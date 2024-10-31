@@ -31,6 +31,26 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 	dest[j] = '\0';
 	return (len);
 }
+
+char *ft_strncpy(char *dest, char *src, unsigned int n)
+{
+    unsigned int i;
+
+    i = 0;
+
+    while(src[i] != '\0' && i < n)
+    {
+        dest[i] = src[i];
+        i++;
+    }
+    while(dest[i] < n)
+    {
+    dest[i] = '\0';
+    i++;
+    }
+    
+    return 0;
+}
 /*
 int	main (void)
 {

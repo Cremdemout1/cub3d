@@ -26,32 +26,90 @@ bool    valid_arguments(int argc, char **argv)
     return (true);
 }
 
-char    *get_map(int fd, t_map *map)
+// char    *get_map(int fd, t_map *map)
+// {
+//     int i;
+//     char *line;
+//     char *buf;
+//     char *temp;
+//     i = 0;
+//     buf = NULL;
+//     while (1)
+//     {
+//         line = get_next_line(fd);
+//         if (!line)
+//             break ;
+//         i++;
+//         if (buf)
+//         {
+//             temp = ft_strjoin(buf, line);
+//             free(buf);
+//             buf = ft_strdup(temp);
+//             free(temp);
+//         }
+//         else
+//             buf = ft_strdup(line);
+//         free(line);
+//     }
+//     return (map->length = i, buf);
+// }
+
+char    **get_map(int fd, t_map *map)
 {
-    int i;
+    int i = 0;
+    int line_count = 0;
+    int line_len;
     char *line;
-    char *buf;
-    char *temp;
-    i = 0;
-    buf = NULL;
-    while (1)
+    char **buf;
+
+    line_len = 0;
+    while ((line = get_next_line(fd)))
     {
-        line = get_next_line(fd);
-        if (!line)
-            break ;
-        i++;
-        if (buf)
-        {
-            temp = ft_strjoin(buf, line);
-            free(buf);
-            buf = ft_strdup(temp);
-            free(temp);
-        }
-        else
-            buf = ft_strdup(line);
+        line_len = ft_strlen(line) + 2;
+        if (line_len > i)
+            i = line_len;
+        line_count++;
         free(line);
     }
-    return (map->length = i, buf);
+    map->length = line_count;
+    map->biggest_width = i;
+    close(fd);
+    fd = open("map.cub", O_RDONLY);
+    i = 0;
+    line_len = 0;
+    buf = (char **)malloc(sizeof(char *) * (line_count + 2 + 1));
+    if (!buf)
+        return NULL;
+    buf[i] = (char *)malloc(sizeof(char) * (map->biggest_width + 1));
+    if (!buf[i])
+        return NULL;
+    ft_memset(buf[i], ' ', map->biggest_width);
+    buf[i][map->biggest_width] = '\0';
+    i++;
+    while ((line = get_next_line(fd)))
+    {
+        line_len = ft_strlen(line);
+
+        if (line[line_len - 1] == '\n')
+            line_len--;
+        buf[i] = (char *)malloc(sizeof(char) * (line_len + 2 + 1)); // 2 extra for spaces
+        if (!buf[i])
+            return NULL;
+        buf[i][0] = ' ';
+        ft_strcpy(buf[i] + 1, line);
+        buf[i][line_len + 1] = ' ';
+        buf[i][line_len + 2] = '\0';
+        free(line);
+        i++;
+    }
+    buf[i] = (char *)malloc(sizeof(char) * (map->biggest_width + 1));
+    if (!buf[i])
+        return NULL;
+    ft_memset(buf[i], ' ', map->biggest_width);
+    buf[i][map->biggest_width] = '\0';
+    buf[i + 1] = NULL;
+    map->length = i + 1;
+    return (buf);
 }
 
 void    player_start_info(t_map *info, char dir, int x, int y)
@@ -249,26 +307,31 @@ void bufferize_map(char **old_map, t_map *info)
 bool    init_map_and_player(t_map *map_info, int fd)
 {
     char **map;
-    char *buf;
+    // char *buf;
 
-    buf = get_map(fd, map_info);
-    close(fd);
-    if (!buf)
-        return (ft_printf_fd(2, "buffer error\n"), false);
-    map = ft_split(buf, '\n');
+    // buf = get_map(fd, map_info);
+    // close(fd);
+    // if (!buf)
+    //     return (ft_printf_fd(2, "buffer error\n"), false);
+    // map = ft_split(buf, '\n');
+
+    // for(int i = 0; map[i] != NULL; i++)
+        // printf("%s\n", map[i]);
+    // free(buf);
+    // if (!map)
+        // return (ft_printf_fd(2, "map error\n"), false);
+    map = get_map(fd, map_info);
+    map_info->map = map;
     for(int i = 0; map[i] != NULL; i++)
         printf("%s\n", map[i]);
-    free(buf);
-    if (!map)
-        return (ft_printf_fd(2, "map error\n"), false);
-    map_info->map = map;
+    //map_info->map = get_map(fd, map_info);
     if (!found_player(map_info))
     {
-        free_array(map);
+        // free_array(map);
         return (ft_printf_fd(2, "initiation error\n"), false);
     }
     get_widths(map_info);
-    bufferize_map(map_info->map, map_info);
+    //bufferize_map(map_info->map, map_info);
     initialize_visit_state(map_info);
     const char *direction_names[] = { "NORTH", "SOUTH", "EAST", "WEST" };
     printf("player initial direction: %s\n", direction_names[map_info->start_dir]);

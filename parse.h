@@ -17,7 +17,7 @@
 
 bool    valid_arguments(int argc, char **argv);
 bool    flood_fill(t_map *map);
-char    *get_map(int fd, t_map *map);
+char    **get_map(int fd, t_map *map);
 bool    init_map_and_player(t_map *map_info, int fd);
 
 

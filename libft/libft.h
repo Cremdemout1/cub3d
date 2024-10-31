@@ -110,5 +110,7 @@ char	*gnl_ft_strjoin(char *line, char *buf);
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
 int		ft_isalphaund(int input);
 int		ft_isalnumund(int input);
+char 	*ft_strncpy(char *dest, char *src, unsigned int n);
+
 
 #endif

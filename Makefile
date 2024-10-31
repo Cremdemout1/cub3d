@@ -26,7 +26,7 @@ $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
 $(NAME): $(LIBFT) $(SRC)
-	@$(CC) $(FLAGS) $(SRC) $(LIBFT) -o $(NAME) $(DEPS)
+	@$(CC) $(FLAGS) $(SRC) $(LIBFT) -o $(NAME)
 
 clean:
 #	@$(RM) $(OBJ)

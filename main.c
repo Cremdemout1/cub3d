@@ -23,13 +23,13 @@ int main (int argc, char **argv)
         return (ft_printf_fd(2, "invalid arguments\n"), 1);
     if (!init_map_and_player(&map, fd))
         return (1);
-    /* if (!flood_fill(&map))
+    if (!flood_fill(&map))
     {
         free_array(map.map);
         free_bool_array(map.parser.visited, map.length);
         free(map.width);
         return(1);
-    } */
+    }
     free_array(map.map);
     free_bool_array(map.parser.visited, map.length);
     free(map.width);
