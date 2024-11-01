@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:35:10 by ycantin           #+#    #+#             */
-/*   Updated: 2024/10/30 22:32:28 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/01 07:30:07 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main (int argc, char **argv)
     fd = open(argv[1], O_RDONLY);
     if (!valid_arguments(argc, argv) || fd < 1)
         return (ft_printf_fd(2, "invalid arguments\n"), 1);
-    if (!init_map_and_player(&map, fd))
+    if (!init_map_and_player(&map, argv[1]))
         return (1);
     if (!flood_fill(&map))
     {
@@ -30,6 +30,8 @@ int main (int argc, char **argv)
         free(map.width);
         return(1);
     }
+    for(int i = 0; map.map[i] != NULL; i++)
+        printf("%s\n", map.map[i]);
     free_array(map.map);
     free_bool_array(map.parser.visited, map.length);
     free(map.width);
