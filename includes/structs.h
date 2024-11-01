@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/10/30 21:18:36 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/01 13:59:55 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,17 @@ typedef struct s_parse
     bool    **visited;
 }   t_parse;
 
+typedef struct s_window
+{
+	void	*mlx;
+	void	*win;
+	void	*img;
+    char	*img_pixel_ptr;
+	int		bits_per_pixel;
+	int	    endian;
+	int		line_len;
+}   t_window;
+
 typedef struct s_map
 {
     int     *width; // x
@@ -49,5 +60,12 @@ typedef struct s_map
     t_parse parser;
 }   t_map;
 
+typedef struct s_game
+{
+    t_map    map;
+    t_window window;
+    void     (*loop)(struct s_game *g);
+
+}   t_game;
 
 #endif
