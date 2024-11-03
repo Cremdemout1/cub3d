@@ -6,7 +6,7 @@
 #    By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/28 20:32:02 by ycantin           #+#    #+#              #
-#    Updated: 2024/11/01 13:37:51 by ycantin          ###   ########.fr        #
+#    Updated: 2024/11/02 11:21:38 by ycantin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SRC = 	main.c \
 		parsing/parse.c \
 		parsing/flood.c \
 		parsing/bufferize.c \
-		measure.c 
+		measure.c \
+		my_mlx.c
 
 all: $(NAME)
 

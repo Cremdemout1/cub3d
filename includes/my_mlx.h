@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx.h                                              :+:      :+:    :+:   */
+/*   my_mlx.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:35:10 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/01 13:33:17 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/03 09:09:22 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MLX_H
-#define MLX_H
+#ifndef MY_MLX_H
+#define MY_MLX_H
 
 # define XK_ESCAPE 0xff1b
 # define XK_A 0x0061
@@ -50,5 +50,9 @@
 # define XK_BRACKETLEFT 0x005b
 # define XK_BRACKETRIGHT 0x005d
 # define M_PI 3.14159265358979323846
+
+// int x_button(t_window *window);
+void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
+
 
 #endif

@@ -6,104 +6,323 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/01 13:08:49 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/03 17:39:57 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-char    *add_bigger_buf(int decider, t_map *map, int i, char *line)
+// char    *add_bigger_buf(int decider, t_map *map, int i, char *line)
+// {
+//     int len;
+//     int size;
+//     char *str;
+    
+//     size = ft_strlen(line);
+//     if (decider == -1)
+//         len = map->width[i - 1];
+//     else if (decider == 1)
+//         len = map->width[i + 1];
+//     str = malloc(sizeof(char) * (len + 2));
+//     if (!str)
+//         return (NULL);
+//     str[0] = ' ';
+//     ft_strcpy(str + 1, line);
+    
+//     if (line[size - 1] !='\n')
+//     {
+//         while (size < (len - 1))
+//             str[size++] = ' ';
+//         str[size + 1] = ' ';
+//         str[size + 2] = '\0';
+//     }
+//     else
+//     {    
+//         while ((size) < len)
+//             str[size++] = ' ';
+//         str[size] = ' ';
+//         str[size + 1] = '\0';
+//     }
+//     return (str);
+// }
+
+
+// char *create_biggest_buf(t_map *map)
+// {
+//     char *str;
+    
+//     str = (char *)malloc(sizeof(char) * (map->biggest_width + 1));
+//     if (!str)
+//         return (NULL);
+//     ft_memset(str, ' ', map->biggest_width);
+//     str[map->biggest_width] = '\0';
+//     return(str);
+// }
+
+int     is_empty(char *str)
 {
-    int len;
-    int size;
-    char *str;
-    
-    size = ft_strlen(line);
-    if (decider == -1)
-        len = map->width[i - 1];
-    else if (decider == 1)
-        len = map->width[i + 1];
-    str = malloc(sizeof(char) * (len + 2));
-    if (!str)
-        return (NULL);
-    str[0] = ' ';
-    ft_strcpy(str + 1, line);
-    
-    if (line[size - 1] !='\n')
+    int i;
+
+    i = 0;
+    if (!str[0])
+        return (1);
+    while (str[i] == ' ' && str[i] == '\t')
+        i++;
+    if (str[i] == '\0')
+        return (1);
+    return (0);
+}
+
+// char    **get_map(t_map *map, char *filename)
+// {
+//     int i;
+//     int fd;
+//     int line_len;
+//     char *line;
+//     char **buf;
+
+//     i = 1;
+//     fd = open(filename, O_RDONLY);
+//     buf = (char **)malloc(sizeof(char *) * (map->length + 2 + 1));
+//     if (!buf)
+//         return (NULL);
+
+//     if (!(buf[0] = create_biggest_buf(map)))
+//         return (NULL);
+//     while (1)
+//     {
+//         line = get_next_line(fd);
+//         if (!line)
+//             break ;
+//         if (i > 1 && (map->width[i] < map->width[i + 1] || map->width[i] < map->width[i - 1]))
+//         {
+//             if (map->width[i - 1] > map->width[i + 1])
+//                 buf[i] = add_bigger_buf(-1, map, i, line);
+//             else
+//                 buf[i] = add_bigger_buf(1, map, i, line);
+//         }
+//         else
+//         {
+//             line_len = ft_strlen(line);
+//             if (line[line_len - 1] == '\n')
+//                 line_len--;
+//             buf[i] = (char *)malloc(sizeof(char) * (line_len + 2 + 1)); // 2 extra for spaces
+//             if (!buf[i])
+//                 return NULL;
+//             buf[i][0] = ' ';
+//             ft_strcpy(buf[i] + 1, line);
+//             buf[i][line_len + 1] = ' ';
+//             buf[i][line_len + 2] = '\0';
+//         }
+//         free(line);
+//         i++;
+//     }
+//     buf[i] = create_biggest_buf(map);
+//     buf[i + 1] = NULL;
+//     close(fd);
+//     return (buf);
+// }
+
+// int get_starting_info(t_map *map, char *filename) {
+//     int i = 0;
+//     int found = 0;
+//     int fd;
+//     char *line;
+//     int error[4] = {0, 0, 0, 0}; // Track texture assignments
+
+//     fd = open(filename, O_RDONLY);
+//     if (fd < 0) {
+//         perror("Error opening file");
+//         return 1; // Return error if file cannot be opened
+//     }
+
+//     while (1) {
+//         line = get_next_line(fd);
+//         if (!line) {
+//             break; // Exit if end of file is reached
+//         }
+
+//         // Skip leading whitespace
+//         int j = 0;
+//         while (line[j] == ' ' || line[j] == '\t') {
+//             j++;
+//         }
+
+//         // Check for empty line
+//         if (line[j] == '\0') {
+//             free(line);
+//             i++;
+//             continue;
+//         }
+
+//         // Texture definitions
+//         if (ft_strncmp(line + j, "NO", 2) == 0) {
+//             if (error[0]) {
+//                 free(line);
+//                 close(fd);
+//                 return ft_printf_fd(2, "Error: same cardinal texture found more than once\n"), 1;
+//             }
+//             map->N_text = ft_strdup(line + j + 3); // Skip "NO "
+//             error[0] = 1;
+//             i++;
+//             continue ;
+//         } else if (ft_strncmp(line + j, "SO", 2) == 0) {
+//             if (error[1]) {
+//                 free(line);
+//                 close(fd);
+//                 return ft_printf_fd(2, "Error: same cardinal texture found more than once\n"), 1;
+//             }
+//             map->S_text = ft_strdup(line + j + 3); // Skip "SO "
+//             error[1] = 1;
+//             i++;
+//             continue ;
+//         } else if (ft_strncmp(line + j, "WE", 2) == 0) {
+//             if (error[2]) {
+//                 free(line);
+//                 close(fd);
+//                 return ft_printf_fd(2, "Error: same cardinal texture found more than once\n"), 1;
+//             }
+//             map->W_text = ft_strdup(line + j + 3); // Skip "WE "
+//             error[2] = 1;
+//             i++;
+//             continue ;
+//         } else if (ft_strncmp(line + j, "EA", 2) == 0) {
+//             if (error[3]) {
+//                 free(line);
+//                 close(fd);
+//                 return ft_printf_fd(2, "Error: same cardinal texture found more than once\n"), 1;
+//             }
+//             map->E_text = ft_strdup(line + j + 3); // Skip "EA "
+//             error[3] = 1;
+//             i++;
+//             continue ;
+//         }
+//             free(line);
+//             //i++;
+//         if (error[0] && error[1] && error[2] && error[3]) {
+//             found = 1;
+//             break; // Exit after finding the start of the map
+//         }
+//         i++;
+//     }
+//     if (found)
+//         map->map_start = i; // Mark the start of the map
+//     else
+//         map->map_start = 0;
+//     close(fd);
+//     return 0; // Return success
+// }
+
+int get_starting_info(t_map *map, char *filename) 
+{
+    int i = 0;
+    int fd;
+    char *line;
+    int error[4] = {0, 0, 0, 0}; // Track texture assignments
+
+    fd = open(filename, O_RDONLY);
+    if (fd < 0) {
+        perror("Error opening file");
+        return 1; // Return error if file cannot be opened
+    }
+
+    while (1)
     {
-        while (size < (len - 1))
-            str[size++] = ' ';
-        str[size + 1] = ' ';
-        str[size + 2] = '\0';
+        line = get_next_line(fd);
+        if (!line) {
+            break; // Exit if end of file is reached
+        }
+
+        // Skip leading whitespace
+        int j = 0;
+        while (line[j] == ' ' || line[j] == '\t') {
+            j++;
+        }
+
+        // Check for empty line
+        if (line[j] == '\0') {
+            free(line);
+            i++;
+            continue;
+        }
+
+        // Texture definitions
+        if (ft_strncmp(line + j, "NO", 2) == 0 && !error[0]) {
+            map->N_text = ft_strdup(line + j + 3); // Skip "NO "
+            error[0] = 1;
+        } else if (ft_strncmp(line + j, "SO", 2) == 0 && !error[1]) {
+            map->S_text = ft_strdup(line + j + 3); // Skip "SO "
+            error[1] = 1;
+        } else if (ft_strncmp(line + j, "WE", 2) == 0 && !error[2]) {
+            map->W_text = ft_strdup(line + j + 3); // Skip "WE "
+            error[2] = 1;
+        } else if (ft_strncmp(line + j, "EA", 2) == 0 && !error[3]) {
+            map->E_text = ft_strdup(line + j + 3); // Skip "EA "
+            error[3] = 1;
+        } else {
+            // If the line doesn't match a texture definition, we may be at the map start
+            if (error[0] || error[1] || error[2] || error[3]) {
+                // If we've found at least one texture, we might consider this line part of the map
+                break;
+            }
+        }
+
+        // Free the line before moving to the next one
+        free(line);
+        i++; // Increment line counter
     }
-    else
-    {    
-        while ((size) < len)
-            str[size++] = ' ';
-        str[size] = ' ';
-        str[size + 1] = '\0';
-    }
-    return (str);
+
+    // Mark the start of the map
+    map->map_start = (error[0] || error[1] || error[2] || error[3]) ? i : 0;
+    close(fd);
+    return 0; // Return success
 }
 
-
-char *create_biggest_buf(t_map *map)
-{
-    char *str;
-    
-    str = (char *)malloc(sizeof(char) * (map->biggest_width + 1));
-    if (!str)
-        return (NULL);
-    ft_memset(str, ' ', map->biggest_width);
-    str[map->biggest_width] = '\0';
-    return(str);
-}
 
 char    **get_map(t_map *map, char *filename)
 {
     int i;
     int fd;
-    int line_len;
     char *line;
     char **buf;
 
-    i = 1;
+    i = 0;
+    printf("start: %d\n", map->map_start);
+    printf("length: %d\n", map->length);
+    for(int i = 0; i < map->length; i++)
+        printf("%d\n", map->width[i]);
     fd = open(filename, O_RDONLY);
-    buf = (char **)malloc(sizeof(char *) * (map->length + 2 + 1));
+    i = 0;
+    while (i + 1 < map->map_start) //changing the amount of map_start gives me a closer value of the map
+    {
+        line = get_next_line(fd);
+        printf("BEFORE: %s\n", line);
+        if (!line)
+            break ;
+        free(line);
+        i++;
+    }
+    i = 0;
+    buf = malloc(sizeof(char *) * (map->length + 1));
     if (!buf)
         return (NULL);
-    if (!(buf[0] = create_biggest_buf(map)))
-        return (NULL);
-    while (1)
+    while (i < map->length)
     {
         line = get_next_line(fd);
         if (!line)
             break ;
-        if (i > 1 && (map->width[i] < map->width[i + 1] || map->width[i] < map->width[i - 1]))
-        {
-            if (map->width[i - 1] > map->width[i + 1])
-                buf[i] = add_bigger_buf(-1, map, i, line);
-            else
-                buf[i] = add_bigger_buf(1, map, i, line);
-        }
-        else
-        {
-            line_len = ft_strlen(line);
-            if (line[line_len - 1] == '\n')
-                line_len--;
-            buf[i] = (char *)malloc(sizeof(char) * (line_len + 2 + 1)); // 2 extra for spaces
-            if (!buf[i])
-                return NULL;
-            buf[i][0] = ' ';
-            ft_strcpy(buf[i] + 1, line);
-            buf[i][line_len + 1] = ' ';
-            buf[i][line_len + 2] = '\0';
-        }
+        printf("\nline[%d]: %s", i, line);
+        buf[i] = ft_strdup(line);
+        // if (!buf)
+        //     return (NULL);
+        int len = ft_strlen(buf[i]);
+        if (len > 0 && buf[i][len - 1] == '\n')
+            buf[i][len - 1] = '\0';
+        printf("buf [%d]: %s\n", i, buf[i]);
         free(line);
         i++;
     }
-    buf[i] = create_biggest_buf(map);
-    buf[i + 1] = NULL;
+    buf[i] = NULL;
     close(fd);
     return (buf);
 }
