@@ -18,11 +18,15 @@ int    init_map(t_map *map, int argc, char **argv)
     
     map->player = false;
     map->map = NULL;
+    map->width = NULL;
     map->parser.visited = NULL;
+    map->parser.error = 0;
     map->N_text = NULL;
     map->S_text = NULL;
     map->W_text = NULL;
     map->E_text = NULL;
+    map->floor_color = NULL;
+    map->ceiling_color = NULL;
 
     if (!valid_arguments(argc, argv))
         return (ft_printf_fd(2, "invalid arguments\n"), 0);
@@ -33,6 +37,7 @@ int    init_map(t_map *map, int argc, char **argv)
     {
         if (map->map)
             free_array(map->map);
+        // if (map->parser.visited) add int array freeer
         if (map->width)
             free(map->width);
         if (map->N_text)
@@ -43,14 +48,65 @@ int    init_map(t_map *map, int argc, char **argv)
             free(map->W_text);
         if (map->E_text)
             free(map->E_text);
+        if (map->floor_color)
+            free(map->floor_color);
+        if (map->ceiling_color)
+            free(map->ceiling_color);
         return (0);
     }
     flood_fill(map);
+    if (map->parser.error == 1)
+    {
+        if (map->map)
+            free_array(map->map);
+        // if (map->parser.visited) add int array freeer
+        if (map->width)
+            free(map->width);
+        if (map->N_text)
+            free(map->N_text);
+        if (map->S_text)
+            free(map->S_text);
+        if (map->W_text)
+            free(map->W_text);
+        if (map->E_text)
+            free(map->E_text);
+        if (map->floor_color)
+            free(map->floor_color);
+        if (map->ceiling_color)
+            free(map->ceiling_color);
+        return (0);
+    }
     const char *direction_names[] = { "NORTH", "SOUTH", "EAST", "WEST" };
     printf("player initial direction: %s\n", direction_names[map->start_dir]);
     printf ("player x: %d, player y: %d\n", map->x_player, map->y_player);
-    for(int i = map->map_start; map->map[i] != NULL; i++)
+    printf("start: %d\n", map->map_start);
+    printf("length: %d\n", map->length);
+    printf("floor color: %s\n", map->floor_color);
+    printf("ceiling color: %s\n", map->ceiling_color);
+    printf("NO: %s\n", map->N_text);
+    printf("SO: %s\n", map->S_text);
+    printf("WE: %s\n", map->W_text);
+    printf("EA: %s\n", map->E_text);
+    printf("MAP:\n");
+    for(int i = 0; map->map[i] != NULL; i++)
         printf("%s\n", map->map[i]);
+    if (map->map)
+        free_array(map->map);
+    // if (map->parser.visited) add int array freeer
+    if (map->width)
+        free(map->width);
+    if (map->N_text)
+        free(map->N_text);
+    if (map->S_text)
+        free(map->S_text);
+    if (map->W_text)
+        free(map->W_text);
+    if (map->E_text)
+        free(map->E_text);
+    if (map->floor_color)
+        free(map->floor_color);
+    if (map->ceiling_color)
+        free(map->ceiling_color);
     return (1);
 }
 
@@ -129,7 +185,11 @@ int main (int argc, char **argv)
 
 
 // to do:
-// 1. handle info before map: texture paths, floor color and ceiling color.
+// 1. handle info before map: texture paths, floor color and ceiling color. DONE
+
+// 1.2 MAKE lines between last info needed and map not count.
+// 1.3 MAKE SURE IF FOUND BAD INFO AT START, END PROGRAM
+// 1.3 CHANGE FLOOD FILL TO find error when out of bounds happens           DOME
 // 2. get texture paths and ensure their validity.
 // 3. ensure validity of floor and ceiling colors.
 

@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/03 17:39:57 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/04 05:11:27 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ int     is_empty(char *str)
     i = 0;
     if (!str[0])
         return (1);
-    while (str[i] == ' ' && str[i] == '\t')
+    while (str[i])
         i++;
-    if (str[i] == '\0')
+    if (str[i - 1] == '\0' || str[i - 1] == '\n' || i == 0 || i == 1)
         return (1);
     return (0);
 }
@@ -218,7 +218,8 @@ int get_starting_info(t_map *map, char *filename)
     int i = 0;
     int fd;
     char *line;
-    int error[4] = {0, 0, 0, 0}; // Track texture assignments
+    int found[6] = {0, 0, 0, 0, 0, 0}; // Track texture assignments
+    int error = 0;
 
     fd = open(filename, O_RDONLY);
     if (fd < 0) {
@@ -232,7 +233,6 @@ int get_starting_info(t_map *map, char *filename)
         if (!line) {
             break; // Exit if end of file is reached
         }
-
         // Skip leading whitespace
         int j = 0;
         while (line[j] == ' ' || line[j] == '\t') {
@@ -247,37 +247,43 @@ int get_starting_info(t_map *map, char *filename)
         }
 
         // Texture definitions
-        if (ft_strncmp(line + j, "NO", 2) == 0 && !error[0]) {
-            map->N_text = ft_strdup(line + j + 3); // Skip "NO "
-            error[0] = 1;
-        } else if (ft_strncmp(line + j, "SO", 2) == 0 && !error[1]) {
+        if (ft_strncmp(line + j, "NO", 2) == 0 && !found[0]) { // remove last char if its \n
+            map->N_text = ft_strdup(line + j + 3); // Skip "NO " 
+            found[0] = 1;
+        } else if (ft_strncmp(line + j, "SO", 2) == 0 && !found[1]) {
             map->S_text = ft_strdup(line + j + 3); // Skip "SO "
-            error[1] = 1;
-        } else if (ft_strncmp(line + j, "WE", 2) == 0 && !error[2]) {
+            found[1] = 1;
+        } else if (ft_strncmp(line + j, "WE", 2) == 0 && !found[2]) {
             map->W_text = ft_strdup(line + j + 3); // Skip "WE "
-            error[2] = 1;
-        } else if (ft_strncmp(line + j, "EA", 2) == 0 && !error[3]) {
+            found[2] = 1;
+        } else if (ft_strncmp(line + j, "EA", 2) == 0 && !found[3]) {
             map->E_text = ft_strdup(line + j + 3); // Skip "EA "
-            error[3] = 1;
-        } else {
-            // If the line doesn't match a texture definition, we may be at the map start
-            if (error[0] || error[1] || error[2] || error[3]) {
-                // If we've found at least one texture, we might consider this line part of the map
-                break;
-            }
+            found[3] = 1;
+        } else if (ft_strncmp(line + j, "F", 1) == 0 && !found[4]) {
+            map->floor_color = ft_strdup(line + j + 2); // Skip "EA "
+            found[4] = 1;
+        } else if (ft_strncmp(line + j, "C", 1) == 0 && !found[5]) {
+            map->ceiling_color = ft_strdup(line + j + 2); // Skip "EA "
+            found[5] = 1;
+        } 
+        else if(found[0] && found[1] && found[2] && found[3] && found[4] && found[5] && !error)
+        {
+                free(line);
+                close(fd);
+                map->map_start = i;
+                return (0);
         }
-
-        // Free the line before moving to the next one
         free(line);
-        i++; // Increment line counter
+        i++;
     }
-
-    // Mark the start of the map
-    map->map_start = (error[0] || error[1] || error[2] || error[3]) ? i : 0;
+    // if (error)
+    //     return (ft_printf_fd(2, "Error: found non-standard information: "), -1);
+    map->map_start = i;
+    if (i == 0)
+        return (-1);
     close(fd);
-    return 0; // Return success
+    return (-1);
 }
-
 
 char    **get_map(t_map *map, char *filename)
 {
@@ -287,16 +293,11 @@ char    **get_map(t_map *map, char *filename)
     char **buf;
 
     i = 0;
-    printf("start: %d\n", map->map_start);
-    printf("length: %d\n", map->length);
-    for(int i = 0; i < map->length; i++)
-        printf("%d\n", map->width[i]);
     fd = open(filename, O_RDONLY);
     i = 0;
-    while (i + 1 < map->map_start) //changing the amount of map_start gives me a closer value of the map
+    while (i < map->map_start)
     {
         line = get_next_line(fd);
-        printf("BEFORE: %s\n", line);
         if (!line)
             break ;
         free(line);
@@ -311,14 +312,10 @@ char    **get_map(t_map *map, char *filename)
         line = get_next_line(fd);
         if (!line)
             break ;
-        printf("\nline[%d]: %s", i, line);
         buf[i] = ft_strdup(line);
-        // if (!buf)
-        //     return (NULL);
         int len = ft_strlen(buf[i]);
         if (len > 0 && buf[i][len - 1] == '\n')
             buf[i][len - 1] = '\0';
-        printf("buf [%d]: %s\n", i, buf[i]);
         free(line);
         i++;
     }

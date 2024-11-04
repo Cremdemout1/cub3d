@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/03 17:37:55 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/04 04:54:16 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,5 @@ void    player_start_info(t_map *info, char dir, int x, int y)
         info->start_dir = EAST;
     info->x_player = x;
     info->y_player = y;
+    info->dir = dir;
 }

@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/03 11:08:45 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/04 04:53:45 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_map
     bool    player;
     int     x_player;
     int     y_player;
+    char    dir;
     char    **map;
     int     start_dir;
     char     *N_text;
