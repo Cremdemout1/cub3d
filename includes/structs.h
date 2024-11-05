@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/04 04:53:45 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/04 11:01:49 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ typedef struct s_map
     char     *S_text;
     char     *E_text;
     char     *W_text;
-    char     *floor_color; // to change to int *
-    char     *ceiling_color; //to change to int *
+    int      *floor_color; // to change to int *
+    int      *ceiling_color; //to change to int *
     t_parse parser;
 }   t_map;
 
@@ -73,8 +73,7 @@ typedef struct s_game
     t_img    img;
     void	 *mlx;
 	void	 *win;
-    
-    //void     (*loop)(struct s_game *g);
+    void     (*loop)(struct s_game *g);
 
 }   t_game;
 

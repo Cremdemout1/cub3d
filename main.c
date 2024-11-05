@@ -81,8 +81,10 @@ int    init_map(t_map *map, int argc, char **argv)
     printf ("player x: %d, player y: %d\n", map->x_player, map->y_player);
     printf("start: %d\n", map->map_start);
     printf("length: %d\n", map->length);
-    printf("floor color: %s\n", map->floor_color);
-    printf("ceiling color: %s\n", map->ceiling_color);
+    if (map->floor_color)
+        printf("floor color: %d,%d,%d\n", map->floor_color[0], map->floor_color[1], map->floor_color[2]);
+    if (map->ceiling_color)
+        printf("ceiling color: %d,%d,%d\n", map->ceiling_color[0], map->ceiling_color[1], map->ceiling_color[2]);
     printf("NO: %s\n", map->N_text);
     printf("SO: %s\n", map->S_text);
     printf("WE: %s\n", map->W_text);
@@ -130,6 +132,13 @@ int destroy(t_game *window)
     return (0);
 }
 
+int exit_t(t_game *g)
+{
+    free(g);
+    exit(0);
+    return 1;
+}
+
 void    init_window(t_game *g)
 {
     g->mlx = mlx_init();
@@ -139,6 +148,7 @@ void    init_window(t_game *g)
         fprintf(stderr, "Error: MLX initialization failed.\n");
         exit(EXIT_FAILURE);
     }
+    mlx_hook(g->win, 17, (1L << 0), exit_t, g);
     // g->window.img = mlx_new_image(g->window.mlx, WIDTH, HEIGHT);
     // g->window.line_len = 
     // g->window.img_addr = mlx_get_data_addr(&g->window.img, &g->window.bits_per_pixel, &g->window.line_len, &game->window.endian);
@@ -155,6 +165,12 @@ int     keybrd_hook(int key, t_game *data)
     return (key);
 }
 
+void    loop(t_game *g)
+{
+    if (g->mlx)
+        mlx_loop(g->mlx);
+}
+
 int main (int argc, char **argv)
 {
     t_game *game;
@@ -167,7 +183,7 @@ int main (int argc, char **argv)
     //init_window(game);
     //my_mlx_pixel_put(&game->window, 5, 5, 0x00FF0000);
 	//mlx_put_image_to_window(game->window.mlx, game->window.win, game->window.img, 0, 0);
-    //mlx_loop(game->window.mlx);
+   
     // mlx_hook(game->win, 2, (1L << 0), keybrd_hook, &game);
     // mlx_loop(game->mlx);
     // mlx_destroy_window(game->window.mlx, game->window.win);
@@ -177,6 +193,8 @@ int main (int argc, char **argv)
     // if (game->map.parser.visited)
     //     free_bool_array(game->map.parser.visited, game->map.length);
     // free(game->map.width);
+    // game->loop = loop;
+    // game->loop(game);
     free(game);
     return (0);
 }
@@ -187,14 +205,15 @@ int main (int argc, char **argv)
 // to do:
 // 1. handle info before map: texture paths, floor color and ceiling color. DONE
 
-// 1.2 MAKE lines between last info needed and map not count.
-// 1.3 MAKE SURE IF FOUND BAD INFO AT START, END PROGRAM
-// 1.3 CHANGE FLOOD FILL TO find error when out of bounds happens           DOME
+// 1.2 MAKE lines between last info needed and map not count.               DONE
+// 1.3 MAKE SURE IF FOUND BAD INFO AT START, END PROGRAM                    DONE but add check for atoi being given a null value
+// 1.3 CHANGE FLOOD FILL TO find error when out of bounds happens           DONE
 // 2. get texture paths and ensure their validity.
 // 3. ensure validity of floor and ceiling colors.
 
 // 4. open and close window correctly.
-// 5. draw each texture in 64 x 64 squares on image.
+// 5. draw each texture in 64 x 64 squares on image. turns out xpms will be assigned to each 1 or 0.
+//    give north, south, west, or east value to each wall
 // 6. implement 3D aspect.
 // 7. implement line drawing(dda) until vertial and horizontal WALL
 // 8. add more rays.

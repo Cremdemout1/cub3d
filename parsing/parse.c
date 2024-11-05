@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/04 04:40:35 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/04 10:50:18 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ bool    init_map_and_player(t_map *map_info, char *filename)
 {
     char **map;
     
-    if (get_starting_info(map_info, filename) != 0)
+    if (get_starting_info(map_info, filename) != 0 || map_info->parser.error)
         return (ft_printf_fd(2, "couldnt find info needed\n"), false);
     get_length(map_info, filename);
     get_widths(map_info, filename);
