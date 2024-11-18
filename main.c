@@ -12,6 +12,70 @@
 
 #include "includes/main.h"
 
+void free_resources(t_map *map)
+{
+    if (map->map)
+        free_array(map->map);
+    if (map->parser.visited)
+        free_bool_array(map->parser.visited, map->length);
+    if (map->width)
+        free(map->width);
+    if (map->texs)
+        free_array(map->texs);
+    if (map->floor_color)
+        free(map->floor_color);
+    if (map->ceiling_color)
+        free(map->ceiling_color);
+}
+void load_textures(t_game **game)
+{
+    t_texture **textures;
+    int i;
+
+    i = 0;
+    textures = malloc(sizeof(t_texture *) * 4);
+    if (!textures)
+        return;
+    while (i < 4)
+    {
+        textures[i] = malloc(sizeof(t_texture));
+        if (!textures[i])
+            return (free(textures));
+        textures[i]->img = mlx_xpm_file_to_image((*game)->mlx, (*game)->map.texs[i], &textures[i]->width, &textures[i]->height);
+        if (!textures[i]->img)
+            return (free(textures[i]), free(textures));
+        textures[i]->addr = mlx_get_data_addr(
+            textures[i]->img,
+            &textures[i]->bpp,
+            &textures[i]->line_len,
+            &textures[i]->endian);
+        if (!textures[i]->addr)
+            return (free(textures[i]->img), free(textures[i]), free(textures));
+        i++;
+    }
+    printf("%d  %d\n", textures[i - 1]->width, textures[i - 1]->height);
+    (*game)->texs = textures;
+}
+
+void draw_map(t_game *game)
+{
+    int x, y;
+    int map_x, map_y;
+
+    for (map_y = 0; map_y < game->map.length; map_y++) {
+        for (map_x = 0; map_x < game->map.width[map_y]; map_x++) {
+            if (game->map.map[map_y][map_x] == '1') {
+                x = map_x * XPM_X;
+                y = map_y * XPM_Y;
+                if (game->map.map && game->map.map[map_y][map_x] == '1') {
+                    mlx_put_image_to_window(game->mlx, game->win, game->texs[0]->img, x, y);  // North wall
+                }
+            }
+        }
+    }
+}
+
+
 int    init_map(t_map *map, int argc, char **argv)
 {
     int fd;
@@ -21,10 +85,7 @@ int    init_map(t_map *map, int argc, char **argv)
     map->width = NULL;
     map->parser.visited = NULL;
     map->parser.error = 0;
-    map->N_text = NULL;
-    map->S_text = NULL;
-    map->W_text = NULL;
-    map->E_text = NULL;
+    map->texs = NULL;
     map->floor_color = NULL;
     map->ceiling_color = NULL;
 
@@ -34,88 +95,27 @@ int    init_map(t_map *map, int argc, char **argv)
     if (fd < 0)
         return (0);
     if (!init_map_and_player(map, argv[1]))
-    {
-        if (map->map)
-            free_array(map->map);
-        // if (map->parser.visited) add int array freeer
-        if (map->width)
-            free(map->width);
-        if (map->N_text)
-            free(map->N_text);
-        if (map->S_text)
-            free(map->S_text);
-        if (map->W_text)
-            free(map->W_text);
-        if (map->E_text)
-            free(map->E_text);
-        if (map->floor_color)
-            free(map->floor_color);
-        if (map->ceiling_color)
-            free(map->ceiling_color);
         return (0);
-    }
     flood_fill(map);
     if (map->parser.error == 1)
-    {
-        if (map->map)
-            free_array(map->map);
-        // if (map->parser.visited) add int array freeer
-        if (map->width)
-            free(map->width);
-        if (map->N_text)
-            free(map->N_text);
-        if (map->S_text)
-            free(map->S_text);
-        if (map->W_text)
-            free(map->W_text);
-        if (map->E_text)
-            free(map->E_text);
-        if (map->floor_color)
-            free(map->floor_color);
-        if (map->ceiling_color)
-            free(map->ceiling_color);
         return (0);
-    }
-    const char *direction_names[] = { "NORTH", "SOUTH", "EAST", "WEST" };
-    printf("player initial direction: %s\n", direction_names[map->start_dir]);
-    printf ("player x: %d, player y: %d\n", map->x_player, map->y_player);
-    printf("start: %d\n", map->map_start);
-    printf("length: %d\n", map->length);
-    if (map->floor_color)
-        printf("floor color: %d,%d,%d\n", map->floor_color[0], map->floor_color[1], map->floor_color[2]);
-    if (map->ceiling_color)
-        printf("ceiling color: %d,%d,%d\n", map->ceiling_color[0], map->ceiling_color[1], map->ceiling_color[2]);
-    printf("NO: %s\n", map->N_text);
-    printf("SO: %s\n", map->S_text);
-    printf("WE: %s\n", map->W_text);
-    printf("EA: %s\n", map->E_text);
-    printf("MAP:\n");
-    for(int i = 0; map->map[i] != NULL; i++)
-        printf("%s\n", map->map[i]);
-    if (map->map)
-        free_array(map->map);
-    // if (map->parser.visited) add int array freeer
-    if (map->width)
-        free(map->width);
-    if (map->N_text)
-        free(map->N_text);
-    if (map->S_text)
-        free(map->S_text);
-    if (map->W_text)
-        free(map->W_text);
-    if (map->E_text)
-        free(map->E_text);
-    if (map->floor_color)
-        free(map->floor_color);
-    if (map->ceiling_color)
-        free(map->ceiling_color);
+    //const char *direction_names[] = { "NORTH", "SOUTH", "EAST", "WEST" };
+    // printf("player initial direction: %s\n", direction_names[map->start_dir]);
+    // printf ("player x: %d, player y: %d\n", map->x_player, map->y_player);
+    // printf("start: %d\n", map->map_start);
+    // printf("length: %d\n", map->length);
+    // if (map->floor_color)
+    //     printf("floor color: %d,%d,%d\n", map->floor_color[0], map->floor_color[1], map->floor_color[2]);
+    // if (map->ceiling_color)
+    //     printf("ceiling color: %d,%d,%d\n", map->ceiling_color[0], map->ceiling_color[1], map->ceiling_color[2]);
+    // for(int i = 0; map->texs[i] != NULL; i++)
+    //     printf("%s\n", map->texs[i]);
+    // printf("MAP:\n");
+    // for(int i = 0; map->map[i] != NULL; i++)
+    //     printf("%s\n", map->map[i]);
     return (1);
 }
 
-// void loop(t_game *g)
-// {
-//     mlx_loop(g->window.mlx);
-// }
 int destroy(t_game *window)
 {
     if (window->win)
@@ -134,6 +134,7 @@ int destroy(t_game *window)
 
 int exit_t(t_game *g)
 {
+    free_resources(&g->map);
     free(g);
     exit(0);
     return 1;
@@ -148,6 +149,7 @@ void    init_window(t_game *g)
         fprintf(stderr, "Error: MLX initialization failed.\n");
         exit(EXIT_FAILURE);
     }
+    g->loop = loop;
     mlx_hook(g->win, 17, (1L << 0), exit_t, g);
     // g->window.img = mlx_new_image(g->window.mlx, WIDTH, HEIGHT);
     // g->window.line_len = 
@@ -165,11 +167,25 @@ int     keybrd_hook(int key, t_game *data)
     return (key);
 }
 
-void    loop(t_game *g)
-{
-    if (g->mlx)
-        mlx_loop(g->mlx);
+void test_textures(t_game *game) {
+    if (!game->texs) {
+        printf("Textures array is NULL\n");
+        return;
+    }
+
+    for (int i = 0; i < 4; i++) {
+        if (game->texs[i] == NULL) {
+            printf("Texture %d is NULL\n", i);
+        } else {
+            if (game->texs[i]->img == NULL) {
+                printf("Texture %d image is NULL\n", i);
+            } else {
+                printf("Texture %d loaded successfully with image at %p\n", i, game->texs[i]->img);
+            }
+        }
+    }
 }
+
 
 int main (int argc, char **argv)
 {
@@ -180,7 +196,10 @@ int main (int argc, char **argv)
         return (1);
     if (!init_map(&game->map, argc, argv))
         return (free(game), 1);
-    //init_window(game);
+    init_window(game);
+    load_textures(&game);
+    test_textures(game);
+    draw_map(game);
     //my_mlx_pixel_put(&game->window, 5, 5, 0x00FF0000);
 	//mlx_put_image_to_window(game->window.mlx, game->window.win, game->window.img, 0, 0);
    
@@ -193,8 +212,8 @@ int main (int argc, char **argv)
     // if (game->map.parser.visited)
     //     free_bool_array(game->map.parser.visited, game->map.length);
     // free(game->map.width);
-    // game->loop = loop;
-    // game->loop(game);
+    game->loop(game);
+    free_resources(&game->map);
     free(game);
     return (0);
 }

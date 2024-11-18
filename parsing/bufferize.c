@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/05 03:30:11 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/18 05:31:45 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,13 @@
 //     return(str);
 // }
 
+bool    is_valid_file(char *file)
+{
+    if (access(file, F_OK) == 0)
+        return (true);
+    return (false);
+}
+
 int is_empty(char *str)
 {
     int i;
@@ -79,13 +86,13 @@ void    handle_texture(t_map *map, char *texture, int *found, int dir)
     if (texture[len - 1] == '\n')
         texture[len - 1] = '\0';
     if (dir == 1)
-        map->N_text = ft_strdup(texture + 3);
+        map->texs[0] = ft_strdup(texture + 3);
     else if (dir == 2)
-        map->S_text = ft_strdup(texture + 3);
+        map->texs[1] = ft_strdup(texture + 3);
     else if (dir == 3)
-        map->W_text = ft_strdup(texture + 3);
+        map->texs[2] = ft_strdup(texture + 3);
     else if (dir == 4)
-        map->E_text = ft_strdup(texture + 3);
+        map->texs[3] = ft_strdup(texture + 3);
     *found = 1;
 }
 
@@ -98,10 +105,7 @@ int    handle_color(t_map *map, char *color, int *found, int type)
     i = 0;
     split = ft_split(color, ',');
     if(!split)
-    {
-        ft_printf_fd(2, "Error\n");
-        return (0);
-    }
+        return (ft_printf_fd(2, "Error\n"), 0);
     if (count_strings(split) != 3)
         return (ft_printf_fd(2, "color unavailable: wrong count\n"), free_array(split), 0);
     rgb = malloc(sizeof (int) * 3);
@@ -111,7 +115,7 @@ int    handle_color(t_map *map, char *color, int *found, int type)
         if (rgb[i] > 255 || rgb[i] < 0)
             return (ft_printf_fd(2, "color unavailable: wrong value\n"), free(rgb), free_array(split), 0);
         i++;
-    }
+    } // add check for empty color or color that has non numerical values
     free_array(split);
     if (type == 1)
         map->floor_color = rgb;
@@ -137,6 +141,12 @@ int get_starting_info(t_map *map, char *filename)
         perror("Error opening file");
         return 1; // Return error if file cannot be opened
     }
+    map->texs = malloc(sizeof (char *) * 5);
+    if (!map->texs)
+        return (-1);
+    while (i < 5)
+        map->texs[i++] = NULL;
+    i = 0;  
     while (1)
     {
         line = get_next_line(fd);
@@ -173,7 +183,7 @@ int get_starting_info(t_map *map, char *filename)
         else if(found[0] && found[1] && found[2] && found[3] && found[4] && found[5] && !error)
         {
             free(line);
-                while (1)
+            while (1)
             {
                 line = get_next_line(fd);
                 if (!line)
@@ -193,21 +203,6 @@ int get_starting_info(t_map *map, char *filename)
         free(line);
         i++;
     }
-    // if (error)
-    //     return (ft_printf_fd(2, "Error: found non-standard information: "), -1);
-    // while (1)
-    // {
-    //     line = get_next_line(fd);
-    //     if (!line)
-    //         break;
-    //     if (!is_empty(line)) 
-    //     {
-    //         free(line);
-    //         break; // Stop when the first non-empty map line is found
-    //     }
-    //     i++;
-    //     free(line);
-    // }
     map->map_start = i;
     if (i == 0)
         return (-1);

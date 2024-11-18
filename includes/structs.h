@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/04 11:01:49 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/18 05:33:59 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,16 @@ typedef struct s_img
 	int		line_len;
 }   t_img;
 
+typedef struct s_texture {
+    void    *img;
+    char    *addr;
+    int     width;
+    int     height;
+    int     bpp;
+    int     line_len;
+    int     endian;
+} t_texture;
+
 typedef struct s_map
 {
     int     *width; // x
@@ -62,6 +72,7 @@ typedef struct s_map
     char     *S_text;
     char     *E_text;
     char     *W_text;
+    char     **texs;
     int      *floor_color; // to change to int *
     int      *ceiling_color; //to change to int *
     t_parse parser;
@@ -71,6 +82,7 @@ typedef struct s_game
 {
     t_map    map;
     t_img    img;
+    t_texture **texs;
     void	 *mlx;
 	void	 *win;
     void     (*loop)(struct s_game *g);

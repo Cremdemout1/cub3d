@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:35:10 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/03 09:09:02 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/06 08:38:26 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@
 //     }
 //     return (0);
 // }
+
+void    loop(t_game *g)
+{
+    if (g->mlx)
+        mlx_loop(g->mlx);
+}
 
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
 {

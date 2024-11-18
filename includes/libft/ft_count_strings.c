@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_count_strings.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bruno <bruno@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:42:28 by yohan             #+#    #+#             */
-/*   Updated: 2024/07/24 04:02:25 by bruno            ###   ########.fr       */
+/*   Updated: 2024/11/18 03:30:43 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	count_strings(char **array)
 	if (!array || !*array)
 		return (0);
 	while (array[i])
+	{
 		i++;
+	}
 	return (i);
 }
