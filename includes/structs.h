@@ -6,12 +6,13 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/18 05:33:59 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/19 09:17:58 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 #define STRUCT_H
+#define M_PI           3.14159265358979323846
 
 typedef enum s_type
 {
@@ -23,10 +24,10 @@ typedef enum s_type
 
 typedef enum s_direction
 {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST
+    NORTH = 0,
+    SOUTH = 180,
+    EAST = 90,
+    WEST = 270
 }   t_direction;
 
 typedef struct s_parse
@@ -58,16 +59,16 @@ typedef struct s_texture {
 
 typedef struct s_map
 {
-    int     *width; // x
-    int     biggest_width;
-    int     length; // y
-    int     map_start;
-    bool    player;
-    int     x_player;
-    int     y_player;
-    char    dir;
-    char    **map;
-    int     start_dir;
+    int      *width; // x
+    int      biggest_width;
+    int      length; // y
+    int      map_start;
+    bool     player;
+    int      x_player;
+    int      y_player;
+    char     **map;
+    char     dir;
+    int      facing;
     char     *N_text;
     char     *S_text;
     char     *E_text;
@@ -77,6 +78,37 @@ typedef struct s_map
     int      *ceiling_color; //to change to int *
     t_parse parser;
 }   t_map;
+
+// typedef struct s_player
+// {
+//     float dir;
+//     int   x_pos;
+//     int   y_pos;
+// }   t_player;
+
+typedef struct s_ray
+{
+    float angle;       // Ray angle in radians
+    float distance;    // Distance to the wall hit
+    float x_hit;       // x coordinate of the hit
+    float y_hit;       // y coordinate of the hit
+    int wall_hit;      // Type of wall hit (could be 0 for no hit, 1 for a wall)
+} t_ray;
+
+typedef struct s_ray_holder
+{
+    float   delta_x;
+    float   delta_y;
+    float   start_x;
+    float   start_y;
+    float   step_x;
+    float   step_y;
+    float   cur_x;
+    float   cur_y;
+    int     grid_x;
+    int     grid_y;
+}   t_ray_holder;
+
 
 typedef struct s_game
 {

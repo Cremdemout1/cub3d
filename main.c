@@ -12,28 +12,13 @@
 
 #include "includes/main.h"
 
-void free_resources(t_map *map)
-{
-    if (map->map)
-        free_array(map->map);
-    if (map->parser.visited)
-        free_bool_array(map->parser.visited, map->length);
-    if (map->width)
-        free(map->width);
-    if (map->texs)
-        free_array(map->texs);
-    if (map->floor_color)
-        free(map->floor_color);
-    if (map->ceiling_color)
-        free(map->ceiling_color);
-}
 void load_textures(t_game **game)
 {
     t_texture **textures;
     int i;
 
     i = 0;
-    textures = malloc(sizeof(t_texture *) * 4);
+    textures = malloc(sizeof(t_texture *) * 5);
     if (!textures)
         return;
     while (i < 4)
@@ -53,26 +38,20 @@ void load_textures(t_game **game)
             return (free(textures[i]->img), free(textures[i]), free(textures));
         i++;
     }
-    printf("%d  %d\n", textures[i - 1]->width, textures[i - 1]->height);
+    textures[i] = malloc (sizeof (t_texture));
+    if (!textures[i])
+        return (free(textures));
+            textures[i]->img = mlx_xpm_file_to_image((*game)->mlx, "./player.xpm", &textures[i]->width, &textures[i]->height);
+        if (!textures[i]->img)
+            return (free(textures[i]), free(textures));
+    textures[i]->addr = mlx_get_data_addr(
+        textures[i]->img,
+        &textures[i]->bpp,
+        &textures[i]->line_len,
+        &textures[i]->endian);
+    if (!textures[i]->addr)
+        return (free(textures[i]->img), free(textures));
     (*game)->texs = textures;
-}
-
-void draw_map(t_game *game)
-{
-    int x, y;
-    int map_x, map_y;
-
-    for (map_y = 0; map_y < game->map.length; map_y++) {
-        for (map_x = 0; map_x < game->map.width[map_y]; map_x++) {
-            if (game->map.map[map_y][map_x] == '1') {
-                x = map_x * XPM_X;
-                y = map_y * XPM_Y;
-                if (game->map.map && game->map.map[map_y][map_x] == '1') {
-                    mlx_put_image_to_window(game->mlx, game->win, game->texs[0]->img, x, y);  // North wall
-                }
-            }
-        }
-    }
 }
 
 
@@ -116,30 +95,6 @@ int    init_map(t_map *map, int argc, char **argv)
     return (1);
 }
 
-int destroy(t_game *window)
-{
-    if (window->win)
-    {
-        mlx_destroy_window(window->mlx, window->win);
-        window->win = NULL;
-    }
-    if (window->mlx)
-    {
-        mlx_destroy_display(&window->mlx);
-        window->mlx = NULL;
-    }
-    //free(window->mlx);
-    return (0);
-}
-
-int exit_t(t_game *g)
-{
-    free_resources(&g->map);
-    free(g);
-    exit(0);
-    return 1;
-}
-
 void    init_window(t_game *g)
 {
     g->mlx = mlx_init();
@@ -173,7 +128,7 @@ void test_textures(t_game *game) {
         return;
     }
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         if (game->texs[i] == NULL) {
             printf("Texture %d is NULL\n", i);
         } else {
@@ -200,6 +155,7 @@ int main (int argc, char **argv)
     load_textures(&game);
     test_textures(game);
     draw_map(game);
+    cast_all_rays(game);
     //my_mlx_pixel_put(&game->window, 5, 5, 0x00FF0000);
 	//mlx_put_image_to_window(game->window.mlx, game->window.win, game->window.img, 0, 0);
    

@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/04 04:54:16 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/19 08:55:49 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ void    get_widths(t_map *map, char *filename)
 void    player_start_info(t_map *info, char dir, int x, int y)
 {
     if (dir == 'N')
-        info->start_dir = NORTH;
+        info->facing = NORTH;
     else if (dir == 'S')
-        info->start_dir = SOUTH;
+        info->facing = SOUTH;
     else if (dir == 'W')
-        info->start_dir = WEST;
+        info->facing = WEST;
     else if (dir == 'E')
-        info->start_dir = EAST;
+        info->facing = EAST;
     info->x_player = x;
     info->y_player = y;
     info->dir = dir;
