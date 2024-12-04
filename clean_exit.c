@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -13,44 +12,55 @@
 
 #include "includes/main.h"
 
-void free_resources(t_map *map)
+void free_textures(t_texture **textures, int count, void *mlx)
 {
-    if (map->map)
-        free_array(map->map);
-    if (map->parser.visited)
-        free_bool_array(map->parser.visited, map->length);
-    if (map->width)
-        free(map->width);
-    if (map->texs)
-        free_array(map->texs);
-    if (map->floor_color)
-        free(map->floor_color);
-    if (map->ceiling_color)
-        free(map->ceiling_color);
+    int i;
+
+    i = 0;
+    while (i < count)
+    {
+        if (textures[i])
+        {
+            if (textures[i]->img)
+                mlx_destroy_image(mlx, textures[i]->img);
+            free(textures[i++]);
+        }
+    }
+    free(textures);
 }
 
-
-int destroy(t_game *window)
+void free_resources(t_game **game)
 {
-    if (window->win)
-    {
-        mlx_destroy_window(window->mlx, window->win);
-        window->win = NULL;
-    }
-    if (window->mlx)
-    {
-        mlx_destroy_display(&window->mlx);
-        window->mlx = NULL;
-    }
-    //free(window->mlx);
-    return (0);
+    if ((*game)->map.map)
+        free_array((*game)->map.map);
+    if ((*game)->map.parser.visited)
+        free_bool_array((*game)->map.parser.visited, (*game)->map.length);
+    if ((*game)->map.width)
+        free((*game)->map.width);
+    if ((*game)->map.texs)
+        free_array((*game)->map.texs);
+    if((*game)->texs)
+        free_textures((*game)->texs, 5, (*game)->mlx);
+    if ((*game)->map.floor_color)
+        free((*game)->map.floor_color);
+    if ((*game)->map.ceiling_color)
+        free((*game)->map.ceiling_color);
 }
 
 int exit_t(t_game *g)
 {
-    free_resources(&g->map);
+
+    free_resources(&g);
+    if (g->img_ptr)
+        mlx_destroy_image(g->mlx, g->img_ptr);
+    if (g->win)
+        mlx_destroy_window(g->mlx, g->win);
+    if (g->mlx)
+    {
+        mlx_destroy_display(g->mlx);
+        free(g->mlx);
+    }
     free(g);
     exit(0);
-    return 1;
 }
 

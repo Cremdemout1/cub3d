@@ -24,13 +24,13 @@ void draw_map(t_game *game)
                 x = map_x * XPM_X;
                 y = map_y * XPM_Y;
                 if (game->map.map && game->map.map[map_y][map_x] == '1')
-                    mlx_put_image_to_window(game->mlx, game->win, game->texs[0]->img, x, y);  // North wall
+                    mlx_put_image_to_window(game->scdmlx, game->scdwin, game->texs[0]->img, x, y);  // North wall
             }
             else if (map_y == game->map.y_player && map_x == game->map.x_player)
             {
                 x = map_x * XPM_X;
                 y = map_y * XPM_Y;
-                mlx_put_image_to_window(game->mlx, game->win, game->texs[4]->img, x, y);  // North wall
+                mlx_put_image_to_window(game->scdmlx, game->scdwin, game->texs[4]->img, x, y);  // North wall
             }
         }
     }

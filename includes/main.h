@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:44:33 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/20 03:48:57 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/30 10:43:17 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #define CUBED_H
 
 #define HEIGHT       800
-#define WIDTH        800
+#define WIDTH        1000
 #define XPM_X        16
 #define XPM_Y        16
 #define FOV          60
-#define PLAYER_SPEED 4
+#define PLAYER_SPEED 1
 #define ROT_SPEED    0.45
 #define M_PI           3.14159265358979323846
 
@@ -35,13 +35,13 @@
 #include "libft/libft.h"
 #include "../minilibx-linux/mlx.h"
 
-void    free_resources(t_map *map);
+void    free_resources(t_game **game);
 int     exit_t(t_game *g);
 int     destroy(t_game *window);
 
 void    draw_map(t_game *game);
 
 void    cast_all_rays(t_game *game);
-
+int     keybrd_hook(int key, t_game **game);
 
 #endif

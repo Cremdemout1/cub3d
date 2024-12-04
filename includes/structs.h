@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/19 09:17:58 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/11/30 03:58:19 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ typedef struct s_ray_holder
     float   cur_y;
     int     grid_x;
     int     grid_y;
+    int     hor_step;
+    int     ver_step;
 }   t_ray_holder;
 
 
@@ -116,7 +118,10 @@ typedef struct s_game
     t_img    img;
     t_texture **texs;
     void	 *mlx;
+    void	 *scdmlx;
 	void	 *win;
+	void	 *scdwin;
+    void     *img_ptr;
     void     (*loop)(struct s_game *g);
 
 }   t_game;

@@ -1,3 +1,10 @@
+NO ./north.xpm
+SO ./north.xpm
+WE ./north.xpm
+EA ./north.xpm
+
+F 255,0,0
+C 255,255,0
 
 11111111111111111
 10000000000000001
