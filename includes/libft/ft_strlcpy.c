@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bruno <bruno@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:41:31 by yohan             #+#    #+#             */
-/*   Updated: 2024/07/09 16:14:19 by bruno            ###   ########.fr       */
+/*   Updated: 2024/12/04 16:32:09 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ char *ft_strncpy(char *dest, char *src, unsigned int n)
         dest[i] = src[i];
         i++;
     }
-    while(dest[i] < n)
+    while((unsigned int)dest[i] < n)
     {
-    dest[i] = '\0';
-    i++;
+		dest[i] = '\0';
+		i++;
     }
     
     return 0;

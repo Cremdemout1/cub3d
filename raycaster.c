@@ -59,67 +59,7 @@ void	image_put_pixel(t_img *img, int x, int y, int color)
 //     ray->grid_y = ray->start_y;
 // }
 
-void init_ray_holder(t_ray_holder *ray, t_game *game, float ray_angle)
-{
-    ray->delta_x = cos(deg_to_rad(ray_angle));
-    ray->delta_y = sin(-deg_to_rad(ray_angle));
-
-    ray->start_x = game->map.x_player;
-    ray->start_y = game->map.y_player;
-
-    ray->grid_x = floor(ray->start_x / XPM_X);
-    ray->grid_y = floor(ray->start_y / XPM_Y);
-
-    ray->step_x = ray->delta_x >= 0 ? 1 : -1;
-    ray->step_y = ray->delta_y >= 0 ? 1 : -1;
-
-    float next_hor;
-    if (ray->step_x > 0)
-        next_hor = XPM_X * (ray->grid_x + 1) - ray->start_x;
-    else
-        next_hor = ray->start_x - XPM_X * ray->grid_x;
-    float next_ver;
-    if (ray->step_y > 0)
-        next_ver = XPM_Y * (ray->grid_y + 1) - ray->start_y;
-    else
-        next_ver = ray->start_y - XPM_Y * ray->grid_y;
-    ray->hor_step = next_hor / fabs(ray->delta_x);
-    ray->ver_step = next_ver / fabs(ray->delta_y);
-
-    ray->cur_x = ray->start_x + (ray->hor_step < ray->ver_step ? ray->hor_step : 0);
-    ray->cur_y = ray->start_y + (ray->hor_step >= ray->ver_step ? ray->ver_step : 0);
-}
-
-
-// t_ray    *cast_ray(t_game *game, int x_for_angle)
-// {
-//     t_ray *ray;
-//     t_ray_holder holder;
-
-//     ray = malloc (sizeof (t_ray));
-//     if (!ray)
-//         return (NULL);
-//     init_ray_holder(&holder, game);
-//     ray->angle = ray_angle(game, x_for_angle);
-//     while (holder.cur_x >= 0 && holder.cur_x < game->map.width[holder.grid_y]
-//         && holder.cur_y >= 0 && holder.cur_y < game->map.length)
-//     {
-//         if (game->map.map[holder.grid_y][holder.grid_x] == '1')
-//         {
-//             ray->wall_hit = 1;
-//             ray->x_hit = holder.cur_x;
-//             ray->y_hit = holder.cur_y;
-//             ray->distance = sqrtf(powf((holder.cur_x - holder.start_x), 2)
-//                 + powf((holder.cur_y - holder.start_y), 2));
-//             break ;
-//         }
-//         holder.cur_x += holder.step_x;
-//         holder.cur_y += holder.step_y;
-//         holder.grid_x = (int)(holder.cur_x / XPM_X);
-//         holder.grid_y = (int)(holder.cur_y / XPM_Y);
-//     }
-//     return (ray);
-// }
+// e
 
 void    init_ray(t_ray *ray)
 {
@@ -139,6 +79,7 @@ void draw_wall_column(t_img *img, int x, int wall_top, int wall_bottom, int colo
         y++;
     }
 }
+
 // t_ray cast_ray(t_game *game, float ray_angle)
 // {
 //     t_ray ray;
@@ -147,15 +88,20 @@ void draw_wall_column(t_img *img, int x, int wall_top, int wall_bottom, int colo
 //     init_ray(&ray);
 //     ray.angle = ray_angle;
 //     init_ray_holder(&holder, game, ray.angle);
+
+//     printf("Ray Angle: %f degrees\n", ray_angle);
+
 //     while (holder.cur_x >= 0 && holder.cur_x < game->map.biggest_width &&
 //            holder.cur_y >= 0 && holder.cur_y < game->map.length)
 //     {
-//         // Check if the ray hit a wall
+//         // Convert ray's current position to grid coordinates
 //         holder.grid_x = (int)(holder.cur_x / XPM_X);
 //         holder.grid_y = (int)(holder.cur_y / XPM_Y);
+
 //         printf("Current Position: (%f, %f)\n", holder.cur_x, holder.cur_y);
 //         printf("Current Grid: (%d, %d)\n", holder.grid_x, holder.grid_y);
 
+//         // Check if the ray hit a wall
 //         if (game->map.map[holder.grid_y][holder.grid_x] == '1')
 //         {
 //             ray.wall_hit = 1;
@@ -163,8 +109,13 @@ void draw_wall_column(t_img *img, int x, int wall_top, int wall_bottom, int colo
 //             ray.y_hit = holder.cur_y;
 //             ray.distance = sqrt(pow(holder.cur_x - holder.start_x, 2) +
 //                                 pow(holder.cur_y - holder.start_y, 2));
+//             printf("Wall Hit at Grid (%d, %d), World Position (%f, %f)\n",
+//                    holder.grid_x, holder.grid_y, ray.x_hit, ray.y_hit);
+//             printf("Distance to Wall: %f\n", ray.distance);
 //             break;
 //         }
+
+//         // Step the ray to the next horizontal or vertical intersection
 //         if (holder.hor_step < holder.ver_step)
 //         {
 //             holder.cur_x += holder.hor_step * holder.step_x;
@@ -177,70 +128,18 @@ void draw_wall_column(t_img *img, int x, int wall_top, int wall_bottom, int colo
 //             holder.cur_y += holder.ver_step * holder.step_y;
 //             holder.ver_step += XPM_Y / fabs(holder.delta_y);
 //         }
+
+//         printf("Next Intersection: hor_step=%d, ver_step=%d\n",
+//                holder.hor_step, holder.ver_step);
 //     }
 
-//     return (ray);
+//     if (!ray.wall_hit)
+//     {
+//         printf("Ray did not hit a wall within map bounds.\n");
+//     }
+
+//     return ray;
 // }
-t_ray cast_ray(t_game *game, float ray_angle)
-{
-    t_ray ray;
-    t_ray_holder holder;
-
-    init_ray(&ray);
-    ray.angle = ray_angle;
-    init_ray_holder(&holder, game, ray.angle);
-
-    printf("Ray Angle: %f degrees\n", ray_angle);
-
-    while (holder.cur_x >= 0 && holder.cur_x < game->map.biggest_width &&
-           holder.cur_y >= 0 && holder.cur_y < game->map.length)
-    {
-        // Convert ray's current position to grid coordinates
-        holder.grid_x = (int)(holder.cur_x / XPM_X);
-        holder.grid_y = (int)(holder.cur_y / XPM_Y);
-
-        printf("Current Position: (%f, %f)\n", holder.cur_x, holder.cur_y);
-        printf("Current Grid: (%d, %d)\n", holder.grid_x, holder.grid_y);
-
-        // Check if the ray hit a wall
-        if (game->map.map[holder.grid_y][holder.grid_x] == '1')
-        {
-            ray.wall_hit = 1;
-            ray.x_hit = holder.cur_x;
-            ray.y_hit = holder.cur_y;
-            ray.distance = sqrt(pow(holder.cur_x - holder.start_x, 2) +
-                                pow(holder.cur_y - holder.start_y, 2));
-            printf("Wall Hit at Grid (%d, %d), World Position (%f, %f)\n",
-                   holder.grid_x, holder.grid_y, ray.x_hit, ray.y_hit);
-            printf("Distance to Wall: %f\n", ray.distance);
-            break;
-        }
-
-        // Step the ray to the next horizontal or vertical intersection
-        if (holder.hor_step < holder.ver_step)
-        {
-            holder.cur_x += holder.hor_step * holder.step_x;
-            holder.cur_y += holder.hor_step * holder.delta_y;
-            holder.hor_step += XPM_X / fabs(holder.delta_x);
-        }
-        else
-        {
-            holder.cur_x += holder.ver_step * holder.delta_x;
-            holder.cur_y += holder.ver_step * holder.step_y;
-            holder.ver_step += XPM_Y / fabs(holder.delta_y);
-        }
-
-        printf("Next Intersection: hor_step=%d, ver_step=%d\n",
-               holder.hor_step, holder.ver_step);
-    }
-
-    if (!ray.wall_hit)
-    {
-        printf("Ray did not hit a wall within map bounds.\n");
-    }
-
-    return ray;
-}
 
 float normalize_angle(float angle)
 {
@@ -307,60 +206,73 @@ void	update_image(t_game *game)
 //     update_image(game); // Ensure the frame buffer is clean for rendering
 //     for (i = 0; i < WIDTH; i++)
 //     {
-//         ray.angle = ray_angle(game, i);
-//         ray = cast_ray(game, ray.angle);
-
-//         if (ray.wall_hit)
+//         ray.angle = /* normalize_angle */(ray_angle(game, i));
+//         float player_fov_start = normalize_angle(game->map.facing - FOV / 2);
+//         float player_fov_end = normalize_angle(game->map.facing + FOV / 2);
+//         if ((player_fov_start < player_fov_end &&
+//              ray.angle >= player_fov_start && ray.angle <= player_fov_end) ||
+//             (player_fov_start > player_fov_end &&
+//              (ray.angle >= player_fov_start || ray.angle <= player_fov_end)))
 //         {
-//             float corrected_distance = ray.distance * cos(deg_to_rad(ray.angle - game->map.facing));
-
-//             // Calculate wall height based on the corrected distance
-//             wall_height = (XPM_X * (WIDTH / 2.0) / tan(deg_to_rad(FOV / 2))) / corrected_distance;
-//             wall_height /= 2;
-//             wall_top = (HEIGHT / 2.0) - (wall_height / 2.0);
-//             wall_bottom = wall_top + wall_height;
-
-//             // Choose color dynamically based on ray angle (for visual testing)
-//             int color = /* (i < WIDTH / 2) ? 0x000090 :  */0x0000FF;
-
-//             // Render the wall column
-//             draw_wall_column(&game->img, i, (int)wall_top, (int)wall_bottom, color);
+//             ray = cast_ray(game, ray.angle);
+//             if (ray.wall_hit)
+//             {
+//                 float corrected_distance = ray.distance * cos(deg_to_rad(ray.angle - game->map.facing));
+//                 wall_height = (XPM_X * (WIDTH / 2.0) / tan(deg_to_rad(FOV / 2))) / corrected_distance;
+//                 wall_height /= 2;
+//                 wall_top = (HEIGHT / 2.0) - (wall_height / 2.0);
+//                 wall_bottom = wall_top + wall_height;
+//                 int color = 0x0000FF;
+//                 draw_wall_column(&game->img, i, (int)wall_top, (int)wall_bottom, color);
+//             }
 //         }
 //     }
-
-//     // Render the updated image to the window
 //     mlx_put_image_to_window(game->mlx, game->win, game->img_ptr, 0, 0);
 // }
 
-void cast_all_rays(t_game *game)
+void    cast_all_rays(t_game *game)
 {
-    int i;
-    t_ray ray;
-    float wall_height, wall_top, wall_bottom;
+    double posX = game->map.x_player;
+    double posY = game->map.y_player;
 
-    update_image(game); // Ensure the frame buffer is clean for rendering
-    for (i = 0; i < WIDTH; i++)
+    double dirX = -1;
+    double dirY = 0;
+    double planeX = 0;
+    double planeY = 0.66;
+    double time = 0;
+    double oldTime = 0;
+    int x = 0;
+    while (x < WIDTH)
     {
-        ray.angle = /* normalize_angle */(ray_angle(game, i));
-        float player_fov_start = normalize_angle(game->map.facing - FOV / 2);
-        float player_fov_end = normalize_angle(game->map.facing + FOV / 2);
-        if ((player_fov_start < player_fov_end &&
-             ray.angle >= player_fov_start && ray.angle <= player_fov_end) ||
-            (player_fov_start > player_fov_end &&
-             (ray.angle >= player_fov_start || ray.angle <= player_fov_end)))
+        double cameraX = 2 * x / (double)WIDTH - 1;
+        double rayDirX = dirX + planeX * cameraX;
+        double rayDirY = dirY + planeY * cameraX;
+
+        double sideDistX;
+        double sideDistY;
+
+        double deltaDistX;
+        double deltaDistY;
+        if (rayDirX == 0)
+            deltaDistX = 1e30;
+        else
+            deltaDistX = abs(1 / rayDirX);
+        if (rayDirY == 0)
+            deltaDistY = 1e30;
+        else
+            deltaDistY = abs(1 / rayDirY);
+        double perpWallDist;
+
+        int stepX;
+        int stepY;
+        int hit = 0; // was wall hit?
+        int side; // is it NS or EW?
+
+        if (rayDirX < 0)
         {
-            ray = cast_ray(game, ray.angle);
-            if (ray.wall_hit)
-            {
-                float corrected_distance = ray.distance * cos(deg_to_rad(ray.angle - game->map.facing));
-                wall_height = (XPM_X * (WIDTH / 2.0) / tan(deg_to_rad(FOV / 2))) / corrected_distance;
-                wall_height /= 2;
-                wall_top = (HEIGHT / 2.0) - (wall_height / 2.0);
-                wall_bottom = wall_top + wall_height;
-                int color = 0x0000FF;
-                draw_wall_column(&game->img, i, (int)wall_top, (int)wall_bottom, color);
-            }
+            stepX = -1;
+            sideDistX = (posX - Ma)
         }
+        x++;
     }
-    mlx_put_image_to_window(game->mlx, game->win, game->img_ptr, 0, 0);
 }
