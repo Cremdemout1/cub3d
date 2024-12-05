@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:44:33 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/30 10:43:17 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/05 12:31:02 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #define HEIGHT       800
 #define WIDTH        1000
+#define VISITED      2
 #define XPM_X        16
 #define XPM_Y        16
 #define FOV          60
@@ -43,5 +44,7 @@ void    draw_map(t_game *game);
 
 void    cast_all_rays(t_game *game);
 int     keybrd_hook(int key, t_game **game);
+
+float deg_to_rad(int degree);
 
 #endif

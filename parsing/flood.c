@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:52:34 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/04 04:56:46 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/05 08:55:45 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,35 +55,55 @@ typedef struct {
     int y;
 } Position;
 
+
 // void flood_fill(t_map *map)
 // {
 //     if (map->map[map->y_player][map->x_player] == '1')
 //         return;
-        
-//     Position *stack = malloc(sizeof(Position) * map->biggest_width * map->length); // Stack for positions
+
+//     Position *stack = malloc(sizeof(Position) * map->biggest_width * map->length);
+//     if (!stack)
+//     {
+//         ft_printf_fd(2, "Error: Failed to allocate memory for flood_fill\n");
+//         map->parser.error = 1;
+//         return;
+//     }
+
 //     int stack_size = 0;
+//     stack[stack_size++] = (Position){map->x_player, map->y_player};
 
-//     // Push the starting position
-//     stack[stack_size++] = (Position){map->y_player, map->x_player};
-
-//     while (stack_size > 0) {
-//         // Pop the last position
+//     while (stack_size > 0)
+//     {
 //         Position pos = stack[--stack_size];
 //         int x = pos.x;
 //         int y = pos.y;
 
-//         // Check bounds
-//         if (x < 0 || x >= map->width[y] || y < 0 || y >= map->length)
+//         // Out-of-bounds check
+//         if (x < 0 || x >= map->biggest_width || y < 0 || y >= map->length)
 //         {
-//             continue ; // Out of bounds
-//         if (map->map[y][x] != '0')
-//             continue ;
-            
-//         map->map[y][x] = 'V';
-//         stack[stack_size++] = (Position){x + 1, y}; // right
-//         stack[stack_size++] = (Position){x - 1, y}; // left
-//         stack[stack_size++] = (Position){x, y + 1}; // down
-//         stack[stack_size++] = (Position){x, y - 1}; // up
+//             free(stack);
+//             ft_printf_fd(2, "Error: Out of bounds at (%d, %d)\n", x, y);
+//             map->parser.error = 1;
+//             return;
+//         }
+
+//         // Validate map character
+//         char cell = map->map[y][x];
+//         if (cell != '0' && cell != '1' && cell != 'V' && cell != map->dir)
+//         {
+//             free(stack);
+//             ft_printf_fd(2, "Error: Invalid character '%c' at (%d, %d)\n", cell, x, y);
+//             map->parser.error = 1;
+//             return;
+//         }
+//         if (cell == '0')
+//         {
+//             map->map[y][x] = 'V';
+//             stack[stack_size++] = (Position){x + 1, y}; // right
+//             stack[stack_size++] = (Position){x - 1, y}; // left
+//             stack[stack_size++] = (Position){x, y + 1}; // down
+//             stack[stack_size++] = (Position){x, y - 1}; // up
+//         }
 //     }
 
 //     free(stack);
@@ -91,41 +111,85 @@ typedef struct {
 
 void flood_fill(t_map *map)
 {
-    if (map->map[map->y_player][map->x_player] == '1')
+    // Allocate a visited array
+    int **visited = malloc(sizeof(int *) * map->length);
+    if (!visited)
+    {
+        ft_printf_fd(2, "Error: Failed to allocate memory for visited array\n");
+        map->parser.error = 1;
         return;
+    }
+
+    for (int i = 0; i < map->length; i++)
+    {
+        visited[i] = malloc(sizeof(int) * map->biggest_width);
+        if (!visited[i])
+        {
+            for (int j = 0; j < i; j++)
+                free(visited[j]);
+            free(visited);
+            ft_printf_fd(2, "Error: Failed to allocate memory for visited row\n");
+            map->parser.error = 1;
+            return;
+        }
+        for (int j = 0; j < map->biggest_width; j++)
+            visited[i][j] = 0; // Initialize as unvisited
+    }
+
+    // Initialize stack for flood fill
     Position *stack = malloc(sizeof(Position) * map->biggest_width * map->length);
+    if (!stack)
+    {
+        for (int i = 0; i < map->length; i++)
+            free(visited[i]);
+        free(visited);
+        ft_printf_fd(2, "Error: Failed to allocate memory for flood_fill stack\n");
+        map->parser.error = 1;
+        return;
+    }
+
     int stack_size = 0;
-    stack[stack_size++] = (Position){map->y_player, map->x_player};
+    stack[stack_size++] = (Position){map->x_player, map->y_player};
+
     while (stack_size > 0)
     {
         Position pos = stack[--stack_size];
         int x = pos.x;
         int y = pos.y;
-        if (x < 0 || x >= map->biggest_width || y < 0 || y >= map->length) {
-            free(stack);
-            ft_printf_fd(2, "Error: Reached out of bounds at (%d, %d)\n", x, y);
-            map->parser.error = 1;
-            return;
-        }
-        if (map->map[y][x] != '0' && map->map[y][x] != '1' && map->map[y][x] != 'V' && map->map[y][x] != map->dir) {
-            free(stack);
-            ft_printf_fd(2, "Error: Invalid character '%c' at (%d, %d)\n", map->map[y][x], x, y);
-            map->parser.error = 1;
-            return;
-        }
-        if (map->map[y][x] == '0')
-        {
-            map->map[y][x] = 'V';
 
-            stack[stack_size++] = (Position){x + 1, y}; // right
-            stack[stack_size++] = (Position){x - 1, y}; // left
-            stack[stack_size++] = (Position){x, y + 1}; // down
-            stack[stack_size++] = (Position){x, y - 1}; // up
-        }
+        // Boundary check
+        if (x < 0 || x >= map->biggest_width || y < 0 || y >= map->length)
+            continue;
+
+        // Skip already visited or non-walkable cells
+        char cell = map->map[y][x];
+        if (visited[y][x] || cell != '0')
+            continue;
+
+        // Mark as visited
+        visited[y][x] = VISITED;
+
+        // Push valid neighbors
+        stack[stack_size++] = (Position){x + 1, y}; // right
+        stack[stack_size++] = (Position){x - 1, y}; // left
+        stack[stack_size++] = (Position){x, y + 1}; // down
+        stack[stack_size++] = (Position){x, y - 1}; // up;
     }
 
+    // Debugging output
+    for (int i = 0; i < map->length; i++)
+    {
+        for (int j = 0; j < map->width[i]; j++)
+            printf("%d", visited[i][j]); // Space for readability
+        printf("\n");
+        free(visited[i]);
+    }
+    free(visited);
     free(stack);
 }
+
+
+
 
 
 void    initialize_visit_state(t_map *map)

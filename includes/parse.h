@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:49 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/03 17:34:16 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/05 11:46:57 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ void    get_length(t_map *map, char *filename);
 void    get_widths(t_map *map, char *filename);
 void    player_start_info(t_map *info, char dir, int x, int y);
 
+unsigned int    rgb_to_color(int *rgb);
 
 #endif
