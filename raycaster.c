@@ -332,35 +332,169 @@ void	update_image(t_game *game)
 //     mlx_put_image_to_window(game->mlx, game->win, game->img_ptr, 0, 0);
 // }
 
-void cast_all_rays(t_game *game)
-{
-    int i;
-    t_ray ray;
-    float wall_height, wall_top, wall_bottom;
+// void cast_all_rays(t_game *game)
+// {
+//     int i;
+//     t_ray ray;
+//     float wall_height, wall_top, wall_bottom;
 
-    update_image(game); // Ensure the frame buffer is clean for rendering
-    for (i = 0; i < WIDTH; i++)
+//     update_image(game); // Ensure the frame buffer is clean for rendering
+//     for (i = 0; i < WIDTH; i++)
+//     {
+//         ray.angle = /* normalize_angle */(ray_angle(game, i));
+//         float player_fov_start = normalize_angle(game->map.facing - FOV / 2);
+//         float player_fov_end = normalize_angle(game->map.facing + FOV / 2);
+//         if ((player_fov_start < player_fov_end &&
+//              ray.angle >= player_fov_start && ray.angle <= player_fov_end) ||
+//             (player_fov_start > player_fov_end &&
+//              (ray.angle >= player_fov_start || ray.angle <= player_fov_end)))
+//         {
+//             ray = cast_ray(game, ray.angle);
+//             if (ray.wall_hit)
+//             {
+//                 float corrected_distance = ray.distance * cos(deg_to_rad(ray.angle - game->map.facing));
+//                 wall_height = (XPM_X * (WIDTH / 2.0) / tan(deg_to_rad(FOV / 2))) / corrected_distance;
+//                 wall_height /= 2;
+//                 wall_top = (HEIGHT / 2.0) - (wall_height / 2.0);
+//                 wall_bottom = wall_top + wall_height;
+//                 int color = 0x0000FF;
+//                 draw_wall_column(&game->img, i, (int)wall_top, (int)wall_bottom, color);
+//             }
+//         }
+//     }
+//     mlx_put_image_to_window(game->mlx, game->win, game->img_ptr, 0, 0);
+// }
+void    draw_row_to_img(t_img *img, int y, unsigned int color)
+{
+    int x;
+    
+    x = 0;
+    while (x < WIDTH)
     {
-        ray.angle = /* normalize_angle */(ray_angle(game, i));
-        float player_fov_start = normalize_angle(game->map.facing - FOV / 2);
-        float player_fov_end = normalize_angle(game->map.facing + FOV / 2);
-        if ((player_fov_start < player_fov_end &&
-             ray.angle >= player_fov_start && ray.angle <= player_fov_end) ||
-            (player_fov_start > player_fov_end &&
-             (ray.angle >= player_fov_start || ray.angle <= player_fov_end)))
+        image_put_pixel(img, x, y, color);
+        x++;
+    }
+}
+
+void    color_background(t_game *game)
+{
+    int y;
+    int half;
+    
+    y = 0;
+    half = HEIGHT / 2;
+    while (y < half)
+    {
+        draw_row_to_img(&game->img, y, rgb_to_color(game->map.ceiling_color));
+        y++;
+    }
+    while (y < HEIGHT)
+    {
+        draw_row_to_img(&game->img, y, rgb_to_color(game->map.floor_color));
+        y++;
+    }
+}
+
+void    cast_all_rays(t_game *game)
+{
+    color_background(game);
+    int x = 0;
+    double posX = game->map.x_player;
+    double posY = game->map.y_player;
+    double dirX = cos(deg_to_rad(game->map.facing));
+    double dirY = sin(deg_to_rad(game->map.facing));
+    double planeX = -dirY * tan(FOV / 2);
+    double planeY = dirX * tan(FOV / 2);
+    // double time = 0;
+    // double oldTimme = 0;
+    while (x < WIDTH)
+    {
+        double cameraX = 2 * x / (double)WIDTH - 1;
+        double rayDirX = dirX + planeX * cameraX;
+        double rayDirY = dirY + planeY * cameraX;
+
+        int mapX = (int)posX;
+        int mapY = (int)posY;
+
+        double sideDistX;
+        double sideDistY;
+
+        double deltaDistX;
+        double deltaDistY;
+
+        if (rayDirX == 0)
+            deltaDistX = 1e30;
+        else
+            deltaDistX = fabs(1 / rayDirX);
+        if (rayDirY == 0)
+            deltaDistY = 1e30;
+        else
+            deltaDistY = fabs(1 / rayDirY);
+        int stepX;
+        int stepY;
+
+        int hit = 0; //was there a wall hit?
+        int side; //is it North or South? East or West?
+
+        if (rayDirX < 0)
         {
-            ray = cast_ray(game, ray.angle);
-            if (ray.wall_hit)
-            {
-                float corrected_distance = ray.distance * cos(deg_to_rad(ray.angle - game->map.facing));
-                wall_height = (XPM_X * (WIDTH / 2.0) / tan(deg_to_rad(FOV / 2))) / corrected_distance;
-                wall_height /= 2;
-                wall_top = (HEIGHT / 2.0) - (wall_height / 2.0);
-                wall_bottom = wall_top + wall_height;
-                int color = 0x0000FF;
-                draw_wall_column(&game->img, i, (int)wall_top, (int)wall_bottom, color);
-            }
+            stepX = -1;
+            sideDistX = (posX - mapX) / deltaDistX;
         }
+        else
+        {
+            stepX = 1;
+            sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+        }
+        if (rayDirY < 0)
+        {
+            stepY = -1;
+            sideDistY = (posY - mapY) * deltaDistY;
+        }
+        else
+        {
+            stepY = 1;
+            sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+        }
+        //cast DDA:
+        while (!hit)
+        {
+            if (sideDistX < sideDistY)
+            {
+                sideDistX += deltaDistX;
+                mapX += stepX;
+                side = 0;
+            }
+            else
+            {
+                sideDistY += deltaDistY;
+                mapY += stepY;
+                side = 1;
+            }
+            if (game->map.map[mapY][mapX] == '1')
+                hit = 1;
+        }
+        double perpWallDist;
+        if (side == 0)
+            perpWallDist = (sideDistX - deltaDistX);
+        else
+            perpWallDist = (sideDistY - deltaDistY);
+        //draw column of screen
+        int h = HEIGHT;
+        int lineHeight = (int)(h / perpWallDist) * 0.15; //temp fix to make map seem wider
+        int drawStart = -lineHeight / 2 + h / 2;
+        if (drawStart < 0)
+            drawStart = 0;
+        int drawEnd = lineHeight / 2 + h / 2;
+        if (drawEnd >= h)
+            drawEnd = h - 1;
+        int color;
+        if (side == 1)
+            color = 0xff0000;
+        else
+            color = 0x0000ff;
+        draw_wall_column(&game->img, x, drawStart, drawEnd, color);
+        x++;
     }
     mlx_put_image_to_window(game->mlx, game->win, game->img_ptr, 0, 0);
 }

@@ -6,7 +6,7 @@
 #    By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/28 20:32:02 by ycantin           #+#    #+#              #
-#    Updated: 2024/11/30 10:16:58 by ycantin          ###   ########.fr        #
+#    Updated: 2024/12/05 11:47:14 by ycantin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC = 	main.c \
 		measure.c \
 		movement.c \
 		draw_map.c \
+		color.c \
 		raycaster.c \
 		my_mlx.c
 

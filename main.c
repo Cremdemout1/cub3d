@@ -161,7 +161,7 @@ int main (int argc, char **argv)
     load_textures(&game);
     load_player_texture(&game);
     img_placeholder(&game);
-    //test_textures(game);
+    test_textures(game); 
     draw_map(game);
     cast_all_rays(game);
     game->loop(game);
