@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:44:33 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/05 12:31:02 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/05 21:05:23 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void    draw_map(t_game *game);
 void    cast_all_rays(t_game *game);
 int     keybrd_hook(int key, t_game **game);
 
-float deg_to_rad(int degree);
+float   deg_to_rad(int degree);
+void    color_background(t_game *game);
+void	init_default_bg(t_game *game);
 
 #endif

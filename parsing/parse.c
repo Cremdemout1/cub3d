@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/04 10:50:18 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/05 19:03:01 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,5 @@ bool    init_map_and_player(t_map *map_info, char *filename)
         printf("%s\n", map_info->map[i]);
     if (!found_player(map_info))
         return (ft_printf_fd(2, "initiation error\n"), false);
-    //initialize_visit_state(map_info);
     return (true);
 }

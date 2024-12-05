@@ -6,55 +6,16 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:52:34 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/05 08:55:45 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/05 20:31:35 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-// bool fill(t_map *map, int x, int y)
-// {
-//     if (map->parser.error)
-//         return map->parser.error;
-//     if (map->map[y][x + 1] == ' ' || map->map[y][x - 1] == ' '
-//         || map->map[y + 1][x] == ' ' || map->map[y - 1][x] == ' ')
-//             return (ft_printf_fd(2, "iteration went out of bounds\n"),
-//                 map->parser.error = true, map->parser.error);
-//     if (map->parser.visited[y][x])
-//         return (map->parser.error = true, map->parser.error);
-//     map->parser.visited[y][x] = true;
-//     map->map[y][x] = 'V';
-//     if (!map->parser.visited[y][x + 1])
-//         if (fill(map, x + 1, y))
-//             return (map->parser.error);
-//     if (!map->parser.visited[y][x - 1])
-//         if (fill(map, x - 1, y))
-//             return (map->parser.error);
-//     if (!map->parser.visited[y + 1][x])
-//         if (fill(map, x, y + 1))
-//             return (map->parser.error);
-//     if (!map->parser.visited[y - 1][x])
-//         if (fill(map, x, y - 1))
-//             return (map->parser.error);
-//     return (map->parser.error);
-// }
-
-// bool    flood_fill(t_map *map)
-// {
-//     map->parser.error = false;
-//     if (fill(map, map->x_player, map->y_player) == true) //error found
-//         return (false);
-//     return (true);
-// }
-
-#include <stdlib.h>
-#include <stdbool.h>
-
 typedef struct {
     int x;
     int y;
 } Position;
-
 
 // void flood_fill(t_map *map)
 // {
@@ -179,18 +140,14 @@ void flood_fill(t_map *map)
     // Debugging output
     for (int i = 0; i < map->length; i++)
     {
-        for (int j = 0; j < map->width[i]; j++)
-            printf("%d", visited[i][j]); // Space for readability
-        printf("\n");
+        // for (int j = 0; j < map->width[i]; j++)
+        //     printf("%d", visited[i][j]); // Space for readability
+        // printf("\n");
         free(visited[i]);
     }
     free(visited);
     free(stack);
 }
-
-
-
-
 
 void    initialize_visit_state(t_map *map)
 {

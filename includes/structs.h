@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/30 03:58:19 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/05 20:59:50 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,14 @@ typedef struct s_game
 {
     t_map    map;
     t_img    img;
+    t_img    default_bg;
     t_texture **texs;
     void	 *mlx;
     void	 *scdmlx;
 	void	 *win;
 	void	 *scdwin;
     void     *img_ptr;
+    void     *colored_img;
     void     (*loop)(struct s_game *g);
 
 }   t_game;

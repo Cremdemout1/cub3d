@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:42:28 by yohan             #+#    #+#             */
-/*   Updated: 2024/11/18 03:30:43 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/05 19:05:02 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int	count_strings(char **array)
 	if (!array || !*array)
 		return (0);
 	while (array[i])
-	{
 		i++;
-	}
 	return (i);
 }

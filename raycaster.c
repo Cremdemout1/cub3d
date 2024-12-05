@@ -178,25 +178,6 @@ void	draw_line_to_image(t_img *img, int x0, int y0, int x1, int y1, int color)
 	}
 }
 
-void	update_image(t_game *game)
-{
-	// Destroy the previous image
-	if (game->img_ptr)
-		mlx_destroy_image(game->mlx, game->img_ptr);
-
-	// Create a new image
-	game->img_ptr = mlx_new_image(game->mlx, WIDTH, HEIGHT);
-    game->img.img_addr = mlx_get_data_addr(game->img_ptr, 
-                                       &game->img.bits_per_pixel, 
-                                       &game->img.line_len, 
-                                       &game->img.endian);
-    if (!game->img.img_addr)
-    {
-        ft_printf_fd(2, "Failed to get image address\n");
-        return;
-    }
-}
-
 // void cast_all_rays(t_game *game)
 // {
 //     int i;
@@ -274,6 +255,30 @@ void    draw_row_to_img(t_img *img, int y, unsigned int color)
     }
 }
 
+void	init_default_bg(t_game *game)
+{
+    int y;
+    int half;
+
+	game->default_bg.img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+    game->default_bg.img_addr = mlx_get_data_addr(game->default_bg.img, 
+                                                  &game->default_bg.bits_per_pixel, 
+                                                  &game->default_bg.line_len, 
+                                                  &game->default_bg.endian);
+    half = HEIGHT / 2;
+    y = 0;
+    while (y < half)
+    {
+        draw_row_to_img(&game->default_bg, y, rgb_to_color(game->map.ceiling_color));
+        y++;
+    }
+    while (y < HEIGHT)
+    {
+        draw_row_to_img(&game->default_bg, y, rgb_to_color(game->map.floor_color));
+        y++;
+    }
+}
+
 void    color_background(t_game *game)
 {
     int y;
@@ -292,17 +297,27 @@ void    color_background(t_game *game)
         y++;
     }
 }
+void prepare_frame(t_game *game)
+{
+    // Copy the default background to the current image buffer
+    game->img.img = game->default_bg.img;
+    game->img.img_addr = game->default_bg.img_addr;
+    game->img.bits_per_pixel = game->default_bg.bits_per_pixel;
+    game->img.line_len = game->default_bg.line_len;
+    game->img.endian = game->default_bg.endian;
+}
 
 void    cast_all_rays(t_game *game)
 {
     color_background(game);
+    //prepare_frame(game);
     int x = 0;
     double posX = game->map.x_player;
     double posY = game->map.y_player;
     double dirX = cos(deg_to_rad(game->map.facing));
     double dirY = sin(deg_to_rad(game->map.facing));
-    double planeX = -dirY * tan(FOV / 2);
-    double planeY = dirX * tan(FOV / 2);
+    double planeX = dirY * /* tan(FOV / 2) */0.66;
+    double planeY = -dirX * /* tan(FOV / 2) */0.66;
     // double time = 0;
     // double oldTimme = 0;
     while (x < WIDTH)
@@ -379,7 +394,7 @@ void    cast_all_rays(t_game *game)
             perpWallDist = (sideDistY - deltaDistY);
         //draw column of screen
         int h = HEIGHT;
-        int lineHeight = (int)(h / perpWallDist) * 0.15; //temp fix to make map seem wider
+        int lineHeight = (int)(h / perpWallDist); //temp fix to make map seem wider
         int drawStart = -lineHeight / 2 + h / 2;
         if (drawStart < 0)
             drawStart = 0;

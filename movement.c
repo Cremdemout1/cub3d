@@ -69,3 +69,43 @@ int keybrd_hook(int key, t_game **game)
 
     return (key);
 }
+
+// #include "includes/main.h"
+
+// int keybrd_hook(int key, t_game **game)
+// {
+//     double new_x = (*game)->map.x_player;
+//     double new_y = (*game)->map.y_player;
+
+//     // Movement calculations
+//     if (key == XK_W) // Move forward
+//     {
+//         if ((*game)->map.map[(int)])
+//     }
+//     else if (key == XK_S) // Move backward
+//     {
+    
+//     }
+//     else if (key == XK_A) // Strafe left
+//     {
+
+//     }
+//     else if (key == XK_D) // Strafe right
+//     {
+      
+//     else if (key == XK_KP_RIGHT) // Rotate right
+//     {
+      
+//     }
+//     else if (key == XK_KP_LEFT) // Rotate left
+//     {
+     
+//     }
+//     else if (key == XK_ESCAPE) // Exit game
+//         exit_t(*game);
+
+//     int grid_x = (int)(new_x / XPM_X);
+//     int grid_y = (int)(new_y / XPM_Y);
+
+//     return (key);
+// }

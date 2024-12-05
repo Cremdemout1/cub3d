@@ -6,58 +6,11 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/18 05:31:45 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/05 20:31:07 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-// char    *add_bigger_buf(int decider, t_map *map, int i, char *line)
-// {
-//     int len;
-//     int size;
-//     char *str;
-    
-//     size = ft_strlen(line);
-//     if (decider == -1)
-//         len = map->width[i - 1];
-//     else if (decider == 1)
-//         len = map->width[i + 1];
-//     str = malloc(sizeof(char) * (len + 2));
-//     if (!str)
-//         return (NULL);
-//     str[0] = ' ';
-//     ft_strcpy(str + 1, line);
-    
-//     if (line[size - 1] !='\n')
-//     {
-//         while (size < (len - 1))
-//             str[size++] = ' ';
-//         str[size + 1] = ' ';
-//         str[size + 2] = '\0';
-//     }
-//     else
-//     {    
-//         while ((size) < len)
-//             str[size++] = ' ';
-//         str[size] = ' ';
-//         str[size + 1] = '\0';
-//     }
-//     return (str);
-// }
-
-
-// char *create_biggest_buf(t_map *map)
-// {
-//     char *str;
-    
-//     str = (char *)malloc(sizeof(char) * (map->biggest_width + 1));
-//     if (!str)
-//         return (NULL);
-//     ft_memset(str, ' ', map->biggest_width);
-//     str[map->biggest_width] = '\0';
-//     return(str);
-// }
 
 bool    is_valid_file(char *file)
 {
@@ -96,6 +49,22 @@ void    handle_texture(t_map *map, char *texture, int *found, int dir)
     *found = 1;
 }
 
+bool    has_non_num_val(char *str)
+{
+    int i;
+
+    i = 0;
+    while(str[i])
+    {
+        if (!str[i])
+            return (false);
+        if (!(str[i] >= '0' && str[i] <= '9') && str[i] != ' ' && str[i] != '\n')
+            return (/* printf("error found:%c\n", str[i]), */ true);
+        i++;
+    }
+    return (false);
+}
+
 int    handle_color(t_map *map, char *color, int *found, int type)
 {
     char **split;
@@ -112,17 +81,16 @@ int    handle_color(t_map *map, char *color, int *found, int type)
     while (split[i])
     {
         rgb[i] = ft_atoi(split[i]);
-        if (rgb[i] > 255 || rgb[i] < 0)
+        if (rgb[i] > 255 || rgb[i] < 0 || has_non_num_val(split[i]))
             return (ft_printf_fd(2, "color unavailable: wrong value\n"), free(rgb), free_array(split), 0);
         i++;
-    } // add check for empty color or color that has non numerical values
+    }
     free_array(split);
     if (type == 1)
         map->floor_color = rgb;
     else
         map->ceiling_color = rgb;
-    *found = 1;
-    return (1);
+    return (*found = 1, 1);
 }
 
 int get_starting_info(t_map *map, char *filename) 
