@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/05 19:03:01 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/06 14:21:50 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ bool found_player(t_map *info)
     while (info->map[y])
     {
         x = 0;
-        //printf("%s\n", info->map[y]); 
         while (info->map[y][x])
         {
             char    cur;

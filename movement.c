@@ -58,7 +58,7 @@ int keybrd_hook(int key, t_game **game)
 
     debug_printf("Collision Check: grid_x = %d, grid_y = %d\n", grid_x, grid_y);
 
-    if (grid_x >= 0 && grid_x < (*game)->map.biggest_width &&
+    if (grid_x >= 0 && grid_x < (*game)->map.max_width &&
         grid_y >= 0 && grid_y < (*game)->map.length &&
         (*game)->map.map[grid_y][grid_x] != '1') // Check if new position is walkable
     {

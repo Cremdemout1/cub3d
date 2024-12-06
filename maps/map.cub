@@ -1,10 +1,10 @@
-NO ./wall.xpm
+NO ./north.xpm
 SO ./north.xpm
 WE ./north.xpm
 EA ./north.xpm
 
-F 40, 40, 45
-C 50, 50, 60
+F 40, 40, 65
+C 0, 0, 50
 
 
 

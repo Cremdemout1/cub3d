@@ -37,7 +37,7 @@ void load_textures(t_game **game)
         if (!textures[i]->addr)
             return (free(textures[i]->img), free(textures[i]), free(textures));
         i++;
-    }
+    }    
     (*game)->texs = textures;
 }
 
@@ -81,7 +81,9 @@ int    init_map(t_map *map, int argc, char **argv)
         return (0);
     flood_fill(map);
     if (map->parser.error == 1)
-        return (0);
+        return (free_array(map->map), free_bool_array(map->parser.visited, map->length)
+            , free(map->ceiling_color), free(map->floor_color)
+            , free(map->width), free_array(map->texs), 0);
     //const char *direction_names[] = { "NORTH", "SOUTH", "EAST", "WEST" };
     // printf("player initial direction: %s\n", direction_names[map->start_dir]);
     // printf ("player x: %d, player y: %d\n", map->x_player, map->y_player);
@@ -101,12 +103,14 @@ int    init_map(t_map *map, int argc, char **argv)
 
 void    init_window(t_game **g)
 {
-    (*g)->scdmlx = mlx_init();
-    (*g)->scdwin = mlx_new_window((*g)->scdmlx, 500, 500, "2D map");
+    // add second window minimap:
+
+    // (*g)->scdmlx = mlx_init();
+    // (*g)->scdwin = mlx_new_window((*g)->scdmlx, 500, 500, "2D map");
+    //(*g)->img_ptr = mlx_new_image((*g)->mlx, WIDTH, HEIGHT);
 
     (*g)->mlx = mlx_init();
     (*g)->win = mlx_new_window((*g)->mlx, WIDTH, HEIGHT, "cub3d");
-    (*g)->img_ptr = mlx_new_image((*g)->mlx, WIDTH, HEIGHT);
     if (!(*g)->mlx)
     {
         fprintf(stderr, "Error: MLX initialization failed.\n");
@@ -162,7 +166,7 @@ int main (int argc, char **argv)
     load_player_texture(&game);
     img_placeholder(&game);
     test_textures(game); 
-    draw_map(game);
+    //draw_map(game); // for minimap
     cast_all_rays(game);
     game->loop(game);
     return (0);
@@ -184,7 +188,7 @@ int main (int argc, char **argv)
 // 8. add more rays.                                                        DONE
 // 9. assign height value to walls depending on the length of their ray.    DONE
 
-// URGENT: FIX FLOOD FILL! My change from 5th december did not work
+// URGENT: FIX X BUTTON
 // 1. give north, south, west, or east value to each wall
 // 2. get texture paths and ensure their validity.
 // 3. make the vertical drawing draw ceiling and floor depending on if its on top half or  bottom half instead of separate function

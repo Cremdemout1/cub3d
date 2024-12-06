@@ -3,7 +3,7 @@ static char * colorful_16x16_xpm[] = {
 /* Width, Height, Colors, Chars per Pixel */
 "16 16 1 1",
 /* Define Colors */
-"t c #40E0D0", /* Turquoise */
+"t c #ff005f", /* magenta */
 
 /* Pixel Data */
 "tttttttttttttttt",

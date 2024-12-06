@@ -49,7 +49,6 @@ void free_resources(t_game **game)
 
 int exit_t(t_game *g)
 {
-
     free_resources(&g);
     if (g->img_ptr)
         mlx_destroy_image(g->mlx, g->img_ptr);
@@ -63,4 +62,5 @@ int exit_t(t_game *g)
     free(g);
     exit(0);
 }
+
 

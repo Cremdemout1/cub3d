@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/05 20:31:07 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/06 14:22:52 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,5 @@ char    **get_map(t_map *map, char *filename)
         i++;
     }
     buf[i] = NULL;
-    close(fd);
-    return (buf);
+    return (close(fd), buf);
 }

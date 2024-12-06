@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/11/29 05:02:44 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/06 13:22:10 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void    get_widths(t_map *map, char *filename)
         free(line);
     }
     map->width = array;
-    map->biggest_width = size;
+    map->max_width = size;
     close(fd);
 }
 

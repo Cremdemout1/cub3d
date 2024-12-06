@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/05 20:59:50 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/06 15:20:27 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_texture {
 typedef struct s_map
 {
     int      *width; // x
-    int      biggest_width;
+    int      max_width;
     int      length; // y
     int      map_start;
     bool     player;
@@ -69,10 +69,10 @@ typedef struct s_map
     char     **map;
     char     dir;
     int      facing;
-    char     *N_text;
-    char     *S_text;
-    char     *E_text;
-    char     *W_text;
+    // char     *N_text;
+    // char     *S_text;
+    // char     *E_text;
+    // char     *W_text;
     char     **texs;
     int      *floor_color; // to change to int *
     int      *ceiling_color; //to change to int *
