@@ -1,5 +1,5 @@
-NO ./north.xpm
-SO ./north.xpm
+NO ./south.xpm
+SO ./south.xpm
 WE ./north.xpm
 EA ./north.xpm
 

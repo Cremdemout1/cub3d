@@ -52,16 +52,6 @@ void    init_ray(t_ray *ray)
     ray->y_hit = -1;
 }
 
-// int get_texture_pixel(t_texture *texture, int x, int y)
-// {
-//     int offset;
-//     char *pixel_addr;
-
-//     offset = (y * texture->line_len) + (x * (texture->bpp / 8));
-//     pixel_addr = texture->addr + offset;
-//     return (*(int *)pixel_addr);
-// }
-
 void draw_wall_column(t_game *game, int x, int wall_top, int wall_bottom, int color)
 {
     int y = 0;
@@ -98,73 +88,12 @@ float normalize_angle(float angle)
     return angle;
 }
 
-
-// void	draw_line_to_image(t_img *img, int x0, int y0, int x1, int y1, int color)
-// {
-// 	int dx = abs(x1 - x0);
-// 	int dy = abs(y1 - y0);
-// 	int sx = (x0 < x1) ? 1 : -1;
-// 	int sy = (y0 < y1) ? 1 : -1;
-// 	int err = dx - dy;
-
-// 	while (1)
-// 	{
-// 		image_put_pixel(img, x0, y0, color);
-// 		if (x0 == x1 && y0 == y1)
-// 			break;
-// 		int e2 = err * 2;
-// 		if (e2 > -dy)
-// 		{
-// 			err -= dy;
-// 			x0 += sx;
-// 		}
-// 		if (e2 < dx)
-// 		{
-// 			err += dx;
-// 			y0 += sy;
-// 		}
-// 	}
-// }
-
-// void    draw_row_to_img(t_img *img, int y, unsigned int color)
-// {
-//     int x;
-    
-//     x = 0;
-//     while (x < WIDTH)
-//     {
-//         image_put_pixel(img, x, y, color);
-//         x++;
-//     }
-// }
-
-// void    color_background(t_game *game)
-// {
-//     int y;
-//     int half;
-    
-//     y = 0;
-//     half = HEIGHT / 2;
-//     while (y < half)
-//     {
-//         draw_row_to_img(&game->img, y, rgb_to_color(game->map.ceiling_color));
-//         y++;
-//     }
-//     while (y < HEIGHT)
-//     {
-//         draw_row_to_img(&game->img, y, rgb_to_color(game->map.floor_color));
-//         y++;
-//     }
-// }
-
-int tex_color(t_game *game, int tex_X, int tex_Y)
+int tex_color(int tex_X, int tex_Y, t_texture *t)
 {
     int color;
     int bpp;
     int line_len;
-    t_texture *t;
 
-    t = game->texs[0];
     bpp = t->bpp;
     line_len = t->line_len;
     color = *(int *)&t->addr[(tex_X * (bpp / 8)) + (tex_Y * line_len)];
@@ -179,10 +108,8 @@ void    cast_all_rays(t_game *game)
     double posY = game->map.y_player;
     double dirX = cos(deg_to_rad(game->map.facing));
     double dirY = sin(deg_to_rad(game->map.facing));
-    double planeX = dirY * /* tan(FOV / 2) */0.66;
-    double planeY = -dirX * /* tan(FOV / 2) */0.66;
-    // double time = 0;
-    // double oldTimme = 0;
+    double planeX = dirY * 0.66;
+    double planeY = -dirX * 0.66;
     while (x < WIDTH)
     {
         double cameraX = 2 * x / (double)WIDTH - 1;
@@ -269,21 +196,56 @@ void    cast_all_rays(t_game *game)
         if (side == 0)
             wallX = posY + perpWallDist *rayDirY;
         else
-            wallX = posX + perpWallDist *rayDirY;
+            wallX = posX + perpWallDist *rayDirX;
         wallX -= floor(wallX);
 
         //texture coordinate X
-        int textX = (int)(wallX * (double)game->texs[0]->width);
+        t_texture *tex;
+        if (side == 0) // Vertical wall
+        {
+            if (rayDirX < 0) // Wall is to the left
+            {
+                if (game->map.map_start == NORTH || game->map.map_start == SOUTH)
+                    tex = game->texs[3];
+                else
+                    tex = game->texs[1];
+            }
+            else // Wall is to the right
+            {
+                if (game->map.map_start == NORTH || game->map.map_start == SOUTH)
+                    tex = game->texs[2];
+                else
+                    tex = game->texs[0];
+            }
+        }
+        else // Horizontal wall
+        {
+            if (rayDirY < 0) // Wall is above
+            {
+                if (game->map.map_start == EAST || game->map.map_start == WEST)
+                    tex = game->texs[0];
+                else
+                    tex = game->texs[3];
+            }
+            else // Wall is below
+            {
+                if (game->map.map_start == EAST || game->map.map_start == WEST)
+                    tex = game->texs[1];
+                else
+                    tex = game->texs[2];
+            }
+        }
+
+
+        int textX = (int)(wallX * (double)tex->width);
         if (side == 0 && rayDirX > 0)
-            textX = game->texs[0]->width - textX - 1;
+            textX = tex->width - textX - 1;
         if (side == 1 && rayDirY < 0)
-            textX = game->texs[0]->width - textX - 1;
+            textX = tex->width - textX - 1;
 
         //texture coordinate Y
-        double step = 1.0 * game->texs[0]->height / lineHeight;
+        double step = 1.0 * tex->height / lineHeight;
         double texPos = (drawStart - HEIGHT / 2 + lineHeight / 2) * step;
-
-
 
         int y = 0;
         int half = HEIGHT / 2;
@@ -297,12 +259,12 @@ void    cast_all_rays(t_game *game)
         }
         while (y <= drawEnd)
         {
-            int texY = (int)texPos % game->texs[0]->height;
+            int texY = (int)texPos % tex->height;
             if (texY < 0)
-                texY += game->texs[0]->height;
+                texY += tex->height;
             texPos += step;
             
-            image_put_pixel(&game->img, x, y, tex_color(game, textX, texY));
+            image_put_pixel(&game->img, x, y, tex_color(textX, texY, tex));
             y++;
         }
         while (y < HEIGHT)
@@ -313,13 +275,6 @@ void    cast_all_rays(t_game *game)
                 image_put_pixel(&game->img, x, y, rgb_to_color(game->map.floor_color));
             y++;
         }
-        //int color;
-        // if (side == 1)
-        //     color = 0xff005f; // magenta
-        // else
-        //     color = 0x00ffff; //light blue
-        // draw_wall_column(game, x, drawStart, drawEnd, color);
-        //draw_wall_column(game, x, drawStart, drawEnd, color);
         x++;
     }
     mlx_put_image_to_window(game->mlx, game->win, game->img_ptr, 0, 0);
