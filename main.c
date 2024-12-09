@@ -165,7 +165,7 @@ int main (int argc, char **argv)
     load_textures(&game);
     load_player_texture(&game);
     img_placeholder(&game);
-    test_textures(game); 
+    //test_textures(game); 
     //draw_map(game); // for minimap
     cast_all_rays(game);
     game->loop(game);
@@ -189,7 +189,7 @@ int main (int argc, char **argv)
 // 9. assign height value to walls depending on the length of their ray.    DONE
 
 // URGENT: FIX X BUTTON
-// 1. give north, south, west, or east value to each wall
+// 1. give north, south, west, or east value to each wall                   NOT NEEDED
 // 2. get texture paths and ensure their validity.
 // 3. make the vertical drawing draw ceiling and floor depending on if its on top half or  bottom half instead of separate function
 // 4. make movement work

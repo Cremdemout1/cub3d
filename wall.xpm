@@ -2,7 +2,7 @@
 static char *space_station_wall_xpm[] = {
 "16 16 6 1",
 " 	c None",
-".	c #000000", /* Black - Main structure */
+".	c #FFFF00", /* Black - Main structure */
 "+	c #1E1E1E", /* Dark Gray - Metallic panels */
 "@	c #3C3C3C", /* Lighter Gray - Panel borders */
 "#	c #00FFFF", /* Cyan - Glowing accents */

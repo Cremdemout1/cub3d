@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/06 15:20:27 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/09 15:40:18 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,62 +69,64 @@ typedef struct s_map
     char     **map;
     char     dir;
     int      facing;
-    // char     *N_text;
-    // char     *S_text;
-    // char     *E_text;
-    // char     *W_text;
     char     **texs;
     int      *floor_color; // to change to int *
     int      *ceiling_color; //to change to int *
     t_parse parser;
 }   t_map;
 
-// typedef struct s_player
-// {
-//     float dir;
-//     int   x_pos;
-//     int   y_pos;
-// }   t_player;
-
-typedef struct s_ray
+typedef struct s_player_info
 {
-    float angle;       // Ray angle in radians
-    float distance;    // Distance to the wall hit
-    float x_hit;       // x coordinate of the hit
-    float y_hit;       // y coordinate of the hit
-    int wall_hit;      // Type of wall hit (could be 0 for no hit, 1 for a wall)
-} t_ray;
+    double posX;
+    double posY;
+    double dirX;
+    double dirY;
+    double planeX;
+    double planeY;    
+}   t_player_info;
 
-typedef struct s_ray_holder
+typedef struct s_wall
 {
-    float   delta_x;
-    float   delta_y;
-    float   start_x;
-    float   start_y;
-    float   step_x;
-    float   step_y;
-    float   cur_x;
-    float   cur_y;
-    int     grid_x;
-    int     grid_y;
-    int     hor_step;
-    int     ver_step;
-}   t_ray_holder;
+    int         lineHeight;
+    int         top;
+    int         bottom;
+    int         wallX;
+    t_texture   *texture;
+    int         textureX;
+    double      texture_step;
+    double      texture_pos;
+}   t_wall;
 
+typedef struct s_raycast 
+{
+    double cameraX;
+    double rayDirX;
+    double rayDirY;    
+    double sideDistX;
+    double sideDistY;    
+    double deltaDistX;
+    double deltaDistY;    
+    double stepX;
+    double stepY;
+    double perpWallDist;
+    int    hit;    
+    int    side;
+    int    mapX;
+    int    mapY;
+}   t_raycast;
 
 typedef struct s_game
 {
-    t_map    map;
-    t_img    img;
-    t_img    default_bg;
-    t_texture **texs;
-    void	 *mlx;
-    void	 *scdmlx;
-	void	 *win;
-	void	 *scdwin;
-    void     *img_ptr;
-    void     *colored_img;
-    void     (*loop)(struct s_game *g);
+    t_map           map;
+    t_img           img;
+    t_texture       **texs;
+    t_player_info   player;
+    t_wall          wall;
+    t_raycast       ray;
+    void	        *mlx;
+	void	        *win;
+    void            *img_ptr;
+    void            (*loop)(struct s_game *g);
 
 }   t_game;
 
