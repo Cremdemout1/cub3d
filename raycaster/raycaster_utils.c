@@ -6,16 +6,35 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:46:12 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/10 18:19:03 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/10 19:27:33 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
+void center_player_in_tile(t_game *game)
+{
+    game->player.posX = game->map.x_player + 0.5;
+    game->player.posY = game->map.y_player + 0.5;
+}
+
+void add_epsilon(t_game *game, char **map, int x, int y)
+{
+    // printf("x: %d,y: %d\n", x, y);
+    if (x + 1 < game->map.width[y] && map[x + 1][y] == '1')
+        game->player.posX -= 0.1;
+    if (x - 1 >= 1 && map[x - 1][y] == '1')
+        game->player.posX += 0.1;
+    if (y + 1 < game->map.length && map[x][y + 1] == '1')
+        game->player.posY -= 0.1;
+    if (y - 1 >= 0 && map[x][y - 1] == '1')
+        game->player.posY += 0.1;
+}
+
 void init_player_info(t_game *game)
 {
-    game->player.posX = game->map.x_player;
-    game->player.posY = game->map.y_player;
+    center_player_in_tile(game);
+    add_epsilon(game, game->map.map, game->map.x_player,game->map.y_player);
     game->player.dirX = cos(deg_to_rad(game->map.facing));
     game->player.dirY = sin(deg_to_rad(game->map.facing));
     game->player.planeX = -game->player.dirY * 0.66;

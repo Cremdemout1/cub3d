@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:44:33 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/10 16:57:50 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/10 19:42:47 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #define XPM_X        16
 #define XPM_Y        16
 #define FOV          60
-#define PLAYER_SPEED 1
+#define PLAYER_SPEED 0.06
 #define ROT_SPEED    0.45
 #define M_PI           3.14159265358979323846
 

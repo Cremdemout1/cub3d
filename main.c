@@ -117,12 +117,14 @@ void    init_window(t_game **g)
         exit(EXIT_FAILURE);
     }
     (*g)->loop = loop;
-
     mlx_hook((*g)->win, 2, (1L << 0), keybrd_hook, g);
+    //mlx_hook((*g)->win, 2, (1L << 1), keybrd_hook, g);
     mlx_hook((*g)->win, 17, (1L << 0), exit_t, g);
+    mlx_do_key_autorepeaton((*g)->mlx);
 }
 
-void test_textures(t_game *game) {
+void test_textures(t_game *game)
+{
     if (!game->texs) {
         printf("Textures array is NULL\n");
         return;
@@ -165,7 +167,7 @@ int main (int argc, char **argv)
     load_textures(&game);
     load_player_texture(&game);
     img_placeholder(&game);
-    
+    init_player_info(game);
     //test_textures(game); 
     //draw_map(game); // for minimap
     cast_all_rays(game);

@@ -17,7 +17,6 @@ void cast_all_rays(t_game *game)
     int x;
     
     x = 0;
-    init_player_info(game);
     while (x < WIDTH)
     {
         setup_ray(game, x);

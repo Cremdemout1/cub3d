@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/10 18:11:21 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/10 19:31:27 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ typedef struct s_map
     int      length; // y
     int      map_start;
     bool     player;
-    int      x_player;
-    int      y_player;
+    double      x_player;
+    double      y_player;
     char     **map;
     char     dir;
     int      facing;
