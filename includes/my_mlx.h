@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:35:10 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/06 15:04:20 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/10 16:57:07 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,7 @@
 # define XK_BRACKETRIGHT 0x005d
 # define M_PI 3.14159265358979323846
 
-// int x_button(t_window *window);
-void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
+void	image_put_pixel(t_img *img, int x, int y, int color);
 void    loop(t_game *g);
-int     exit_x(t_game *g);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:44:33 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/05 21:05:23 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/10 16:57:50 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 #include <math.h>
 #include "flood.h"
 #include "parse.h"
+#include "raycaster.h"
 #include "structs.h" 
 #include "my_mlx.h"
 #include "libft/libft.h"
@@ -38,7 +39,6 @@
 
 void    free_resources(t_game **game);
 int     exit_t(t_game *g);
-int     destroy(t_game *window);
 
 void    draw_map(t_game *game);
 
@@ -46,7 +46,8 @@ void    cast_all_rays(t_game *game);
 int     keybrd_hook(int key, t_game **game);
 
 float   deg_to_rad(int degree);
-void    color_background(t_game *game);
-void	init_default_bg(t_game *game);
+
+unsigned int    rgb_to_color(int *rgb);
+int             tex_color(int tex_X, int tex_Y, t_texture *t);
 
 #endif

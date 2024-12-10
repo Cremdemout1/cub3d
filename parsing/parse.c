@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/06 14:21:50 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/10 18:10:34 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool    valid_arguments(int argc, char **argv)
         return (false);
     while (argv[1][i] && argv[1][i] != '.')
         i++;
-    if (ft_strcmp(argv[1] + i, ".cub") != 0) //works?? huh
+    if (ft_strcmp(argv[1] + i, ".cub") != 0)
         return (false);
     return (true);
 }

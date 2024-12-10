@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/09 15:40:18 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/10 18:11:21 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ typedef enum s_type
 
 typedef enum s_direction
 {
-    NORTH = 0,
-    SOUTH = 180,
-    EAST = 90,
-    WEST = 270
+    NORTH = 270,
+    SOUTH = 90,
+    EAST = 0,
+    WEST = 180
 }   t_direction;
 
 typedef struct s_parse
@@ -90,10 +90,10 @@ typedef struct s_wall
     int         lineHeight;
     int         top;
     int         bottom;
-    int         wallX;
+    double      wallX;
     t_texture   *texture;
     int         textureX;
-    double      texture_step;
+    double      t_step;
     double      texture_pos;
 }   t_wall;
 

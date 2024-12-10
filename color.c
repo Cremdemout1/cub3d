@@ -35,3 +35,15 @@ unsigned int rgb_to_color(int *rgb)
         b = 255;
     return ((r << 16) | (g << 8) | b);
 }
+
+int tex_color(int tex_X, int tex_Y, t_texture *t)
+{
+    int color;
+    int bpp;
+    int line_len;
+
+    bpp = t->bpp;
+    line_len = t->line_len;
+    color = *(int *)&t->addr[(tex_X * (bpp / 8)) + (tex_Y * line_len)];
+    return (color);
+}

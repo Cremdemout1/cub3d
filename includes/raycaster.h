@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   my_mlx.c                                           :+:      :+:    :+:   */
+/*   raycaster.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 20:35:10 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/10 16:58:16 by ycantin          ###   ########.fr       */
+/*   Created: 2024/10/28 20:43:49 by ycantin           #+#    #+#             */
+/*   Updated: 2024/12/10 17:32:23 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/main.h"
+#ifndef RAYCASTER_H
+#define RAYCASTER_H
+#include "main.h"
+#include "structs.h"
 
-void    loop(t_game *g)
-{
-    if (g->mlx)
-        mlx_loop(g->mlx);
-}
+void    init_player_info(t_game *game);
+void    decide_step(t_game *game);
+void    setup_ray(t_game *game, int x);
+void    cast_ray(t_game *game);
+void    determine_height(t_game *game);
+void    draw_wall_column(t_game *game, int x);
+void    select_texture(t_game *game);
 
-void	image_put_pixel(t_img *img, int x, int y, int color)
-{
-	int	pixel;
+float   normalize_angle(float angle);
 
-	if ((x >= 0 && x < WIDTH) && (y >= 0 && y < HEIGHT))
-	{
-		pixel = (y * img->line_len) + (x * (img->bits_per_pixel
-					/ 8));
-		*(unsigned int *)(pixel + img->img_pixel_ptr) = color;
-	}
-}
+
+#endif
