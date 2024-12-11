@@ -101,6 +101,31 @@ int    init_map(t_map *map, int argc, char **argv)
     return (1);
 }
 
+int keybrd_hook(int key, t_game **game)
+{
+    printf("on: %d\n", key);
+    if (key == 65307) // Exit game
+        exit_t(*game);
+    if (key >= 0 && key < 280) {
+        (*game)->keys[key] = true;  // Key is pressed
+    }
+    if ((*game)->keys[119] || (*game)->keys[115])
+        player_move(*game);
+    if ((*game)->keys[100] || (*game)->keys[97])
+        player_rotate(*game);
+    return key;
+}
+
+int keyrelease_hook(int key, t_game **game)
+{
+    printf("off: %d\n", key);
+    if (key >= 0 && key < 280) {
+        (*game)->keys[key] = false;  // Key is released
+    }
+    return key;
+}
+
+
 void    init_window(t_game **g)
 {
     // add second window minimap:
@@ -118,6 +143,7 @@ void    init_window(t_game **g)
     }
     (*g)->loop = loop;
     mlx_hook((*g)->win, 2, (1L << 0), keybrd_hook, g);
+    mlx_hook((*g)->win, 3, (1L << 1), keyrelease_hook, g);
     //mlx_hook((*g)->win, 2, (1L << 1), keybrd_hook, g);
     mlx_hook((*g)->win, 17, (1L << 0), exit_t, g);
     mlx_do_key_autorepeaton((*g)->mlx);

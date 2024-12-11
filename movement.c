@@ -1,44 +1,57 @@
 #include "includes/main.h"
 
-int player_move(t_game *game, int key)
+void    player_rotate(t_game *game)
 {
-    if (key == XK_W)
+    if (game->keys[97]) //rotate left
     {
-        if (game->map.map[(int)(game->player.posX + 
-            game->player.dirX * PLAYER_SPEED)][(int)game->player.posY])
-                game->player.posX += game->player.dirX * PLAYER_SPEED;
-        if (game->map.map[(int)game->player.posX]
-            [(int)(game->player.posY + game->player.dirY * PLAYER_SPEED)])
-                game->player.posY += game->player.dirY * PLAYER_SPEED;
+        double oldDirX;
+        double oldPlaneX;
+
+        oldDirX = game->player.dirX;
+        oldPlaneX = game->player.planeX;
+
+        game->player.dirX = game->player.dirX * cos(-ROT_SPEED) - game->player.dirY * sin(-ROT_SPEED);
+        game->player.dirY = oldDirX * sin(-ROT_SPEED) + game->player.dirY * cos(-ROT_SPEED);
+        game->player.planeX = oldPlaneX * cos(-ROT_SPEED) - game->player.planeY * sin(-ROT_SPEED);
+        game->player.planeY = oldPlaneX * sin(-ROT_SPEED) + game->player.planeY * cos(-ROT_SPEED);
+        cast_all_rays(game);
+    }       
+    if (game->keys[100]) //rotate right
+    {
+        double oldDirX;
+        double oldPlaneX;
+
+        oldDirX = game->player.dirX;
+        oldPlaneX = game->player.planeX;
+        game->player.dirX = game->player.dirX * cos(ROT_SPEED) - game->player.dirY * sin(ROT_SPEED);
+        game->player.dirY = oldDirX * sin(ROT_SPEED) + game->player.dirY * cos(ROT_SPEED);
+        game->player.planeX = oldPlaneX * cos(ROT_SPEED) - game->player.planeY * sin(ROT_SPEED);
+        game->player.planeY = oldPlaneX * sin(ROT_SPEED) + game->player.planeY * cos(ROT_SPEED);
         cast_all_rays(game);
     }
-    else
-    {
-        if (game->map.map[(int)(game->player.posX - 
-            game->player.dirX * PLAYER_SPEED)][(int)game->player.posY])
-                game->player.posX -= game->player.dirX * PLAYER_SPEED;
-        if (game->map.map[(int)game->player.posX]
-            [(int)(game->player.posY - game->player.dirY * PLAYER_SPEED)])
-                game->player.posY -= game->player.dirY * PLAYER_SPEED;
-        cast_all_rays(game);
-    }     
-    return (key);
 }
 
-// int player_rotate(t_game *game, int key)
-// {
-
-//     return (key);
-// }
-
-int keybrd_hook(int key, t_game **game)
+void player_move(t_game *game)
 {
-    // Movement calculations
-    if (key == XK_ESCAPE) // Exit game
-        exit_t(*game);
-    else if (key == XK_W || key == XK_S)
-        player_move(*game, key);
-    // else if (key == XK_A || key == XK_D)
-    //     player_rotate(game, key);
-    return (key);
+    if (game->keys[119]) // Move forward
+    {
+        if (game->map.map[(int)(game->player.posX + game->player.dirX * PLAYER_SPEED)]
+            [(int)game->player.posY])
+            game->player.posX += game->player.dirX * PLAYER_SPEED;
+        if (game->map.map[(int)game->player.posX]
+            [(int)(game->player.posY + game->player.dirY * PLAYER_SPEED)])
+            game->player.posY += game->player.dirY * PLAYER_SPEED;
+        cast_all_rays(game);
+    }
+
+    if (game->keys[115]) // Move backward
+    {
+        if (game->map.map[(int)(game->player.posX - game->player.dirX * PLAYER_SPEED)]
+            [(int)game->player.posY])
+            game->player.posX -= game->player.dirX * PLAYER_SPEED;
+        if (game->map.map[(int)game->player.posX]
+            [(int)(game->player.posY - game->player.dirY * PLAYER_SPEED)])
+            game->player.posY -= game->player.dirY * PLAYER_SPEED;
+        cast_all_rays(game);
+    }
 }

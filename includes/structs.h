@@ -6,13 +6,14 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/10 19:31:27 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/11 05:38:47 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 #define STRUCT_H
 #define M_PI           3.14159265358979323846
+#include <stdbool.h>
 
 typedef enum s_type
 {
@@ -127,7 +128,7 @@ typedef struct s_game
 	void	        *win;
     void            *img_ptr;
     void            (*loop)(struct s_game *g);
-
+    bool            keys[280];
 }   t_game;
 
 #endif

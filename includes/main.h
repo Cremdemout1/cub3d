@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:44:33 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/10 19:42:47 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/11 06:10:16 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #define XPM_Y        16
 #define FOV          60
 #define PLAYER_SPEED 0.06
-#define ROT_SPEED    0.45
+#define ROT_SPEED    0.038
 #define M_PI           3.14159265358979323846
 
 #include <stdio.h>
@@ -49,5 +49,8 @@ float   deg_to_rad(int degree);
 
 unsigned int    rgb_to_color(int *rgb);
 int             tex_color(int tex_X, int tex_Y, t_texture *t);
+
+void    player_move(t_game *game);
+void    player_rotate(t_game *game);
 
 #endif
