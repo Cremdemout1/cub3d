@@ -56,6 +56,7 @@ int exit_t(t_game *g)
         mlx_destroy_window(g->mlx, g->win);
     if (g->mlx)
     {
+        mlx_do_key_autorepeaton(g->mlx);
         mlx_destroy_display(g->mlx);
         free(g->mlx);
     }

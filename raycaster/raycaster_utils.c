@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:46:12 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/10 19:27:33 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/12 16:59:06 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void add_epsilon(t_game *game, char **map, int x, int y)
     // printf("x: %d,y: %d\n", x, y);
     if (x + 1 < game->map.width[y] && map[x + 1][y] == '1')
         game->player.posX -= 0.1;
-    if (x - 1 >= 1 && map[x - 1][y] == '1')
+    if (x - 1 >= 1 && map[x - 1][y] == '1') //might have to change to 0
         game->player.posX += 0.1;
     if (y + 1 < game->map.length && map[x][y + 1] == '1')
         game->player.posY -= 0.1;

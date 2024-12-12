@@ -108,23 +108,32 @@ int keybrd_hook(int key, t_game **game)
         exit_t(*game);
     if (key >= 0 && key < 280) {
         (*game)->keys[key] = true;  // Key is pressed
+        printf("inside\n");
     }
-    if ((*game)->keys[119] || (*game)->keys[115])
-        player_move(*game);
-    if ((*game)->keys[100] || (*game)->keys[97])
-        player_rotate(*game);
+        printf("outside\n");
+    // if ((*game)->keys[119] || (*game)->keys[115])
+    //     player_move(*game);
+    // if ((*game)->keys[100] || (*game)->keys[97])
+    //     player_rotate(*game);
     return key;
 }
 
 int keyrelease_hook(int key, t_game **game)
 {
     printf("off: %d\n", key);
-    if (key >= 0 && key < 280) {
+    if (key >= 0 && key < 280)
         (*game)->keys[key] = false;  // Key is released
-    }
     return key;
 }
 
+int all_moves(t_game **game, int keycode)
+{
+    if ((*game)->keys[119] || (*game)->keys[115])
+        player_move(*game);
+    if ((*game)->keys[100] || (*game)->keys[97])
+        player_rotate(*game);
+    return (keycode);
+}
 
 void    init_window(t_game **g)
 {
@@ -133,7 +142,7 @@ void    init_window(t_game **g)
     // (*g)->scdmlx = mlx_init();
     // (*g)->scdwin = mlx_new_window((*g)->scdmlx, 500, 500, "2D map");
     //(*g)->img_ptr = mlx_new_image((*g)->mlx, WIDTH, HEIGHT);
-
+    ft_memset((*g)->keys, false, 280);
     (*g)->mlx = mlx_init();
     (*g)->win = mlx_new_window((*g)->mlx, WIDTH, HEIGHT, "cub3d");
     if (!(*g)->mlx)
@@ -144,9 +153,9 @@ void    init_window(t_game **g)
     (*g)->loop = loop;
     mlx_hook((*g)->win, 2, (1L << 0), keybrd_hook, g);
     mlx_hook((*g)->win, 3, (1L << 1), keyrelease_hook, g);
-    //mlx_hook((*g)->win, 2, (1L << 1), keybrd_hook, g);
     mlx_hook((*g)->win, 17, (1L << 0), exit_t, g);
-    mlx_do_key_autorepeaton((*g)->mlx);
+    mlx_do_key_autorepeatoff((*g)->mlx);
+    mlx_loop_hook((*g)->mlx, all_moves, g);
 }
 
 void test_textures(t_game *game)
@@ -163,7 +172,7 @@ void test_textures(t_game *game)
             if (game->texs[i]->img == NULL) {
                 printf("Texture %d img is NULL\n", i);
             } else {
-                printf("Texture %d loaded successfully with img at %p\n", i, game->texs[i]->img);
+                printf("Texture %d loaded successnormalizedY with img at %p\n", i, game->texs[i]->img);
             }
         }
     }
