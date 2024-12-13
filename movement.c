@@ -38,45 +38,96 @@ int    normalized_value(double value)
 
     integer_val = (int)value;
     decimal = value - integer_val;
-    if (decimal < 0.2)
+    if (decimal < 0.5)
         return (integer_val);
     return (integer_val + 1);
 }
 
+// void player_move(t_game *game)
+// {
+//     // if (game->keys[119]) // Move forward
+//     // {
+//     //     if (game->map.map[(int)(game->player.posX + game->player.dirX * PLAYER_SPEED)]
+//     //         [(int)game->player.posY] != '1')
+//     //         game->player.posX += game->player.dirX * PLAYER_SPEED;
+//     //     if (game->map.map[(int)game->player.posX]
+//     //         [(int)(game->player.posY + game->player.dirY * PLAYER_SPEED)])
+//     //         game->player.posY += game->player.dirY * PLAYER_SPEED;
+//     //     cast_all_rays(game);
+//     // }
+//     if (game->keys[119]) // Move forward
+//     {
+//         int normalizedX = normalized_value(game->player.posX);
+//         int normalizedY = normalized_value(game->player.posY);
+
+//         printf("X: %d\nY: %d\n", normalizedX, normalizedY);
+//         printf("dirX: %f\ndirY: %f\n", game->player.dirX, game->player.dirY);
+//         printf("width: %d\nlength: %d\n", game->map.width[normalizedX], game->map.length);
+//         if (game->map.map[normalizedY][(int)(normalizedX + game->player.dirX * PLAYER_SPEED)] != '1')
+//             game->player.posX += game->player.dirX * PLAYER_SPEED;
+//         if (game->map.map[(int)(normalizedY + game->player.dirY * PLAYER_SPEED)][normalizedX])
+//             game->player.posY += game->player.dirY * PLAYER_SPEED;
+//         cast_all_rays(game);
+//     }
+
+//     if (game->keys[115]) // Move backward
+//     {
+//         if (game->map.map[(int)game->player.posY][(int)(game->player.posX - game->player.dirX * PLAYER_SPEED)])
+//             game->player.posX -= game->player.dirX * PLAYER_SPEED;
+//         if (game->map.map[(int)(game->player.posY - game->player.dirY * PLAYER_SPEED)][(int)game->player.posX])
+//             game->player.posY -= game->player.dirY * PLAYER_SPEED;
+//         cast_all_rays(game);
+//     }
+// }
+
+#define PLAYER_RADIUS 0.4
 void player_move(t_game *game)
 {
-    // if (game->keys[119]) // Move forward
-    // {
-    //     if (game->map.map[(int)(game->player.posX + game->player.dirX * PLAYER_SPEED)]
-    //         [(int)game->player.posY] != '1')
-    //         game->player.posX += game->player.dirX * PLAYER_SPEED;
-    //     if (game->map.map[(int)game->player.posX]
-    //         [(int)(game->player.posY + game->player.dirY * PLAYER_SPEED)])
-    //         game->player.posY += game->player.dirY * PLAYER_SPEED;
-    //     cast_all_rays(game);
-    // }
+    double nextX, nextY;
+
     if (game->keys[119]) // Move forward
     {
-        int normalizedX = normalized_value(game->player.posX);
-        int normalizedY = normalized_value(game->player.posY);
+        // Calculate next positions
+        nextX = game->player.posX + game->player.dirX * PLAYER_SPEED;
+        nextY = game->player.posY + game->player.dirY * PLAYER_SPEED;
 
-        printf("X: %d\nY: %d\n", normalizedX, normalizedY);
-        printf("dirX: %f\ndirY: %f\n", game->player.dirX, game->player.dirY);
-        printf("width: %d\nlength: %d\n", game->map.width[normalizedX], game->map.length);
-        if (game->map.map[normalizedY][(int)(normalizedX + game->player.dirX * PLAYER_SPEED)] != '1')
-            game->player.posX += game->player.dirX * PLAYER_SPEED;
-        if (game->map.map[(int)(normalizedY + game->player.dirY * PLAYER_SPEED)][normalizedX])
-            game->player.posY += game->player.dirY * PLAYER_SPEED;
+        // Check for wall collision on X axis and update position
+        if (game->map.map[(int)(game->player.posY - PLAYER_RADIUS)][(int)nextX] != '1' &&
+            game->map.map[(int)(game->player.posY + PLAYER_RADIUS)][(int)nextX] != '1')
+        {
+            game->player.posX = nextX;
+        }
+
+        // Check for wall collision on Y axis and update position
+        if (game->map.map[(int)nextY][(int)(game->player.posX - PLAYER_RADIUS)] != '1' &&
+            game->map.map[(int)nextY][(int)(game->player.posX + PLAYER_RADIUS)] != '1')
+        {
+            game->player.posY = nextY;
+        }
+
         cast_all_rays(game);
     }
 
     if (game->keys[115]) // Move backward
     {
-        if (game->map.map[(int)game->player.posY][(int)(game->player.posX - game->player.dirX * PLAYER_SPEED)])
-            game->player.posX -= game->player.dirX * PLAYER_SPEED;
-        if (game->map.map[(int)(game->player.posY - game->player.dirY * PLAYER_SPEED)][(int)game->player.posX])
-            game->player.posY -= game->player.dirY * PLAYER_SPEED;
+        // Calculate next positions
+        nextX = game->player.posX - game->player.dirX * PLAYER_SPEED;
+        nextY = game->player.posY - game->player.dirY * PLAYER_SPEED;
+
+        // Check for wall collision on X axis and update position
+        if (game->map.map[(int)(game->player.posY - PLAYER_RADIUS)][(int)nextX] != '1' &&
+            game->map.map[(int)(game->player.posY + PLAYER_RADIUS)][(int)nextX] != '1')
+        {
+            game->player.posX = nextX;
+        }
+
+        // Check for wall collision on Y axis and update position
+        if (game->map.map[(int)nextY][(int)(game->player.posX - PLAYER_RADIUS)] != '1' &&
+            game->map.map[(int)nextY][(int)(game->player.posX + PLAYER_RADIUS)] != '1')
+        {
+            game->player.posY = nextY;
+        }
+
         cast_all_rays(game);
     }
 }
-
