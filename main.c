@@ -103,18 +103,10 @@ int    init_map(t_map *map, int argc, char **argv)
 
 int keybrd_hook(int key, t_game **game)
 {
-    printf("on: %d\n", key);
-    if (key == 65307) // Exit game
+    if (key == 65307)
         exit_t(*game);
-    if (key >= 0 && key < 280) {
-        (*game)->keys[key] = true;  // Key is pressed
-        printf("inside\n");
-    }
-        printf("outside\n");
-    // if ((*game)->keys[119] || (*game)->keys[115])
-    //     player_move(*game);
-    // if ((*game)->keys[100] || (*game)->keys[97])
-    //     player_rotate(*game);
+    if (key >= 0 && key < 280)
+        (*game)->keys[key] = true;
     return key;
 }
 
@@ -122,7 +114,7 @@ int keyrelease_hook(int key, t_game **game)
 {
     printf("off: %d\n", key);
     if (key >= 0 && key < 280)
-        (*game)->keys[key] = false;  // Key is released
+        (*game)->keys[key] = false;
     return key;
 }
 
@@ -227,11 +219,11 @@ int main (int argc, char **argv)
 // 9. assign height value to walls depending on the length of their ray.    DONE
 
 // URGENT: FIX X BUTTON
-// 1. give north, south, west, or east value to each wall                   NOT NEEDED
+// 1. give north, south, west, or east value to each wall    DONE               NOT NEEDED
 // 2. get texture paths and ensure their validity.
 // 3. make the vertical drawing draw ceiling and floor depending on if its on top half or  bottom half instead of separate function
-// 4. make movement work
-// 5. draw textures on 3D walls
+// 4. make movement work                                     DONE
+// 5. draw textures on 3D walls                              DONE
 // 6. make minimap inside normal map
 // 7. test my parser
 //    have fun ;)

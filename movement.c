@@ -80,54 +80,51 @@ int    normalized_value(double value)
 //     }
 // }
 
-#define PLAYER_RADIUS 0.4
+#define PLAYER_RADIUS 0.2
+
+void    change_player_coords(t_game *game, double nextX, double nextY)
+{
+    int right_wall;
+    int left_wall;
+    int top_wall;
+    int bottom_wall;
+
+    right_wall = (game->map.map[(int)game->player.posY]
+        [(int)(game->player.posX + 1)] == '1');
+    left_wall = (game->map.map[(int)game->player.posY]
+        [(int)(game->player.posX - 1)] == '1');
+    top_wall = (game->map.map[(int)(game->player.posY - 1)]
+        [(int)game->player.posX] == '1');
+    bottom_wall = (game->map.map[(int)(game->player.posY + 1)]
+        [(int)game->player.posX] == '1');
+    if ((!right_wall || nextX + PLAYER_RADIUS
+        < (int)(game->player.posX + 1)) &&
+        (!left_wall || nextX - PLAYER_RADIUS > (int)game->player.posX))
+            game->player.posX = nextX;
+    if ((!bottom_wall || nextY + PLAYER_RADIUS
+        < (int)(game->player.posY + 1)) &&
+        (!top_wall || nextY - PLAYER_RADIUS > (int)game->player.posY))
+            game->player.posY = nextY;
+}
+
 void player_move(t_game *game)
 {
-    double nextX, nextY;
+    double nextX;
+    double nextY;
 
     if (game->keys[119]) // Move forward
     {
-        // Calculate next positions
         nextX = game->player.posX + game->player.dirX * PLAYER_SPEED;
         nextY = game->player.posY + game->player.dirY * PLAYER_SPEED;
-
-        // Check for wall collision on X axis and update position
-        if (game->map.map[(int)(game->player.posY - PLAYER_RADIUS)][(int)nextX] != '1' &&
-            game->map.map[(int)(game->player.posY + PLAYER_RADIUS)][(int)nextX] != '1')
-        {
-            game->player.posX = nextX;
-        }
-
-        // Check for wall collision on Y axis and update position
-        if (game->map.map[(int)nextY][(int)(game->player.posX - PLAYER_RADIUS)] != '1' &&
-            game->map.map[(int)nextY][(int)(game->player.posX + PLAYER_RADIUS)] != '1')
-        {
-            game->player.posY = nextY;
-        }
-
+        change_player_coords(game, nextX, nextY);
         cast_all_rays(game);
     }
 
     if (game->keys[115]) // Move backward
     {
-        // Calculate next positions
         nextX = game->player.posX - game->player.dirX * PLAYER_SPEED;
         nextY = game->player.posY - game->player.dirY * PLAYER_SPEED;
-
-        // Check for wall collision on X axis and update position
-        if (game->map.map[(int)(game->player.posY - PLAYER_RADIUS)][(int)nextX] != '1' &&
-            game->map.map[(int)(game->player.posY + PLAYER_RADIUS)][(int)nextX] != '1')
-        {
-            game->player.posX = nextX;
-        }
-
-        // Check for wall collision on Y axis and update position
-        if (game->map.map[(int)nextY][(int)(game->player.posX - PLAYER_RADIUS)] != '1' &&
-            game->map.map[(int)nextY][(int)(game->player.posX + PLAYER_RADIUS)] != '1')
-        {
-            game->player.posY = nextY;
-        }
-
+        change_player_coords(game, nextX, nextY);
         cast_all_rays(game);
     }
 }
