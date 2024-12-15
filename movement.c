@@ -2,31 +2,28 @@
 
 void    player_rotate(t_game *game)
 {
-    if (game->keys[97]) //rotate left
-    {
-        double oldDirX;
-        double oldPlaneX;
+    double oldDirX;
+    double oldPlaneX;
+    double rot_speed = ROT_SPEED * game->dt;
 
+    if (game->keys[LEFT_ARR]) //rotate left
+    {
         oldDirX = game->player.dirX;
         oldPlaneX = game->player.planeX;
-
-        game->player.dirX = game->player.dirX * cos(-ROT_SPEED) - game->player.dirY * sin(-ROT_SPEED);
-        game->player.dirY = oldDirX * sin(-ROT_SPEED) + game->player.dirY * cos(-ROT_SPEED);
-        game->player.planeX = oldPlaneX * cos(-ROT_SPEED) - game->player.planeY * sin(-ROT_SPEED);
-        game->player.planeY = oldPlaneX * sin(-ROT_SPEED) + game->player.planeY * cos(-ROT_SPEED);
+        game->player.dirX = game->player.dirX * cos(-rot_speed) - game->player.dirY * sin(-rot_speed);
+        game->player.dirY = oldDirX * sin(-rot_speed) + game->player.dirY * cos(-rot_speed);
+        game->player.planeX = oldPlaneX * cos(-rot_speed) - game->player.planeY * sin(-rot_speed);
+        game->player.planeY = oldPlaneX * sin(-rot_speed) + game->player.planeY * cos(-rot_speed);
         cast_all_rays(game);
     }       
-    if (game->keys[100]) //rotate right
+    if (game->keys[RIGHT_ARR]) //rotate right
     {
-        double oldDirX;
-        double oldPlaneX;
-
         oldDirX = game->player.dirX;
         oldPlaneX = game->player.planeX;
-        game->player.dirX = game->player.dirX * cos(ROT_SPEED) - game->player.dirY * sin(ROT_SPEED);
-        game->player.dirY = oldDirX * sin(ROT_SPEED) + game->player.dirY * cos(ROT_SPEED);
-        game->player.planeX = oldPlaneX * cos(ROT_SPEED) - game->player.planeY * sin(ROT_SPEED);
-        game->player.planeY = oldPlaneX * sin(ROT_SPEED) + game->player.planeY * cos(ROT_SPEED);
+        game->player.dirX = game->player.dirX * cos(rot_speed) - game->player.dirY * sin(rot_speed);
+        game->player.dirY = oldDirX * sin(rot_speed) + game->player.dirY * cos(rot_speed);
+        game->player.planeX = oldPlaneX * cos(rot_speed) - game->player.planeY * sin(rot_speed);
+        game->player.planeY = oldPlaneX * sin(rot_speed) + game->player.planeY * cos(rot_speed);
         cast_all_rays(game);
     }
 }
@@ -43,67 +40,51 @@ int    normalized_value(double value)
     return (integer_val + 1);
 }
 
-// void player_move(t_game *game)
+// void    change_player_coords(t_game *game, double nextX, double nextY)
 // {
-//     // if (game->keys[119]) // Move forward
-//     // {
-//     //     if (game->map.map[(int)(game->player.posX + game->player.dirX * PLAYER_SPEED)]
-//     //         [(int)game->player.posY] != '1')
-//     //         game->player.posX += game->player.dirX * PLAYER_SPEED;
-//     //     if (game->map.map[(int)game->player.posX]
-//     //         [(int)(game->player.posY + game->player.dirY * PLAYER_SPEED)])
-//     //         game->player.posY += game->player.dirY * PLAYER_SPEED;
-//     //     cast_all_rays(game);
-//     // }
-//     if (game->keys[119]) // Move forward
-//     {
-//         int normalizedX = normalized_value(game->player.posX);
-//         int normalizedY = normalized_value(game->player.posY);
+//     int right_wall;
+//     int left_wall;
+//     int top_wall;
+//     int bottom_wall;
 
-//         printf("X: %d\nY: %d\n", normalizedX, normalizedY);
-//         printf("dirX: %f\ndirY: %f\n", game->player.dirX, game->player.dirY);
-//         printf("width: %d\nlength: %d\n", game->map.width[normalizedX], game->map.length);
-//         if (game->map.map[normalizedY][(int)(normalizedX + game->player.dirX * PLAYER_SPEED)] != '1')
-//             game->player.posX += game->player.dirX * PLAYER_SPEED;
-//         if (game->map.map[(int)(normalizedY + game->player.dirY * PLAYER_SPEED)][normalizedX])
-//             game->player.posY += game->player.dirY * PLAYER_SPEED;
-//         cast_all_rays(game);
-//     }
-
-//     if (game->keys[115]) // Move backward
-//     {
-//         if (game->map.map[(int)game->player.posY][(int)(game->player.posX - game->player.dirX * PLAYER_SPEED)])
-//             game->player.posX -= game->player.dirX * PLAYER_SPEED;
-//         if (game->map.map[(int)(game->player.posY - game->player.dirY * PLAYER_SPEED)][(int)game->player.posX])
-//             game->player.posY -= game->player.dirY * PLAYER_SPEED;
-//         cast_all_rays(game);
-//     }
+//     right_wall = (game->map.map[(int)game->player.posY]
+//         [(int)(game->player.posX + 1)] == '1');
+//     left_wall = (game->map.map[(int)game->player.posY]
+//         [(int)(game->player.posX - 1)] == '1');
+//     top_wall = (game->map.map[(int)(game->player.posY - 1)]
+//         [(int)game->player.posX] == '1');
+//     bottom_wall = (game->map.map[(int)(game->player.posY + 1)]
+//         [(int)game->player.posX] == '1');
+//     if ((!right_wall || nextX + PLAYER_RADIUS
+//         < (int)(game->player.posX + 1)) &&
+//         (!left_wall || nextX - PLAYER_RADIUS > (int)game->player.posX))
+//             game->player.posX = nextX;
+//     if ((!bottom_wall || nextY + PLAYER_RADIUS
+//         < (int)(game->player.posY + 1)) &&
+//         (!top_wall || nextY - PLAYER_RADIUS > (int)game->player.posY))
+//             game->player.posY = nextY;
 // }
 
-#define PLAYER_RADIUS 0.2
-
-void    change_player_coords(t_game *game, double nextX, double nextY)
+void change_player_coords(t_game *game, double nextX, double nextY)
 {
-    int right_wall;
-    int left_wall;
-    int top_wall;
-    int bottom_wall;
+    int right_wall, left_wall, top_wall, bottom_wall;
 
     right_wall = (game->map.map[(int)game->player.posY]
-        [(int)(game->player.posX + 1)] == '1');
+        [(int)(nextX + PLAYER_RADIUS)] == '1');
     left_wall = (game->map.map[(int)game->player.posY]
-        [(int)(game->player.posX - 1)] == '1');
-    top_wall = (game->map.map[(int)(game->player.posY - 1)]
+        [(int)(nextX - PLAYER_RADIUS)] == '1');
+
+    top_wall = (game->map.map[(int)(nextY - PLAYER_RADIUS)]
         [(int)game->player.posX] == '1');
-    bottom_wall = (game->map.map[(int)(game->player.posY + 1)]
+    bottom_wall = (game->map.map[(int)(nextY + PLAYER_RADIUS)]
         [(int)game->player.posX] == '1');
-    if ((!right_wall || nextX + PLAYER_RADIUS
-        < (int)(game->player.posX + 1)) &&
-        (!left_wall || nextX - PLAYER_RADIUS > (int)game->player.posX))
+
+    if (!right_wall || (game->player.dirX < 0 && !left_wall))
+        if (!left_wall || (game->player.dirX > 0 && !right_wall))
             game->player.posX = nextX;
-    if ((!bottom_wall || nextY + PLAYER_RADIUS
-        < (int)(game->player.posY + 1)) &&
-        (!top_wall || nextY - PLAYER_RADIUS > (int)game->player.posY))
+
+    if (!bottom_wall || (game->player.dirY < 0 && !top_wall))
+        if (!top_wall || (game->player.dirY > 0 && !bottom_wall))
             game->player.posY = nextY;
 }
 
@@ -111,19 +92,38 @@ void player_move(t_game *game)
 {
     double nextX;
     double nextY;
+    double strafeX;
+    double strafeY;
 
     if (game->keys[119]) // Move forward
     {
-        nextX = game->player.posX + game->player.dirX * PLAYER_SPEED;
-        nextY = game->player.posY + game->player.dirY * PLAYER_SPEED;
+        nextX = game->player.posX + game->player.dirX * PLAYER_SPEED * game->dt;
+        nextY = game->player.posY + game->player.dirY * PLAYER_SPEED * game->dt;
         change_player_coords(game, nextX, nextY);
         cast_all_rays(game);
     }
-
     if (game->keys[115]) // Move backward
     {
-        nextX = game->player.posX - game->player.dirX * PLAYER_SPEED;
-        nextY = game->player.posY - game->player.dirY * PLAYER_SPEED;
+        nextX = game->player.posX - game->player.dirX * PLAYER_SPEED * game->dt;
+        nextY = game->player.posY - game->player.dirY * PLAYER_SPEED * game->dt;
+        change_player_coords(game, nextX, nextY);
+        cast_all_rays(game);
+    }
+        if (game->keys[100])
+    {
+        strafeX = -game->player.dirY;
+        strafeY = game->player.dirX;
+        nextX = game->player.posX + strafeX * (PLAYER_SPEED / 3 * 2) * game->dt;
+        nextY = game->player.posY + strafeY * (PLAYER_SPEED / 2 * 2) * game->dt;
+        change_player_coords(game, nextX, nextY);
+        cast_all_rays(game);
+    }
+    if (game->keys[97])
+    {
+        strafeX = game->player.dirY;
+        strafeY = -game->player.dirX;
+        nextX = game->player.posX + strafeX * (PLAYER_SPEED / 3 * 2) * game->dt;
+        nextY = game->player.posY + strafeY * (PLAYER_SPEED / 3 * 2) * game->dt;
         change_player_coords(game, nextX, nextY);
         cast_all_rays(game);
     }

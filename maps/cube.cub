@@ -1,10 +1,10 @@
-NO ./wall.xpm
-SO ./wall.xpm
-WE ./wall.xpm
-EA ./wall.xpm
+NO ./wall2.xpm
+SO ./wall2.xpm
+WE ./wall2.xpm
+EA ./wall2.xpm
 
-F 40, 40, 65
-C 0, 0, 50
+F 255, 255, 255
+C 62, 52, 133
 
 
 

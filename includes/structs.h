@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/11 05:38:47 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/15 13:24:42 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,9 @@ typedef struct s_game
 	void	        *win;
     void            *img_ptr;
     void            (*loop)(struct s_game *g);
-    bool            keys[280];
+    bool            keys[283];
+    struct timeval  last_time;
+    double          dt;
 }   t_game;
 
 #endif

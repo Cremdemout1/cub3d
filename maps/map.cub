@@ -1,7 +1,7 @@
-NO ./south.xpm
+NO ./north.xpm
 SO ./south.xpm
-WE ./north.xpm
-EA ./north.xpm
+WE ./west.xpm
+EA ./east.xpm
 
 F 40, 40, 65
 C 0, 0, 50

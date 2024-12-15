@@ -105,14 +105,21 @@ int keybrd_hook(int key, t_game **game)
 {
     if (key == 65307)
         exit_t(*game);
-    if (key >= 0 && key < 280)
+    if (key == 65361)
+        (*game)->keys[LEFT_ARR] = true;
+    else if (key == 65363)
+        (*game)->keys[RIGHT_ARR] = true;
+    else if (key >= 0 && key < 280)
         (*game)->keys[key] = true;
     return key;
 }
 
 int keyrelease_hook(int key, t_game **game)
 {
-    printf("off: %d\n", key);
+    if (key == 65361)
+        (*game)->keys[LEFT_ARR] = false;
+    else if (key == 65363)
+        (*game)->keys[RIGHT_ARR] = false;
     if (key >= 0 && key < 280)
         (*game)->keys[key] = false;
     return key;
@@ -120,9 +127,12 @@ int keyrelease_hook(int key, t_game **game)
 
 int all_moves(t_game **game, int keycode)
 {
-    if ((*game)->keys[119] || (*game)->keys[115])
+    update_dt(*game);
+    if ((*game)->keys[119] || (*game)->keys[115] || (*game)->keys[100] || (*game)->keys[97])
         player_move(*game);
-    if ((*game)->keys[100] || (*game)->keys[97])
+    // if ()
+    //     player_strafe(*game);
+    if ((*game)->keys[LEFT_ARR] || (*game)->keys[RIGHT_ARR])
         player_rotate(*game);
     return (keycode);
 }
@@ -195,6 +205,7 @@ int main (int argc, char **argv)
     load_player_texture(&game);
     img_placeholder(&game);
     init_player_info(game);
+    gettimeofday(&game->last_time, NULL);
     //test_textures(game); 
     //draw_map(game); // for minimap
     cast_all_rays(game);

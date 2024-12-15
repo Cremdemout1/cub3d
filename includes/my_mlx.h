@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:35:10 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/10 16:57:07 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/15 13:28:17 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@
 
 void	image_put_pixel(t_img *img, int x, int y, int color);
 void    loop(t_game *g);
+void    update_dt(t_game *game);
 
 #endif

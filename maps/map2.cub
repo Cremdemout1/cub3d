@@ -1,10 +1,10 @@
-NO ./south.xpm
-SO ./south.xpm
-WE ./north.xpm
-EA ./north.xpm
+NO ./wall1.xpm
+SO ./wall1.xpm
+WE ./gpt.xpm
+EA ./gpt.xpm
 
 F 144,238,144
-C 173,216,230
+C 62, 52, 133
 
  
                                               111111111111111111
