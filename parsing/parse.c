@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/15 16:17:47 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/15 17:30:15 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ bool found_player(t_map *info)
     int     y;
     int     count;
     int     error;
+    int     is_empty;
         
     y = 0;
     error = 0;
     count = 0;
+    is_empty = true;
     while (info->map[y])
     {
         x = 0;
@@ -49,6 +51,8 @@ bool found_player(t_map *info)
         {
             char    cur;
             cur = info->map[y][x];
+            if (cur != '\n' && cur != '\0' && cur != '\t' && cur != ' ')
+                is_empty = false;    
             if (!valid_map_char(cur))
                 error = 1;
             else
@@ -63,13 +67,15 @@ bool found_player(t_map *info)
         }
         y++;
     }
+    if (is_empty)
+        return (ft_printf_fd(2, "Error\nMap empty\n"), false);
     if (error == 1)
-        return (ft_printf_fd(2, "non conformative character: "), false);
+        return (ft_printf_fd(2, "Error\nNon conformative character\n"), false);
     if (count < 1)
-        return (ft_printf_fd(2, "no player found: "), false);
+        return (ft_printf_fd(2, "Error\nNo player found\n"), false);
     else if(count == 1)
         return (true);
-    return (ft_printf_fd(2, "too many players found: "), false);
+    return (ft_printf_fd(2, "Error\nToo many players found\n"), false);
 }
 
 int    valid_textures(t_map *map)
@@ -127,11 +133,13 @@ bool    init_map_and_player(t_map *map_info, char *filename)
     get_widths(map_info, filename);
     map = get_map(map_info, filename);
     if (!map)
-        return (ft_printf_fd(2, "Error\nMap creation error\n"), false);
+        return (free_starting_info(map_info), free(map_info->width), false);
+        // return (free_starting_info(map_info),
+        //     free_array(map), free(map_info->width), ft_printf_fd(2, "Error\nMap creation error\n"), false);
     map_info->map = map;
     if (!found_player(map_info))
         return (free_starting_info(map_info), free(map_info->width), 
-            free_array(map_info->map), 
-                ft_printf_fd(2, "Error\nInitiation error\n"), false);
+            free_array(map_info->map)/* , 
+                ft_printf_fd(2, "Error\nInitiation error\n") */, false);
     return (true);
 }
