@@ -26,12 +26,11 @@ void load_textures(t_game **game)
         textures[i] = malloc(sizeof(t_texture));
         if (!textures[i])
             return (free(textures));
-        textures[i]->img = mlx_xpm_file_to_image((*game)->mlx, (*game)->map.texs[i], &textures[i]->width, &textures[i]->height);
+        textures[i]->img = mlx_xpm_file_to_image((*game)->mlx,
+            (*game)->map.texs[i], &textures[i]->width, &textures[i]->height);
         if (!textures[i]->img)
             return (free(textures[i]), free(textures));
-        textures[i]->addr = mlx_get_data_addr(
-            textures[i]->img,
-            &textures[i]->bpp,
+        textures[i]->addr = mlx_get_data_addr(textures[i]->img, &textures[i]->bpp,
             &textures[i]->line_len,
             &textures[i]->endian);
         if (!textures[i]->addr)
@@ -46,9 +45,11 @@ void    load_player_texture(t_game **game)
     (*game)->texs[4] = malloc (sizeof (t_texture));
     if (!(*game)->texs[4])
         return (free((*game)->texs));
-            (*game)->texs[4]->img = mlx_xpm_file_to_image((*game)->mlx, "./player.xpm", &(*game)->texs[4]->width, &(*game)->texs[4]->height);
-        if (!(*game)->texs[4]->img)
-            return (free((*game)->texs[4]), free((*game)->texs));
+            (*game)->texs[4]->img = mlx_xpm_file_to_image((*game)->mlx,
+                "./includes/textures/player.xpm", &(*game)->texs[4]->width,
+                &(*game)->texs[4]->height);
+    if (!(*game)->texs[4]->img)
+        return (free((*game)->texs[4]), free((*game)->texs));
     (*game)->texs[4]->addr = mlx_get_data_addr(
         (*game)->texs[4]->img,
         &(*game)->texs[4]->bpp,
@@ -71,17 +72,17 @@ int    init_map(t_map *map, int argc, char **argv)
     map->texs = NULL;
     map->floor_color = NULL;
     map->ceiling_color = NULL;
-
     if (!valid_arguments(argc, argv))
         return (ft_printf_fd(2, "invalid arguments\n"), 0);
     fd = open(argv[1], O_RDONLY);
     if (fd < 0)
-        return (0);
+        return (close(fd), 0);
     if (!init_map_and_player(map, argv[1]))
-        return (0);
+        return (close(fd), 0);
     flood_fill(map);
     if (map->parser.error == 1)
-        return (free_array(map->map), free_bool_array(map->parser.visited, map->length)
+        return (close(fd), free_array(map->map), 
+            free_bool_array(map->parser.visited, map->length)
             , free(map->ceiling_color), free(map->floor_color)
             , free(map->width), free_array(map->texs), 0);
     //const char *direction_names[] = { "NORTH", "SOUTH", "EAST", "WEST" };
@@ -98,7 +99,7 @@ int    init_map(t_map *map, int argc, char **argv)
     // printf("MAP:\n");
     // for(int i = 0; map->map[i] != NULL; i++)
     //     printf("%s\n", map->map[i]);
-    return (1);
+    return (close(fd), 1);
 }
 
 int keybrd_hook(int key, t_game **game)
@@ -128,10 +129,9 @@ int keyrelease_hook(int key, t_game **game)
 int all_moves(t_game **game, int keycode)
 {
     update_dt(*game);
-    if ((*game)->keys[119] || (*game)->keys[115] || (*game)->keys[100] || (*game)->keys[97])
+    if ((*game)->keys[119] || (*game)->keys[115]
+        || (*game)->keys[100] || (*game)->keys[97])
         player_move(*game);
-    // if ()
-    //     player_strafe(*game);
     if ((*game)->keys[LEFT_ARR] || (*game)->keys[RIGHT_ARR])
         player_rotate(*game);
     return (keycode);
@@ -139,12 +139,7 @@ int all_moves(t_game **game, int keycode)
 
 void    init_window(t_game **g)
 {
-    // add second window minimap:
-
-    // (*g)->scdmlx = mlx_init();
-    // (*g)->scdwin = mlx_new_window((*g)->scdmlx, 500, 500, "2D map");
-    //(*g)->img_ptr = mlx_new_image((*g)->mlx, WIDTH, HEIGHT);
-    ft_memset((*g)->keys, false, 280);
+    ft_memset((*g)->keys, false, 283);
     (*g)->mlx = mlx_init();
     (*g)->win = mlx_new_window((*g)->mlx, WIDTH, HEIGHT, "cub3d");
     if (!(*g)->mlx)
@@ -174,7 +169,8 @@ void test_textures(t_game *game)
             if (game->texs[i]->img == NULL) {
                 printf("Texture %d img is NULL\n", i);
             } else {
-                printf("Texture %d loaded successnormalizedY with img at %p\n", i, game->texs[i]->img);
+                printf("Texture %d loaded success with img at %p\n"
+                    , i, game->texs[i]->img);
             }
         }
     }
@@ -223,7 +219,7 @@ int main (int argc, char **argv)
 // 1.3 CHANGE FLOOD FILL TO find error when out of bounds happens           DONE
 // 3. ensure validity of floor and ceiling colors.                          DONE
 // 4. open and close window correctly.                                      DONE
-// 5. draw each texture in 64 x 64 squares on img. turns out xpms will be assigned to each 1 or 0.
+// 5. draw each texture in 64 x 64 squares on img. turns out xpms will be assigned to each 1 or0 0.
 // 6. implement 3D aspect.                                                  DONE
 // 7. implement line drawing(dda) until vertial and horizontal WALL         DONE
 // 8. add more rays.                                                        DONE

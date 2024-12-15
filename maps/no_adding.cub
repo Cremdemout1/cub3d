@@ -1,7 +1,7 @@
-NO ./north.xpm
-SO ./north.xpm
-WE ./south.xpm
-EA ./south.xpm
+NO ./includes/textures/north.xpm
+SO ./includes/textures/north.xpm
+WE ./includes/textures/south.xpm
+EA ./includes/textures/south.xpm
 
 F 40, 40, 65
 C 0, 0, 50

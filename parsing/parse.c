@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/10 18:10:34 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/15 16:17:47 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,66 @@ bool found_player(t_map *info)
     return (ft_printf_fd(2, "too many players found: "), false);
 }
 
+int    valid_textures(t_map *map)
+{
+    int i;
+    int fd;
+
+    i = 0;
+    while (i < 4)
+    {
+        fd = open(map->texs[i], O_RDONLY);
+        if (fd < 0)
+        {
+            ft_printf_fd(2, "Error\nInvalid texture: %s\n", map->texs[i]);
+            return (0);
+        }
+        close(fd);
+        i++;
+    }
+    return (1);
+}
+
+void    free_str_textures(t_map *map)
+{
+    int i;
+
+    i = 0;
+    while (i < 4)
+    {
+        if (map->texs[i])
+            free(map->texs[i]);
+        i++;
+    }
+    free(map->texs);
+}
+
+void    free_starting_info(t_map *map)
+{
+    free_str_textures(map);
+    free(map->ceiling_color);
+    free(map->floor_color);
+}
+
 bool    init_map_and_player(t_map *map_info, char *filename)
 {
     char **map;
     
     if (get_starting_info(map_info, filename) != 0 || map_info->parser.error)
-        return (ft_printf_fd(2, "couldnt find info needed\n"), false);
+        return (free_starting_info(map_info), 
+            ft_printf_fd(2, "Error\nCouldn't find required information\n"), 
+            false);
+    if (!valid_textures(map_info))
+        return (free_starting_info(map_info), false);
     get_length(map_info, filename);
     get_widths(map_info, filename);
     map = get_map(map_info, filename);
     if (!map)
-        return (ft_printf_fd(2, "map creation error\n"), false);
+        return (ft_printf_fd(2, "Error\nMap creation error\n"), false);
     map_info->map = map;
-    for(int i = 0; map_info->map[i] != NULL; i++)
-        printf("%s\n", map_info->map[i]);
     if (!found_player(map_info))
-        return (ft_printf_fd(2, "initiation error\n"), false);
+        return (free_starting_info(map_info), free(map_info->width), 
+            free_array(map_info->map), 
+                ft_printf_fd(2, "Error\nInitiation error\n"), false);
     return (true);
 }

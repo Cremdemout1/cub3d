@@ -1,7 +1,7 @@
-NO ./wall1.xpm
-SO ./wall1.xpm
-WE ./gpt.xpm
-EA ./gpt.xpm
+NO ./includes/textures/wall1.xpm
+SO ./includes/textures/wall1.xpm
+WE ./includes/textures/gpt.xpm
+EA ./includes/textures/gpt.xpm
 
 F 144,238,144
 C 62, 52, 133

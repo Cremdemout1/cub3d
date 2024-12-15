@@ -1,12 +1,10 @@
-NO ./wall2.xpm
-SO ./wall2.xpm
-WE ./wall2.xpm
-EA ./wall2.xpm
+NO ./includes/textures/north.xpm
+SO ./includes/textures/south.xpm
+WE ./includes/textures/west.xpm
+EA ./includes/textures/east.xpm
 
 F 255, 255, 255
 C 62, 52, 133
-
-
 
 111111111111111111
 100000000000000001
@@ -19,4 +17,4 @@ C 62, 52, 133
 100000000000000001
 10000000N000000001
 100000000000000001
-111111111111111111
+111111110111111111

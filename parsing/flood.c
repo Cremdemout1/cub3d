@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:52:34 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/06 18:30:11 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/15 17:04:33 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ void    initialize_visit_state(t_map *map)
         while (x < map->width[y])
         {
             if (map->map[y][x] == '0' || map->map[y][x] == 'N'
-                || map->map[y][x] == 'S' || map->map[y][x] == 'W' || map->map[y][x] == 'E')
+                || map->map[y][x] == 'S' || map->map[y][x] == 'W'
+                    || map->map[y][x] == 'E')
                     visited[y][x] = false;
             else if(map->map[y][x] == '1')
                 visited[y][x] = true;
@@ -107,45 +108,73 @@ void    initialize_visit_state(t_map *map)
     map->parser.visited = visited;
 }
 
+// void flood_fill(t_map *map)
+// {
+//     initialize_visit_state(map);
+//     Position *stack = malloc(sizeof(Position) * map->max_width * map->length);
+//     if (!stack)
+//     {
+//         ft_printf_fd(2, "Error\nFailed to allocate memory for flood_fill stack\n");
+//         map->parser.error = 1;
+//         free(stack);
+//         return ;
+//     }
+//     int stack_size = 0;
+//     stack[stack_size++] = (Position){map->x_player, map->y_player};
+//     while (stack_size > 0)
+//     {
+//         Position pos = stack[--stack_size];
+//         int x = pos.x;
+//         int y = pos.y;
+//         if (y < 0 || y >= map->length || x < 0 || x >= map->width[y] || map->parser.visited[y][x])
+//             continue ;
+//         if (map->map[y][x] != '0' && map->map[y][x] != '1' && map->map[y][x] != map->dir)
+//         {
+//             ft_printf_fd(2, "Error\nPlayer not surrounded by walls\n");
+//             map->parser.error = 1;
+//             free(stack);
+//             return ;
+//         }
+//         map->parser.visited[y][x] = true;
+//         stack[stack_size++] = (Position){x + 1, y}; // right
+//         stack[stack_size++] = (Position){x - 1, y}; // left
+//         stack[stack_size++] = (Position){x, y + 1}; // down
+//         stack[stack_size++] = (Position){x, y - 1}; // up
+//     }
+//     // for (int i = 0; i < map->length; i++)
+//     // {
+//     //     for (int j = 0; j < map->width[i]; j++)
+//     //         printf("%d", map->parser.visited[i][j]);
+//     //     printf("\n");
+//     // }
+//     free(stack);
+// }
+
+
+void    fill(char **map, int x, int y, bool *error, bool ***visited, char player)
+{
+    if (*error == 1)
+        return ;
+    printf("x: %d   y: %d\n", x, y);
+    if ((*visited)[y][x] == true)
+        return ;
+    if (map[y][x] != '1' && map[y][x] != '0' && map[y][x] != player)
+    {
+        *error = true;
+        return ;
+    }
+    (*visited)[y][x] = true;
+    fill(map, x + 1, y, error, visited, player);
+    fill(map, x - 1, y, error, visited, player);
+    fill(map, x, y + 1, error, visited, player);
+    fill(map, x, y - 1, error, visited, player);
+}
+
 void flood_fill(t_map *map)
 {
     initialize_visit_state(map);
-    Position *stack = malloc(sizeof(Position) * map->max_width * map->length);
-    if (!stack)
-    {
-        ft_printf_fd(2, "Error: Failed to allocate memory for flood_fill stack\n");
-        map->parser.error = 1;
-        free(stack);
-        return ;
-    }
-    int stack_size = 0;
-    stack[stack_size++] = (Position){map->x_player, map->y_player};
-    while (stack_size > 0)
-    {
-        Position pos = stack[--stack_size];
-        int x = pos.x;
-        int y = pos.y;
-        if (y < 0 || y >= map->length || x < 0 || x >= map->width[y] || map->parser.visited[y][x])
-            continue ;
-        if (map->map[y][x] != '0' && map->map[y][x] != '1' && map->map[y][x] != map->dir)
-        {
-            ft_printf_fd(2, "Error: Player not surrounded by walls\n");
-            map->parser.error = 1;
-            free(stack);
-            return ;
-        }
-        map->parser.visited[y][x] = true;
-        stack[stack_size++] = (Position){x + 1, y}; // right
-        stack[stack_size++] = (Position){x - 1, y}; // left
-        stack[stack_size++] = (Position){x, y + 1}; // down
-        stack[stack_size++] = (Position){x, y - 1}; // up
-    }
-    // for (int i = 0; i < map->length; i++)
-    // {
-    //     for (int j = 0; j < map->width[i]; j++)
-    //         printf("%d", map->parser.visited[i][j]);
-    //     printf("\n");
-    // }
-    free(stack);
+    printf("%d\n", map->x_player);
+    printf("%d\n", map->y_player);
+    printf("%d\n", map->parser.error);
+    fill(map->map, map->x_player, map->y_player, &map->parser.error, &map->parser.visited, map->dir);
 }
-

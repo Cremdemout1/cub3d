@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/06 14:22:52 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/15 16:05:52 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ bool    has_non_num_val(char *str)
         if (!str[i])
             return (false);
         if (!(str[i] >= '0' && str[i] <= '9') && str[i] != ' ' && str[i] != '\n')
-            return (/* printf("error found:%c\n", str[i]), */ true);
+            return (true);
         i++;
     }
     return (false);
@@ -123,10 +123,11 @@ int get_starting_info(t_map *map, char *filename)
         j = 0;
         while (line[j] == ' ' || line[j] == '\t') 
             j++;
-        if (line[j] == '\0') {
+        if (line[j] == '\0')
+        {
             free(line);
             i++;
-            continue;
+            continue ;
         }
         if (ft_strncmp(line + j, "NO", 2) == 0 && !found[0]) 
             handle_texture(map, line, &found[0], 1);
@@ -147,7 +148,7 @@ int get_starting_info(t_map *map, char *filename)
                 return (free(line), -1);
         }
         else if (map->parser.error)
-            return (-1);
+            return (free(line), -1);
         else if(found[0] && found[1] && found[2] && found[3] && found[4] && found[5] && !error)
         {
             free(line);
@@ -165,8 +166,7 @@ int get_starting_info(t_map *map, char *filename)
                 free(line);
             }
             map->map_start = i;
-            close(fd);
-            return (0);
+            return (close(fd), 0);
         }
         free(line);
         i++;
@@ -174,8 +174,7 @@ int get_starting_info(t_map *map, char *filename)
     map->map_start = i;
     if (i == 0)
         return (-1);
-    close(fd);
-    return (-1);
+    return (close(fd), -1);
 }
 
 void    skip_initial_lines(t_map *map, int fd)

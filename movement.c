@@ -40,31 +40,6 @@ int    normalized_value(double value)
     return (integer_val + 1);
 }
 
-// void    change_player_coords(t_game *game, double nextX, double nextY)
-// {
-//     int right_wall;
-//     int left_wall;
-//     int top_wall;
-//     int bottom_wall;
-
-//     right_wall = (game->map.map[(int)game->player.posY]
-//         [(int)(game->player.posX + 1)] == '1');
-//     left_wall = (game->map.map[(int)game->player.posY]
-//         [(int)(game->player.posX - 1)] == '1');
-//     top_wall = (game->map.map[(int)(game->player.posY - 1)]
-//         [(int)game->player.posX] == '1');
-//     bottom_wall = (game->map.map[(int)(game->player.posY + 1)]
-//         [(int)game->player.posX] == '1');
-//     if ((!right_wall || nextX + PLAYER_RADIUS
-//         < (int)(game->player.posX + 1)) &&
-//         (!left_wall || nextX - PLAYER_RADIUS > (int)game->player.posX))
-//             game->player.posX = nextX;
-//     if ((!bottom_wall || nextY + PLAYER_RADIUS
-//         < (int)(game->player.posY + 1)) &&
-//         (!top_wall || nextY - PLAYER_RADIUS > (int)game->player.posY))
-//             game->player.posY = nextY;
-// }
-
 void change_player_coords(t_game *game, double nextX, double nextY)
 {
     int right_wall, left_wall, top_wall, bottom_wall;
