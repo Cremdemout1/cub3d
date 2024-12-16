@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/15 16:05:52 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/16 15:08:18 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,18 @@ int    handle_color(t_map *map, char *color, int *found, int type)
     if(!split)
         return (ft_printf_fd(2, "Error\n"), 0);
     if (count_strings(split) != 3)
-        return (ft_printf_fd(2, "color unavailable: wrong count\n"), free_array(split), 0);
+        return (/* ft_printf_fd(2, "color unavailable: wrong count\n"),  */free_array(split), 0);
     rgb = malloc(sizeof (int) * 3);
     while (split[i])
     {
-        rgb[i] = ft_atoi(split[i]);
+        int j = 0;
+        while (split[i][j] == ' ')
+            j++;
+        if (split[i][j] == '\n' || split[i][j] == '\0')
+            return (/* ft_printf_fd(2, "no value given\n"),  */free(rgb), free_array(split), 0);
+        rgb[i] = ft_atoi(split[i] + j);
         if (rgb[i] > 255 || rgb[i] < 0 || has_non_num_val(split[i]))
-            return (ft_printf_fd(2, "color unavailable: wrong value\n"), free(rgb), free_array(split), 0);
+            return (/* ft_printf_fd(2, "color unavailable: wrong value\n"),  */free(rgb), free_array(split), 0);
         i++;
     }
     free_array(split);
@@ -99,16 +104,14 @@ int get_starting_info(t_map *map, char *filename)
     int j;
     int fd;
     char *line;
-    int found[6] = {0, 0, 0, 0, 0, 0}; // Track texture assignments
+    int found[6] = {0, 0, 0, 0, 0, 0};
     int error;
 
     i = 0;
     error = 0;
     fd = open(filename, O_RDONLY);
-    if (fd < 0) {
-        perror("Error opening file");
-        return 1; // Return error if file cannot be opened
-    }
+    if (fd < 0)
+        return (perror("Error opening file\n"), 1);
     map->texs = malloc(sizeof (char *) * 5);
     if (!map->texs)
         return (-1);

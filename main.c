@@ -213,24 +213,9 @@ int main (int argc, char **argv)
 
 
 // to do:
-// 1. handle info before map: texture paths, floor color and ceiling color. DONE
-// 1.2 MAKE lines between last info needed and map not count.               DONE
-// 1.3 MAKE SURE IF FOUND BAD INFO AT START, END PROGRAM                    DONE but add check for atoi being given a null value
-// 1.3 CHANGE FLOOD FILL TO find error when out of bounds happens           DONE
-// 3. ensure validity of floor and ceiling colors.                          DONE
-// 4. open and close window correctly.                                      DONE
-// 5. draw each texture in 64 x 64 squares on img. turns out xpms will be assigned to each 1 or0 0.
-// 6. implement 3D aspect.                                                  DONE
-// 7. implement line drawing(dda) until vertial and horizontal WALL         DONE
-// 8. add more rays.                                                        DONE
-// 9. assign height value to walls depending on the length of their ray.    DONE
+//DONE but add check for atoi being given a null value
 
 // URGENT: FIX X BUTTON
-// 1. give north, south, west, or east value to each wall    DONE               NOT NEEDED
-// 2. get texture paths and ensure their validity.
-// 3. make the vertical drawing draw ceiling and floor depending on if its on top half or  bottom half instead of separate function
-// 4. make movement work                                     DONE
-// 5. draw textures on 3D walls                              DONE
 // 6. make minimap inside normal map
 // 7. test my parser
 //    have fun ;)
