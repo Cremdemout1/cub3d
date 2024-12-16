@@ -85,20 +85,6 @@ int    init_map(t_map *map, int argc, char **argv)
             free_bool_array(map->parser.visited, map->length)
             , free(map->ceiling_color), free(map->floor_color)
             , free(map->width), free_array(map->texs), 0);
-    //const char *direction_names[] = { "NORTH", "SOUTH", "EAST", "WEST" };
-    // printf("player initial direction: %s\n", direction_names[map->start_dir]);
-    // printf ("player x: %d, player y: %d\n", map->x_player, map->y_player);
-    // printf("start: %d\n", map->map_start);
-    // printf("length: %d\n", map->length);
-    // if (map->floor_color)
-    //     printf("floor color: %d,%d,%d\n", map->floor_color[0], map->floor_color[1], map->floor_color[2]);
-    // if (map->ceiling_color)
-    //     printf("ceiling color: %d,%d,%d\n", map->ceiling_color[0], map->ceiling_color[1], map->ceiling_color[2]);
-    // for(int i = 0; map->texs[i] != NULL; i++)
-    //     printf("%s\n", map->texs[i]);
-    // printf("MAP:\n");
-    // for(int i = 0; map->map[i] != NULL; i++)
-    //     printf("%s\n", map->map[i]);
     return (close(fd), 1);
 }
 
@@ -209,13 +195,10 @@ int main (int argc, char **argv)
     return (0);
 }
 
-//use delta time to make rendering smoother
-
-
-// to do:
-//DONE but add check for atoi being given a null value
-
-// URGENT: FIX X BUTTON
+// FIX X BUTTON
 // 6. make minimap inside normal map
 // 7. test my parser
+// 8. figure out why add_epsilon is fucking up some spawns
+// 9. make collisions work when going other direction than frontward
+// 10.When directory is right but file isnt, open doesnt fail which makes bad textures seg fault
 //    have fun ;)

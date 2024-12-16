@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:46:12 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/12 16:59:06 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/16 19:34:45 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ void center_player_in_tile(t_game *game)
 
 void add_epsilon(t_game *game, char **map, int x, int y)
 {
-    // printf("x: %d,y: %d\n", x, y);
     if (x + 1 < game->map.width[y] && map[x + 1][y] == '1')
         game->player.posX -= 0.1;
-    if (x - 1 >= 1 && map[x - 1][y] == '1') //might have to change to 0
+    if (x - 1 >= 1 && map[x - 1][y] == '1')
         game->player.posX += 0.1;
     if (y + 1 < game->map.length && map[x][y + 1] == '1')
         game->player.posY -= 0.1;
@@ -34,7 +33,8 @@ void add_epsilon(t_game *game, char **map, int x, int y)
 void init_player_info(t_game *game)
 {
     center_player_in_tile(game);
-    add_epsilon(game, game->map.map, game->map.x_player,game->map.y_player);
+    add_epsilon(game, game->map.map,
+        game->map.x_player,game->map.y_player);
     game->player.dirX = cos(deg_to_rad(game->map.facing));
     game->player.dirY = sin(deg_to_rad(game->map.facing));
     game->player.planeX = -game->player.dirY * 0.66;
@@ -46,22 +46,26 @@ void    decide_step(t_game *game)
     if (game->ray.rayDirX < 0)
     {
         game->ray.stepX = -1;
-        game->ray.sideDistX = (game->player.posX - game->ray.mapX) * game->ray.deltaDistX;
+        game->ray.sideDistX = (game->player.posX - game->ray.mapX) *
+            game->ray.deltaDistX;
     }
     else
     {
         game->ray.stepX = 1;
-        game->ray.sideDistX = (game->ray.mapX + 1.0 - game->player.posX) * game->ray.deltaDistX;
+        game->ray.sideDistX = (game->ray.mapX + 1.0 - game->player.posX) *
+            game->ray.deltaDistX;
     }
     if (game->ray.rayDirY < 0)
     {
         game->ray.stepY = -1;
-        game->ray.sideDistY = (game->player.posY - game->ray.mapY) * game->ray.deltaDistY;
+        game->ray.sideDistY = (game->player.posY - game->ray.mapY) *
+            game->ray.deltaDistY;
     }
     else
     {
         game->ray.stepY = 1;
-        game->ray.sideDistY = (game->ray.mapY + 1.0 - game->player.posY) * game->ray.deltaDistY;
+        game->ray.sideDistY = (game->ray.mapY + 1.0 - game->player.posY) *
+            game->ray.deltaDistY;
     }
 }
 
@@ -125,8 +129,10 @@ void    determine_height(t_game *game)
         game->wall.bottom = HEIGHT - 1;
 
     if (game->ray.side == 0)
-        game->wall.wallX = game->player.posY + game->ray.perpWallDist * game->ray.rayDirY;
+        game->wall.wallX = game->player.posY +
+            game->ray.perpWallDist * game->ray.rayDirY;
     else
-        game->wall.wallX = game->player.posX + game->ray.perpWallDist * game->ray.rayDirX;
+        game->wall.wallX = game->player.posX +
+            game->ray.perpWallDist * game->ray.rayDirX;
     game->wall.wallX -= floor(game->wall.wallX);
 }
