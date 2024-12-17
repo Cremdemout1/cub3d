@@ -6,7 +6,7 @@
 #    By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/28 20:32:02 by ycantin           #+#    #+#              #
-#    Updated: 2024/12/15 13:28:27 by ycantin          ###   ########.fr        #
+#    Updated: 2024/12/16 19:51:45 by ycantin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 NAME = cub3d
 CC = cc
 FLAGS = -Wall -Werror -Wextra -g
-DEPS = -Iminilibx-linux -Lminilibx-linux -lmlx -lXext -lX11 -lm
+DEPS = -Iminilibx-linux -Lminilibx-linux -lmlx -lXext -lX11 -lm -O3
 RM = rm -f
 
 SRC = 	main.c \

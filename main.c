@@ -200,5 +200,4 @@ int main (int argc, char **argv)
 // 7. test my parser
 // 8. figure out why add_epsilon is fucking up some spawns
 // 9. make collisions work when going other direction than frontward
-// 10.When directory is right but file isnt, open doesnt fail which makes bad textures seg fault
 //    have fun ;)

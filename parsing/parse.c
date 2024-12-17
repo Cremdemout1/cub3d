@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/15 17:30:15 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/17 19:17:47 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,19 @@ bool found_player(t_map *info)
 int    valid_textures(t_map *map)
 {
     int i;
+    int j;
     int fd;
 
-    i = 0;
+    i = 0;   
     while (i < 4)
     {
+        j = 0;
+        while (map->texs[i][j])
+           j++;
+        while(map->texs[i][j] != '.')
+            j--;
         fd = open(map->texs[i], O_RDONLY);
-        if (fd < 0)
+        if (fd < 0 || ft_strncmp(map->texs[i] + j + 1, "xpm", 3))
         {
             ft_printf_fd(2, "Error\nInvalid texture: %s\n", map->texs[i]);
             return (0);
