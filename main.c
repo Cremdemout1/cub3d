@@ -197,7 +197,9 @@ int main (int argc, char **argv)
 
 // FIX X BUTTON
 // 6. make minimap inside normal map
-// 7. test my parser
 // 8. figure out why add_epsilon is fucking up some spawns
-// 9. make collisions work when going other direction than frontward
+// 9. make collisions work when going other direction than frontward\
+// 7. test my parser
+// to make sure xpm files are valid, get_next_line the first line and make sur eit matches a normal xpm
+// in the reverse parser, make sure that null terminators are changed to o too!!!
 //    have fun ;)
