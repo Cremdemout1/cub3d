@@ -6,15 +6,15 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:44:33 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/18 12:41:07 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/18 13:38:25 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBED_H
 #define CUBED_H
 
-#define HEIGHT       800
-#define WIDTH        1000
+#define HEIGHT       1000
+#define WIDTH        1200
 #define VISITED      2
 #define XPM_X        64
 #define XPM_Y        64

@@ -6,12 +6,11 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 13:23:11 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/15 13:39:19 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/18 12:57:34 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/main.h"
-
 
 void update_dt(t_game *game)
 {

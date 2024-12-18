@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:46:12 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/16 19:34:45 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/18 13:11:22 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void add_epsilon(t_game *game, char **map, int x, int y)
 void init_player_info(t_game *game)
 {
     center_player_in_tile(game);
-    add_epsilon(game, game->map.map,
-        game->map.x_player,game->map.y_player);
+    //add_epsilon(game, game->map.map,
+        // game->map.x_player,game->map.y_player);
     game->player.dirX = cos(deg_to_rad(game->map.facing));
     game->player.dirY = sin(deg_to_rad(game->map.facing));
     game->player.planeX = -game->player.dirY * 0.66;
@@ -124,7 +124,7 @@ void    determine_height(t_game *game)
     game->wall.top = (game->wall.lineHeight * -1) / 2 + HEIGHT / 2;
     if (game->wall.top < 0)
         game->wall.top = 0;
-    game->wall.bottom = game->wall.top + game->wall.lineHeight;/* game->wall.lineHeight / 2 + HEIGHT / 2; */
+    game->wall.bottom = game->wall.top + game->wall.lineHeight;
     if (game->wall.bottom >= HEIGHT)
         game->wall.bottom = HEIGHT - 1;
 

@@ -40,27 +40,35 @@ int    normalized_value(double value)
     return (integer_val + 1);
 }
 
+int check_collision(t_game *game, double x, double y)
+{
+    if (game->map.map[(int)y]
+        [(int)(x + PLAYER_RADIUS)] == '1' || 
+        game->map.map[(int)y]
+        [(int)(x - PLAYER_RADIUS)] == '1' || 
+        game->map.map[(int)(y + PLAYER_RADIUS)]
+        [(int)x] == '1' || 
+        game->map.map[(int)(y - PLAYER_RADIUS)]
+        [(int)x] == '1')
+            return (1);
+    if (game->map.map[(int)(y + PLAYER_RADIUS)]
+        [(int)(x + PLAYER_RADIUS)] == '1' ||
+        game->map.map[(int)(y - PLAYER_RADIUS)]
+        [(int)(x - PLAYER_RADIUS)] == '1' ||
+        game->map.map[(int)(y + PLAYER_RADIUS)]
+        [(int)(x - PLAYER_RADIUS)] == '1' ||
+        game->map.map[(int)(y - PLAYER_RADIUS)]
+        [(int)(x + PLAYER_RADIUS)] == '1')
+            return (1);
+    return (0);
+}
+
 void change_player_coords(t_game *game, double nextX, double nextY)
 {
-    int right_wall, left_wall, top_wall, bottom_wall;
-
-    right_wall = (game->map.map[(int)game->player.posY]
-        [(int)(nextX + PLAYER_RADIUS)] == '1');
-    left_wall = (game->map.map[(int)game->player.posY]
-        [(int)(nextX - PLAYER_RADIUS)] == '1');
-
-    top_wall = (game->map.map[(int)(nextY - PLAYER_RADIUS)]
-        [(int)game->player.posX] == '1');
-    bottom_wall = (game->map.map[(int)(nextY + PLAYER_RADIUS)]
-        [(int)game->player.posX] == '1');
-
-    if (!right_wall || (game->player.dirX < 0 && !left_wall))
-        if (!left_wall || (game->player.dirX > 0 && !right_wall))
-            game->player.posX = nextX;
-
-    if (!bottom_wall || (game->player.dirY < 0 && !top_wall))
-        if (!top_wall || (game->player.dirY > 0 && !bottom_wall))
-            game->player.posY = nextY;
+     if (!check_collision(game, nextX, game->player.posY))
+        game->player.posX = nextX;
+    if (!check_collision(game, game->player.posX, nextY))
+        game->player.posY = nextY;
 }
 
 void player_move(t_game *game)
@@ -84,7 +92,7 @@ void player_move(t_game *game)
         change_player_coords(game, nextX, nextY);
         cast_all_rays(game);
     }
-        if (game->keys[100])
+    if (game->keys[100]) //strafe 
     {
         strafeX = -game->player.dirY;
         strafeY = game->player.dirX;
@@ -93,7 +101,7 @@ void player_move(t_game *game)
         change_player_coords(game, nextX, nextY);
         cast_all_rays(game);
     }
-    if (game->keys[97])
+    if (game->keys[97]) // strafe
     {
         strafeX = game->player.dirY;
         strafeY = -game->player.dirX;
