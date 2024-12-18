@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:44:33 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/15 14:25:59 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/18 12:41:07 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 
 void    free_resources(t_game **game);
 int     exit_t(t_game *g);
+void    free_textures(t_texture **textures, int count, void *mlx);
 
 void    draw_map(t_game *game);
 

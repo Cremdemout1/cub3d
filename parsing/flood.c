@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:52:34 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/16 19:37:37 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/18 12:16:45 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ char **buffed_map(t_map *map)
         _map[i][0] = 'o';
         while (j < map->width[i - 1])
         {
-            if (map->map[i - 1][j] == ' ')
+            if (map->map[i - 1][j] == ' ' || map->map[i - 1][j] == '\0')
                 _map[i][j + 1] = 'o';
             else
                 _map[i][j + 1] = map->map[i - 1][j];
             j++;
         }
         while (j < map->max_width)
-            _map[i][j++] = 'o';
+            _map[i][j++ + 1] = 'o';
         _map[i][j] = 'o';
         _map[i][j + 1] = '\0';
         i++;

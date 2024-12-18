@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/15 16:37:00 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/12/18 12:45:09 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ typedef struct s_game
     bool            keys[283];
     struct timeval  last_time;
     double          dt;
+    int             texture_error;
 }   t_game;
 
 #endif

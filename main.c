@@ -15,6 +15,7 @@
 void load_textures(t_game **game)
 {
     t_texture **textures;
+    (*game)->texture_error = 0;
     int i;
 
     i = 0;
@@ -23,18 +24,20 @@ void load_textures(t_game **game)
         return;
     while (i < 4)
     {
+        (*game)->texture_error = i;
         textures[i] = malloc(sizeof(t_texture));
         if (!textures[i])
-            return (free(textures));
+            return ((*game)->map.parser.error = 1, free(textures));
         textures[i]->img = mlx_xpm_file_to_image((*game)->mlx,
             (*game)->map.texs[i], &textures[i]->width, &textures[i]->height);
         if (!textures[i]->img)
-            return (free(textures[i]), free(textures));
+            return ((*game)->map.parser.error = 1, free(textures[i]), free(textures));
         textures[i]->addr = mlx_get_data_addr(textures[i]->img, &textures[i]->bpp,
             &textures[i]->line_len,
             &textures[i]->endian);
         if (!textures[i]->addr)
-            return (free(textures[i]->img), free(textures[i]), free(textures));
+            return ((*game)->map.parser.error = 1,
+                free(textures[i]->img), free(textures[i]), free(textures));
         i++;
     }    
     (*game)->texs = textures;
@@ -184,6 +187,8 @@ int main (int argc, char **argv)
         return (free(game), 1);
     init_window(&game);
     load_textures(&game);
+    if (game->map.parser.error)
+        return(ft_printf_fd(2, "Error\nTextures invalid\n"), 1); // take care of memory allocation
     load_player_texture(&game);
     img_placeholder(&game);
     init_player_info(game);
@@ -199,7 +204,4 @@ int main (int argc, char **argv)
 // 6. make minimap inside normal map
 // 8. figure out why add_epsilon is fucking up some spawns
 // 9. make collisions work when going other direction than frontward\
-// 7. test my parser
-// to make sure xpm files are valid, get_next_line the first line and make sur eit matches a normal xpm
-// in the reverse parser, make sure that null terminators are changed to o too!!!
 //    have fun ;)
