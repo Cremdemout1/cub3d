@@ -6,13 +6,13 @@
 #    By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/28 20:32:02 by ycantin           #+#    #+#              #
-#    Updated: 2024/12/16 19:51:45 by ycantin          ###   ########.fr        #
+#    Updated: 2024/12/18 17:53:12 by ycantin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT_DIR = includes/libft
 LIBFT = $(LIBFT_DIR)/libft.a 
-NAME = cub3d
+NAME = cub3D
 CC = cc
 FLAGS = -Wall -Werror -Wextra -g
 DEPS = -Iminilibx-linux -Lminilibx-linux -lmlx -lXext -lX11 -lm -O3
@@ -23,13 +23,14 @@ SRC = 	main.c \
 		parsing/parse.c \
 		parsing/flood.c \
 		parsing/bufferize.c \
-		measure.c \
+		parsing/measure_map.c \
 		movement.c \
 		draw_map.c \
-		color.c \
-		delta_time.c \
+		rendering/pixels_and_color.c \
+		rendering/delta_time.c \
 		raycaster/raycaster.c  raycaster/raycaster_utils.c	raycaster/raycaster_utils2.c \
-		my_mlx.c
+		mlx/mlx_handling.c \
+		mlx/textures.c
 
 all: $(NAME)
 

@@ -1,7 +1,7 @@
-NO ./includes/textures/north.xpm
-SO ./includes/textures/south.xpm
-WE ./includes/textures/west.xpm
-EA ./includes/textures/east.xpm
+NO ./includes/textures/emptywall.xpm
+SO ./includes/textures/wallbluearcade.xpm
+WE ./includes/textures/emptywall.xpm
+EA ./includes/textures/emptywall.xpm
 
 F 40, 40, 65
 C 0, 0, 50
