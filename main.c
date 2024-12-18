@@ -202,6 +202,4 @@ int main (int argc, char **argv)
 
 // FIX X BUTTON
 // 6. make minimap inside normal map
-// 8. figure out why add_epsilon is fucking up some spawns ---> fixed by removing epsilon usage
-// 9. make collisions work when going other direction than frontward
 //    have fun ;)
