@@ -31,7 +31,7 @@ void free_textures(t_texture **textures, int count, void *mlx)
 
 void free_resources(t_game **game)
 {
-    if ((*game)->map.map)
+    if ((*game) && (*game)->map.map)
         free_array((*game)->map.map);
     if ((*game)->map.parser.visited)
         free_bool_array((*game)->map.parser.visited, (*game)->map.length);
@@ -49,6 +49,27 @@ void free_resources(t_game **game)
 
 int exit_t(t_game *g)
 {
+    free_resources(&g);
+    if (g->img_ptr)
+        mlx_destroy_image(g->mlx, g->img_ptr);
+    if (g->win)
+        mlx_destroy_window(g->mlx, g->win);
+    if (g->mlx)
+    {
+        mlx_do_key_autorepeaton(g->mlx);
+        mlx_destroy_display(g->mlx);
+        free(g->mlx);
+    }
+    free(g);
+    exit(0);
+}
+
+int exit_x_button(void *param)
+{
+    t_game *g;
+ 
+    g = (t_game *)param;
+    (void)param;
     free_resources(&g);
     if (g->img_ptr)
         mlx_destroy_image(g->mlx, g->img_ptr);

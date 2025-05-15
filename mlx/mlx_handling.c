@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:35:10 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/18 17:52:08 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/07 18:45:11 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	img_placeholder(t_game **game)
 int keybrd_hook(int key, t_game **game)
 {
     if (key == 65307)
-        exit_t(*game);
+        exit_x_button((void *)*game);
     if (key == 65361)
         (*game)->keys[LEFT_ARR] = true;
     else if (key == 65363)
@@ -46,6 +46,7 @@ int keyrelease_hook(int key, t_game **game)
         (*game)->keys[key] = false;
     return key;
 }
+
 
 int all_moves(t_game **game, int keycode)
 {
@@ -71,7 +72,7 @@ void    init_window(t_game **g)
     (*g)->loop = loop;
     mlx_hook((*g)->win, 2, (1L << 0), keybrd_hook, g);
     mlx_hook((*g)->win, 3, (1L << 1), keyrelease_hook, g);
-    mlx_hook((*g)->win, 17, (1L << 0), exit_t, g);
+    mlx_hook((*g)->win, 17, (1L << 0), exit_x_button, *g);
     mlx_do_key_autorepeatoff((*g)->mlx);
     mlx_loop_hook((*g)->mlx, all_moves, g);
 }

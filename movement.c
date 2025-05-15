@@ -65,10 +65,18 @@ int check_collision(t_game *game, double x, double y)
 
 void change_player_coords(t_game *game, double nextX, double nextY)
 {
-     if (!check_collision(game, nextX, game->player.posY))
+    if (!check_collision(game, nextX, nextY))
+    {
         game->player.posX = nextX;
-    if (!check_collision(game, game->player.posX, nextY))
         game->player.posY = nextY;
+    }
+    // else // sliding very rarely gives seg fault in corners when using valgrind
+    // {
+    //     if (!check_collision(game, nextX, game->player.posY))
+    //         game->player.posX = nextX;
+    //     if (!check_collision(game, game->player.posX, nextY))
+    //         game->player.posY = nextY;
+    // }
 }
 
 void player_move(t_game *game)

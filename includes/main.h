@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:44:33 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/18 13:38:25 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/07 18:31:28 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #define FOV          60
 #define PLAYER_SPEED  3
 #define ROT_SPEED     1.8
-#define PLAYER_RADIUS 0.2
+#define PLAYER_RADIUS 0.1
 #define M_PI           3.14159265358979323846
 #define LEFT_ARR     281
 #define RIGHT_ARR    282
@@ -43,6 +43,7 @@
 
 void    free_resources(t_game **game);
 int     exit_t(t_game *g);
+int     exit_x_button(void *param);
 void    free_textures(t_texture **textures, int count, void *mlx);
 
 void    draw_map(t_game *game);
