@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:43:49 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/10 17:30:50 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/15 14:36:42 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,10 @@ void    get_length(t_map *map, char *filename);
 void    get_widths(t_map *map, char *filename);
 void    player_start_info(t_map *info, char dir, int x, int y);
 
+void	free_starting_info(t_map *map);
+void	free_str_textures(t_map *map);
+bool    valid_map_char(char c);
+bool	valid_arguments(int argc, char **argv);
+bool	return_value(t_variables *purse);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 20:44:33 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/07 18:31:28 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/15 14:02:25 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,23 @@
 #include "libft/libft.h"
 #include "../minilibx-linux/mlx.h"
 
-void    free_resources(t_game **game);
-int     exit_t(t_game *g);
-int     exit_x_button(void *param);
-void    free_textures(t_texture **textures, int count, void *mlx);
+void            free_resources(t_game **game);
+int             exit_t(t_game *g);
+int             exit_x_button(void *param);
+void            free_textures(t_texture **textures, int count, void *mlx);
 
-void    draw_map(t_game *game);
+void            draw_map(t_game *game);
 
-void    cast_all_rays(t_game *game);
-int     keybrd_hook(int key, t_game **game);
+void            cast_all_rays(t_game *game);
+int             keybrd_hook(int key, t_game **game);
 
-float   deg_to_rad(int degree);
+float           deg_to_rad(int degree);
 
 unsigned int    rgb_to_color(int *rgb);
 int             tex_color(int tex_X, int tex_Y, t_texture *t);
 
-void    player_move(t_game *game);
-void    player_strafe(t_game *game);
-void    player_rotate(t_game *game);
+void            player_move(t_game *game);
+void            player_strafe(t_game *game);
+void            player_rotate(t_game *game);
 
 #endif

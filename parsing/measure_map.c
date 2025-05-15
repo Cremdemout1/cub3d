@@ -1,96 +1,97 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   measure_map.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 20:43:35 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/18 17:52:45 by ycantin          ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   measure_map.c									  :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: ycantin <ycantin@student.42.fr>			+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2024/10/28 20:43:35 by ycantin		   #+#	#+#			 */
+/*   Updated: 2024/12/18 17:52:45 by ycantin		  ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-void    get_length(t_map *map, char *filename)
+void	get_length(t_map *map, char *filename)
 {
-    int fd;
-    int y;
-    char *line;
+	t_variables	purse;
 
-    fd = open(filename, O_RDONLY);
-    y = 0;
-    while (y < map->map_start)
-    {
-        line = get_next_line(fd);
-        if (!line)
-            break ;
-        free(line);
-        y++;
-    }
-    y = 0;
-    while (1)
-    {
-        line = get_next_line(fd);
-        if (!line)
-            break ;
-        y++;
-        free(line);
-    }
-    map->length = y;
-    close(fd);
+	purse.fd = open(filename, O_RDONLY);
+	purse.y = 0;
+	while (purse.y < map->map_start)
+	{
+		purse.line = get_next_line(purse.fd);
+		if (!purse.line)
+			break ;
+		free(purse.line);
+		purse.y++;
+	}
+	purse.y = 0;
+	while (1)
+	{
+		purse.line = get_next_line(purse.fd);
+		if (!purse.line)
+			break ;
+		purse.y++;
+		free(purse.line);
+	}
+	map->length = purse.y;
+	close(purse.fd);
 }
 
-void    get_widths(t_map *map, char *filename)
+int	assign_purse_values(t_variables *purse, int map_length,
+		char *filename, int map_start)
 {
-    int y;
-    int fd;
-    int size;
-    int *array;
-    char *line;
-    
-    y = 0;
-    size = 0;
-    fd = open(filename, O_RDONLY);
-    array = malloc (sizeof(int) * (map->length));
-    if (!array)
-        return ;
-    while (y < map->map_start)
-    {
-        line = get_next_line(fd);
-        if (!line)
-            break ;
-        free(line);
-        y++;
-    }
-    y = 0;
-    while (1)
-    {
-        line = get_next_line(fd);
-        if (!line)
-            break ;
-        array[y] = ft_strlen(line);
-        if (array[y] > size)
-            size = array[y];
-        y++;
-        free(line);
-    }
-    map->width = array;
-    map->max_width = size;
-    close(fd);
+	purse->y = 0;
+	purse->size = 0;
+	purse->fd = open(filename, O_RDONLY);
+	purse->array = malloc (sizeof(int) * map_length);
+	if (!purse->array)
+		return (0);
+	while (purse->y++ < map_start)
+	{
+		purse->line = get_next_line(purse->fd);
+		if (!purse->line)
+			break ;
+		free(purse->line);
+	}
+	return (1);
 }
 
-void    player_start_info(t_map *info, char dir, int x, int y)
+void	get_widths(t_map *map, char *filename)
 {
-    if (dir == 'N')
-        info->facing = NORTH;
-    else if (dir == 'S')
-        info->facing = SOUTH;
-    else if (dir == 'W')
-        info->facing = WEST;
-    else if (dir == 'E')
-        info->facing = EAST;
-    info->x_player = x;
-    info->y_player = y;
-    info->dir = dir;
+	t_variables	purse;
+
+	if (!assign_purse_values(&purse, map->length, filename, map->map_start))
+		return ;
+	purse.y = 0;
+	while (1)
+	{
+		purse.line = get_next_line(purse.fd);
+		if (!purse.line)
+			break ;
+		purse.array[purse.y] = ft_strlen(purse.line);
+		if (purse.array[purse.y] > purse.size)
+			purse.size = purse.array[purse.y];
+		purse.y++;
+		free(purse.line);
+	}
+	map->width = purse.array;
+	map->max_width = purse.size;
+	close(purse.fd);
+}
+
+void	player_start_info(t_map *info, char dir, int x, int y)
+{
+	if (dir == 'N')
+		info->facing = NORTH;
+	else if (dir == 'S')
+		info->facing = SOUTH;
+	else if (dir == 'W')
+		info->facing = WEST;
+	else if (dir == 'E')
+		info->facing = EAST;
+	info->x_player = x;
+	info->y_player = y;
+	info->dir = dir;
 }

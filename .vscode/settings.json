@@ -4,6 +4,10 @@
         "libft.h": "c",
         "stdlib.h": "c",
         "cmath": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "algorithm": "c",
+        "format": "c",
+        "type_traits": "c",
+        "structs.h": "c"
     }
 }

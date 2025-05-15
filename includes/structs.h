@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/07 15:53:03 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/15 15:32:40 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,30 @@ typedef struct s_game
     double          dt;
     int             texture_error;
 }   t_game;
+
+typedef struct s_fill_context
+{
+    char        **map;
+    bool        **visited;
+    bool        *error;
+    char        player;
+}   t_fill_context;
+
+typedef struct s_var_holder
+{
+    int i;
+    int j;
+    int y;
+	int fd;
+	int size;
+	int *array;
+	char *line;
+    int	 x;
+	int	 count;
+	int	 error;
+	int	 is_empty;
+    char **_map;
+    bool **visited;
+}   t_variables;
 
 #endif

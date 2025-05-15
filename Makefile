@@ -6,7 +6,7 @@
 #    By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/28 20:32:02 by ycantin           #+#    #+#              #
-#    Updated: 2024/12/18 17:53:12 by ycantin          ###   ########.fr        #
+#    Updated: 2025/05/15 15:44:51 by ycantin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ RM = rm -f
 SRC = 	main.c \
 		clean_exit.c \
 		parsing/parse.c \
+		parsing/parse_utils.c \
 		parsing/flood.c \
+		parsing/flood_utils.c \
 		parsing/bufferize.c \
 		parsing/measure_map.c \
 		movement.c \
