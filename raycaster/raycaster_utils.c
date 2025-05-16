@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:46:12 by ycantin           #+#    #+#             */
-/*   Updated: 2024/12/18 17:58:10 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/16 17:44:33 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,39 @@ void    setup_ray(t_game *game, int x)
     decide_step(game);
 }
 
-void    cast_ray(t_game *game)
-{
-    int hit;
+// void    cast_ray(t_game *game)
+// {
+//     int hit;
 
-    hit = 0;
+//     hit = 0;
+//     while (!hit)
+//     {
+//         if (game->ray.sideDistX < game->ray.sideDistY)
+//         {
+//             game->ray.sideDistX += game->ray.deltaDistX;
+//             game->ray.mapX += game->ray.stepX;
+//             game->ray.side = 0;
+//         }
+//         else
+//         {
+//             game->ray.sideDistY += game->ray.deltaDistY;
+//             game->ray.mapY += game->ray.stepY;
+//             game->ray.side = 1;
+//         }
+//         if (game->map.map[game->ray.mapY][game->ray.mapX] == '1')
+//             hit = 1;
+//     }
+//     if (game->ray.side == 0)
+//         game->ray.perpWallDist = game->ray.sideDistX - game->ray.deltaDistX; //HORIZONTAL WALL
+//     else
+//         game->ray.perpWallDist = game->ray.sideDistY - game->ray.deltaDistY; //VERTICAL WALL
+//     game->ray.hit = hit;
+// }
+
+void cast_ray(t_game *game)
+{
+    int hit = 0;
+
     while (!hit)
     {
         if (game->ray.sideDistX < game->ray.sideDistY)
@@ -108,15 +136,26 @@ void    cast_ray(t_game *game)
             game->ray.mapY += game->ray.stepY;
             game->ray.side = 1;
         }
-        if (game->map.map[game->ray.mapY][game->ray.mapX] == '1')
+        if (game->ray.mapY < 0 || game->ray.mapY >= game->map.length ||
+            game->ray.mapX < 0 || game->ray.mapX >= game->map.max_width)
+        {
+            hit = 1; // Stop if out of bounds
+            break;
+        }
+        char cell = game->map.map[game->ray.mapY][game->ray.mapX];
+        if (game->ray.mapY >= 0 && game->ray.mapY < game->map.length &&
+            game->ray.mapX >= 0 && game->ray.mapX < game->map.width[game->ray.mapY] &&
+            game->map.map[game->ray.mapY] && cell == '1')
             hit = 1;
     }
     if (game->ray.side == 0)
-        game->ray.perpWallDist = game->ray.sideDistX - game->ray.deltaDistX; //HORIZONTAL WALL
+        game->ray.perpWallDist = game->ray.sideDistX - game->ray.deltaDistX;
     else
-        game->ray.perpWallDist = game->ray.sideDistY - game->ray.deltaDistY; //VERTICAL WALL
+        game->ray.perpWallDist = game->ray.sideDistY - game->ray.deltaDistY;
+
     game->ray.hit = hit;
 }
+
 
 void    determine_height(t_game *game)
 {

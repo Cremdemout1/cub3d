@@ -89,7 +89,7 @@ void	buffed_map_inner_loop(t_variables *p, t_map *map)
 			return;
 		p->_map[p->i][0] = 'o';
 
-		if (!map->map[p->i - 1] || map->map[p->i - 1][0] == '\0')
+		if (p-> i == 0 || !map->map[p->i - 1] || map->map[p->i - 1][0] == '\0')
 		{
 			// Fill entire line with 'o' if it's NULL or empty
 			while (p->j < map->max_width)
@@ -253,12 +253,7 @@ void	flood_fill(t_map *map)
 		ft_printf_fd(2, "Error\nPlayer not surrounded by walls\n");
 		return ;
 	}
-    printf("[DEBUG] map->length = %d\n", map->length);	
-	for (int i = 0; i < map->length - 1; i++)
-    	printf("[DEBUG] map->width[%d] = %d\n", i, map->width[i]);
-
 	initialize_visit_state(map);
-	// print_visited_map(map->parser.visited, map->length, map->width);
 	fill(&(t_fill_context){.map = map->map,
 		.visited = map->parser.visited, .error = &map->parser.error,
 		.player = map->dir}, map->x_player, map->y_player);

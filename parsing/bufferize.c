@@ -196,33 +196,124 @@ void	skip_initial_lines(t_map *map, int fd)
 	}
 }
 
-char	**get_map(t_map *map, char *filename)
+// char	**get_map(t_map *map, char *filename)
+// {
+// 	int i;
+// 	int fd;
+// 	char *line;
+// 	char **buf;
+
+// 	i = 0;
+// 	fd = open(filename, O_RDONLY);
+// 	skip_initial_lines(map, fd);
+// 	buf = malloc(sizeof(char *) * (map->length + 1));
+// 	if (!buf)
+// 		return (NULL);
+// 	while (i < map->length)
+// 	{
+// 		line = get_next_line(fd);
+// 		if (!line)
+// 			break ;
+// 		buf[i] = ft_strdup(line);
+// 		int len = ft_strlen(buf[i]);
+// 		if (len > 0 && buf[i][len - 1] == '\n')
+// 			buf[i][len - 1] = '\0';
+// 		free(line);
+// 		i++;
+// 	}
+// 	buf[i] = NULL;
+// 	return (close(fd), buf);
+// }
+
+// char **get_map(t_map *map, char *filename)
+// {
+// 	int i = 0, fd;
+// 	char *line;
+// 	char **buf;
+
+// 	fd = open(filename, O_RDONLY);
+// 	skip_initial_lines(map, fd);
+// 	buf = malloc(sizeof(char *) * (map->length + 1));
+// 	if (!buf)
+// 		return (NULL);
+
+// 	while (i < map->length)
+// 	{
+// 		line = get_next_line(fd);
+// 		if (!line)
+// 			break;
+
+// 		// Remove newline
+// 		int len = ft_strlen(line);
+// 		if (len > 0 && line[len - 1] == '\n')
+// 			line[len - 1] = '\0';
+
+// 		buf[i] = malloc(sizeof(char) * map->max_width + 1);
+// 		ft_strcpy(buf[i], line);
+// 		int j = 0;
+// 		while (buf[i][j])
+// 			j++;
+// 		j--;
+// 		while (j < map->max_width)
+// 		{
+// 			buf[i][j] = ' ';
+// 			j++;
+// 		}
+// 			buf[i][j] = '\0';
+// 		free(line);
+// 		i++;
+// 	}
+// 	buf[i] = NULL;
+// 	close(fd);
+// 	return buf;
+// }
+
+char **get_map(t_map *map, char *filename)
 {
-	int i;
-	int fd;
+	int i = 0, fd;
 	char *line;
 	char **buf;
 
-	i = 0;
 	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		return (NULL);
 	skip_initial_lines(map, fd);
+
 	buf = malloc(sizeof(char *) * (map->length + 1));
 	if (!buf)
 		return (NULL);
+
 	while (i < map->length)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			break ;
-		buf[i] = ft_strdup(line);
-		int len = ft_strlen(buf[i]);
-		printf("buf[i]: %s\n", buf[i]);
-		if (len > 0 && buf[i][len - 1] == '\n')
-			buf[i][len - 1] = '\0';
-		printf("new buf[i]: %s\n", buf[i]);
+			break;
+		int len = ft_strlen(line);
+		if (len > 0 && line[len - 1] == '\n')
+			line[len - 1] = '\0';
+		buf[i] = malloc(map->max_width + 1);
+		if (!buf[i])
+			return (NULL);
+		int j = 0;
+		while (line[j] && j < map->max_width)
+		{
+			if (line[j] == ' ')
+				buf[i][j] = '1';
+			else
+				buf[i][j] = line[j];
+			j++;
+		}
+		while (j < map->max_width)
+		{
+			buf[i][j] = '1';
+			j++;
+		}
+		buf[i][j] = '\0';
+
 		free(line);
 		i++;
 	}
 	buf[i] = NULL;
-	return (close(fd), buf);
+	close(fd);
+	return buf;
 }

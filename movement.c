@@ -40,28 +40,65 @@ int    normalized_value(double value)
     return (integer_val + 1);
 }
 
+// int check_collision(t_game *game, double x, double y)
+// {
+//     if (game->map.map[(int)y]
+//         [(int)(x + PLAYER_RADIUS)] == '1' || 
+//         game->map.map[(int)y]
+//         [(int)(x - PLAYER_RADIUS)] == '1' || 
+//         game->map.map[(int)(y + PLAYER_RADIUS)]
+//         [(int)x] == '1' || 
+//         game->map.map[(int)(y - PLAYER_RADIUS)]
+//         [(int)x] == '1')
+//             return (1);
+//     if (game->map.map[(int)(y + PLAYER_RADIUS)]
+//         [(int)(x + PLAYER_RADIUS)] == '1' ||
+//         game->map.map[(int)(y - PLAYER_RADIUS)]
+//         [(int)(x - PLAYER_RADIUS)] == '1' ||
+//         game->map.map[(int)(y + PLAYER_RADIUS)]
+//         [(int)(x - PLAYER_RADIUS)] == '1' ||
+//         game->map.map[(int)(y - PLAYER_RADIUS)]
+//         [(int)(x + PLAYER_RADIUS)] == '1')
+//             return (1);
+//     return (0);
+// }
+
 int check_collision(t_game *game, double x, double y)
 {
-    if (game->map.map[(int)y]
-        [(int)(x + PLAYER_RADIUS)] == '1' || 
-        game->map.map[(int)y]
-        [(int)(x - PLAYER_RADIUS)] == '1' || 
-        game->map.map[(int)(y + PLAYER_RADIUS)]
-        [(int)x] == '1' || 
-        game->map.map[(int)(y - PLAYER_RADIUS)]
-        [(int)x] == '1')
-            return (1);
-    if (game->map.map[(int)(y + PLAYER_RADIUS)]
-        [(int)(x + PLAYER_RADIUS)] == '1' ||
-        game->map.map[(int)(y - PLAYER_RADIUS)]
-        [(int)(x - PLAYER_RADIUS)] == '1' ||
-        game->map.map[(int)(y + PLAYER_RADIUS)]
-        [(int)(x - PLAYER_RADIUS)] == '1' ||
-        game->map.map[(int)(y - PLAYER_RADIUS)]
-        [(int)(x + PLAYER_RADIUS)] == '1')
-            return (1);
+    int mx, my;
+
+    mx = (int)x;
+    my = (int)y;
+
+    // Map height check
+    if (my < 0 || my >= game->map.length)
+        return (1);
+
+    // Map width check for all used x positions
+    if (mx - PLAYER_RADIUS < 0 || mx + PLAYER_RADIUS >= (int)ft_strlen(game->map.map[my]))
+        return (1);
+    if ((int)(y - PLAYER_RADIUS) < 0 || (int)(y + PLAYER_RADIUS) >= game->map.length)
+        return (1);
+    if ((int)x >= (int)ft_strlen(game->map.map[(int)(y + PLAYER_RADIUS)]) ||
+        (int)x >= (int)ft_strlen(game->map.map[(int)(y - PLAYER_RADIUS)]))
+        return (1);
+
+    // Actual collision checks
+    if (game->map.map[my][(int)(x + PLAYER_RADIUS)] == '1' || 
+        game->map.map[my][(int)(x - PLAYER_RADIUS)] == '1' || 
+        game->map.map[(int)(y + PLAYER_RADIUS)][mx] == '1' || 
+        game->map.map[(int)(y - PLAYER_RADIUS)][mx] == '1')
+        return (1);
+
+    if (game->map.map[(int)(y + PLAYER_RADIUS)][(int)(x + PLAYER_RADIUS)] == '1' ||
+        game->map.map[(int)(y - PLAYER_RADIUS)][(int)(x - PLAYER_RADIUS)] == '1' ||
+        game->map.map[(int)(y + PLAYER_RADIUS)][(int)(x - PLAYER_RADIUS)] == '1' ||
+        game->map.map[(int)(y - PLAYER_RADIUS)][(int)(x + PLAYER_RADIUS)] == '1')
+        return (1);
+
     return (0);
 }
+
 
 void change_player_coords(t_game *game, double nextX, double nextY)
 {
