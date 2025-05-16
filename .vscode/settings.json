@@ -8,6 +8,7 @@
         "algorithm": "c",
         "format": "c",
         "type_traits": "c",
-        "structs.h": "c"
+        "structs.h": "c",
+        "string_view": "c"
     }
 }

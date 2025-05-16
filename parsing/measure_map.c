@@ -76,10 +76,16 @@ void	get_widths(t_map *map, char *filename)
 		purse.y++;
 		free(purse.line);
 	}
+	while (purse.y < map->length)
+    {
+        purse.array[purse.y] = 0;
+        purse.y++;
+    }
 	map->width = purse.array;
 	map->max_width = purse.size;
 	close(purse.fd);
 }
+
 
 void	player_start_info(t_map *info, char dir, int x, int y)
 {

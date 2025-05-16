@@ -216,8 +216,10 @@ char	**get_map(t_map *map, char *filename)
 			break ;
 		buf[i] = ft_strdup(line);
 		int len = ft_strlen(buf[i]);
+		printf("buf[i]: %s\n", buf[i]);
 		if (len > 0 && buf[i][len - 1] == '\n')
 			buf[i][len - 1] = '\0';
+		printf("new buf[i]: %s\n", buf[i]);
 		free(line);
 		i++;
 	}
