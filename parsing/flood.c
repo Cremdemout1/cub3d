@@ -88,26 +88,16 @@ void	buffed_map_inner_loop(t_variables *p, t_map *map)
 		if (!p->_map[p->i])
 			return;
 		p->_map[p->i][0] = 'o';
-
-		if (p-> i == 0 || !map->map[p->i - 1] || map->map[p->i - 1][0] == '\0')
+		while (p->j < map->width[p->i - 1])
 		{
-			// Fill entire line with 'o' if it's NULL or empty
-			while (p->j < map->max_width)
-				p->_map[p->i][++p->j] = 'o';
+			if (map->map[p->i - 1][p->j] == ' ' || map->map[p->i - 1][p->j] == '\0')
+				p->_map[p->i][p->j + 1] = 'o';
+			else
+				p->_map[p->i][p->j + 1] = map->map[p->i - 1][p->j];
+			p->j++;
 		}
-		else
-		{
-			while (p->j < map->width[p->i - 1])
-			{
-				if (map->map[p->i - 1][p->j] == ' ' || map->map[p->i - 1][p->j] == '\0')
-					p->_map[p->i][p->j + 1] = 'o';
-				else
-					p->_map[p->i][p->j + 1] = map->map[p->i - 1][p->j];
-				p->j++;
-			}
-			while (p->j < map->max_width)
-				p->_map[p->i][p->j++ + 1] = 'o';
-		}
+		while (p->j < map->max_width)
+			p->_map[p->i][p->j++ + 1] = 'o';
 		p->_map[p->i][p->j] = 'o';
 		p->_map[p->i][p->j + 1] = '\0';
 		p->i++;
