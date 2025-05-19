@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:58:00 by yohan             #+#    #+#             */
-/*   Updated: 2024/11/18 04:39:59 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:17:58 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*gnl_ft_strjoin(char *line, char *buf);
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
 int		ft_isalphaund(int input);
 int		ft_isalnumund(int input);
-char 	*ft_strncpy(char *dest, char *src, unsigned int n);
+char	*ft_strncpy(char *dest, char *src, unsigned int n);
 void	free_and_allocate(char **target, char *replacement, bool to_free);
 void	replace_and_free(char **target, char *replacement);
 

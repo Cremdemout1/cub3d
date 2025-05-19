@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 17:44:53 by bruno             #+#    #+#             */
-/*   Updated: 2024/11/18 04:39:45 by ycantin          ###   ########.fr       */
+/*   Created: 2025/05/19 15:19:43 by ycantin           #+#    #+#             */
+/*   Updated: 2025/05/19 15:19:45 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	replace_and_free(char **target, char *replacement)
 {
 	if (*target)
-        free(*target);
-    *target = replacement;
+		free(*target);
+	*target = replacement;
 }
 
 void	free_and_allocate(char **target, char *replacement, bool to_free)

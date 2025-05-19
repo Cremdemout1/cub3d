@@ -9,6 +9,7 @@
         "format": "c",
         "type_traits": "c",
         "structs.h": "c",
-        "string_view": "c"
+        "string_view": "c",
+        "my_mlx.h": "c"
     }
 }

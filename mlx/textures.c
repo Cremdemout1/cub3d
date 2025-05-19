@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:12:52 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/19 15:08:07 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:10:33 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,62 +15,20 @@
 int	assign_texture_values(t_game **game, t_texture **texture, int i)
 {
 	*texture = malloc(sizeof(t_texture));
-		if (!*texture)
-			return (1);
-		(*texture)->img = mlx_xpm_file_to_image((*game)->mlx,
-				(*game)->map.texs[i], &(*texture)->width,
-				&(*texture)->height);
-		if (!(*texture)->img)
-			return (2);
-		(*texture)->addr = mlx_get_data_addr((*texture)->img,
-				&(*texture)->bpp, &(*texture)->line_len,
-				&(*texture)->endian);
-		if (!(*texture)->addr)
-			return (3);
+	if (!*texture)
+		return (1);
+	(*texture)->img = mlx_xpm_file_to_image((*game)->mlx,
+			(*game)->map.texs[i], &(*texture)->width,
+			&(*texture)->height);
+	if (!(*texture)->img)
+		return (2);
+	(*texture)->addr = mlx_get_data_addr((*texture)->img,
+			&(*texture)->bpp, &(*texture)->line_len,
+			&(*texture)->endian);
+	if (!(*texture)->addr)
+		return (3);
 	return (0);
 }
-
-// void	load_textures(t_game **game)
-// {
-// 	t_texture	**textures;
-// 	int			i;
-// 	int			error;
-
-// 	i = 0;
-// 	textures = malloc(sizeof (t_texture) * 5);
-// 	if (!textures)
-// 		return ;
-// 	while (i < 4)
-// 	{
-// 		error = assign_texture_values(game, &textures[i], i);
-// 		if (error == 1)
-// 			return (printf("%d\n", i), (*game)->map.parser.error = 1, free(textures));
-// 		else if (error == 2)
-// 			return (printf("%d\n", i), (*game)->map.parser.error = 1, free(textures[i]),
-// 					free(textures));
-// 		else if (error == 3)
-// 			return (printf("%d\n", i), (*game)->map.parser.error = 1,
-// 					free(textures[i]->img), free(textures[i]),
-// 					free(textures));
-// 		// textures[i] = malloc(sizeof(t_texture));
-// 		// if (!textures[i])
-// 		// 	return ((*game)->map.parser.error = 1, free(textures));
-// 		// textures[i]->img = mlx_xpm_file_to_image((*game)->mlx,
-// 		// 		(*game)->map.texs[i], &textures[i]->width,
-// 		// 		&textures[i]->height);
-// 		// if (!textures[i]->img)
-// 		// 	return ((*game)->map.parser.error = 1, free(textures[i]),
-// 		// 		free(textures));
-// 		// textures[i]->addr = mlx_get_data_addr(textures[i]->img,
-// 		// 		&textures[i]->bpp, &textures[i]->line_len,
-// 		// 		&textures[i]->endian);
-// 		// if (!textures[i]->addr)
-// 		// 	return ((*game)->map.parser.error = 1,
-// 		// 		free(textures[i]->img), free(textures[i]), free(textures));
-// 		i++;
-// 	}
-// 	(*game)->texs = textures;
-// }
 
 void	free_loaded_textures(t_texture **textures, int count, void *mlx)
 {
@@ -84,7 +42,7 @@ void	free_loaded_textures(t_texture **textures, int count, void *mlx)
 		if (textures[i])
 		{
 			if (textures[i]->img)
-				  mlx_destroy_image(mlx, textures[i]->img);
+				mlx_destroy_image(mlx, textures[i]->img);
 			free(textures[i]);
 		}
 		i++;
@@ -118,7 +76,6 @@ void	load_textures(t_game **game)
 	textures[4] = NULL;
 	(*game)->texs = textures;
 }
-
 
 void	load_player_texture(t_game **game)
 {
