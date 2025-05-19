@@ -47,21 +47,29 @@ void free_resources(t_game **game)
         free((*game)->map.ceiling_color);
 }
 
-int exit_t(t_game *g)
+void game_error(t_game **g)
 {
-    free_resources(&g);
-    if (g->img_ptr)
-        mlx_destroy_image(g->mlx, g->img_ptr);
-    if (g->win)
-        mlx_destroy_window(g->mlx, g->win);
-    if (g->mlx)
+    if (*g && (*g)->map.map)
+        free_array((*g)->map.map);
+    if ((*g)->map.parser.visited)
+        free_bool_array((*g)->map.parser.visited, (*g)->map.length);
+    if ((*g)->map.width)
+        free((*g)->map.width);
+    if ((*g)->map.floor_color)
+        free((*g)->map.floor_color);
+    if ((*g)->map.ceiling_color)
+        free((*g)->map.ceiling_color);
+    if ((*g)->map.texs)
+        free_array((*g)->map.texs);
+    if ((*g)->win)
+        mlx_destroy_window((*g)->mlx, (*g)->win);
+    if ((*g)->mlx)
     {
-        mlx_do_key_autorepeaton(g->mlx);
-        mlx_destroy_display(g->mlx);
-        free(g->mlx);
+        mlx_do_key_autorepeaton((*g)->mlx);
+        mlx_destroy_display((*g)->mlx);
+        free((*g)->mlx);
     }
-    free(g);
-    exit(0);
+    free(*g);
 }
 
 int exit_x_button(void *param)

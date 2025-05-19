@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:53:22 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/15 15:32:40 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/19 14:25:51 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ typedef struct s_map
     char     dir;
     int      facing;
     char     **texs;
-    int      *floor_color; // to change to int *
-    int      *ceiling_color; //to change to int *
+    int      *floor_color;
+    int      *ceiling_color;
     t_parse parser;
 }   t_map;
 
@@ -131,7 +131,6 @@ typedef struct s_game
     bool            keys[283];
     struct timeval  last_time;
     double          dt;
-    int             texture_error;
 }   t_game;
 
 typedef struct s_fill_context

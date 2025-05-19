@@ -58,18 +58,12 @@ int main (int argc, char **argv)
     init_window(&game);
     load_textures(&game);
     if (game->map.parser.error)
-        return(ft_printf_fd(2, "Error\nTextures invalid\n"), 1); // take care of memory allocation
+        return(game_error(&game), ft_printf_fd(2, "Error\nTextures invalid\n"), 1); // take care of memory allocation
     load_player_texture(&game);
     img_placeholder(&game);
     init_player_info(game);
     gettimeofday(&game->last_time, NULL);
-    //test_textures(game); 
-    //draw_map(game); // for minimap
     cast_all_rays(game);
     game->loop(game);
     return (0);
 }
-
-// FIX X BUTTON
-// 6. make minimap inside normal map
-//    have fun ;)

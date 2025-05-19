@@ -1,6 +1,6 @@
 NO ./includes/textures/emptywall.xpm
 SO ./includes/textures/wallbluearcade.xpm
-WE ./includes/textures/emptywall.xpm
+WE ./includes/textures/no.xpm
 EA ./includes/textures/emptywall.xpm
 
 F 40, 40, 65
