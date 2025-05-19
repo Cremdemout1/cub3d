@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:16:17 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/19 15:16:19 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/19 18:27:20 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,21 @@ bool	is_valid_file(char *file)
 	return (false);
 }
 
-int is_empty(char *str)
+int	is_empty(char *str)
 {
-	int i;
-		
+	int	i;
+
 	i = 0;
 	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
 		i++;
 	if (str[i] == '\0')
 		return (1);
-	return(0);
+	return (0);
 }
 
 void	handle_texture(t_map *map, char *texture, int *found, int dir)
 {
-	int len;
+	int	len;
 
 	len = ft_strlen(texture);
 	if (texture[len - 1] == '\n')
@@ -51,14 +51,15 @@ void	handle_texture(t_map *map, char *texture, int *found, int dir)
 
 bool	has_non_num_val(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (!str[i])
 			return (false);
-		if (!(str[i] >= '0' && str[i] <= '9') && str[i] != ' ' && str[i] != '\n')
+		if (!(str[i] >= '0' && str[i] <= '9')
+			&& str[i] != ' ' && str[i] != '\n')
 			return (true);
 		i++;
 	}
@@ -67,16 +68,16 @@ bool	has_non_num_val(char *str)
 
 int	handle_color(t_map *map, char *color, int *found, int type)
 {
-	char **split;
-	int *rgb;
-	int i;
+	char	**split;
+	int		*rgb;
+	int		i;
 		
 	i = 0;
 	split = ft_split(color, ',');
 	if(!split)
 		return (ft_printf_fd(2, "Error\n"), 0);
 	if (count_strings(split) != 3)
-		return (/* ft_printf_fd(2, "color unavailable: wrong count\n"),  */free_array(split), 0);
+		return (free_array(split), 0);
 	rgb = malloc(sizeof (int) * 3);
 	while (split[i])
 	{
@@ -84,10 +85,10 @@ int	handle_color(t_map *map, char *color, int *found, int type)
 		while (split[i][j] == ' ')
 			j++;
 		if (split[i][j] == '\n' || split[i][j] == '\0')
-			return (/* ft_printf_fd(2, "no value given\n"),  */free(rgb), free_array(split), 0);
+			return (free(rgb), free_array(split), 0);
 		rgb[i] = ft_atoi(split[i] + j);
 		if (rgb[i] > 255 || rgb[i] < 0 || has_non_num_val(split[i]))
-			return (/* ft_printf_fd(2, "color unavailable: wrong value\n"),  */free(rgb), free_array(split), 0);
+			return (free(rgb), free_array(split), 0);
 		i++;
 	}
 	free_array(split);
@@ -182,8 +183,8 @@ int get_starting_info(t_map *map, char *filename)
 
 void	skip_initial_lines(t_map *map, int fd)
 {
-	int i;
-	char *line;
+	int		i;
+	char	*line;
 
 	i = 0;
 	while (i < map->map_start)
@@ -196,124 +197,53 @@ void	skip_initial_lines(t_map *map, int fd)
 	}
 }
 
-// char	**get_map(t_map *map, char *filename)
-// {
-// 	int i;
-// 	int fd;
-// 	char *line;
-// 	char **buf;
-
-// 	i = 0;
-// 	fd = open(filename, O_RDONLY);
-// 	skip_initial_lines(map, fd);
-// 	buf = malloc(sizeof(char *) * (map->length + 1));
-// 	if (!buf)
-// 		return (NULL);
-// 	while (i < map->length)
-// 	{
-// 		line = get_next_line(fd);
-// 		if (!line)
-// 			break ;
-// 		buf[i] = ft_strdup(line);
-// 		int len = ft_strlen(buf[i]);
-// 		if (len > 0 && buf[i][len - 1] == '\n')
-// 			buf[i][len - 1] = '\0';
-// 		free(line);
-// 		i++;
-// 	}
-// 	buf[i] = NULL;
-// 	return (close(fd), buf);
-// }
-
-// char **get_map(t_map *map, char *filename)
-// {
-// 	int i = 0, fd;
-// 	char *line;
-// 	char **buf;
-
-// 	fd = open(filename, O_RDONLY);
-// 	skip_initial_lines(map, fd);
-// 	buf = malloc(sizeof(char *) * (map->length + 1));
-// 	if (!buf)
-// 		return (NULL);
-
-// 	while (i < map->length)
-// 	{
-// 		line = get_next_line(fd);
-// 		if (!line)
-// 			break;
-
-// 		// Remove newline
-// 		int len = ft_strlen(line);
-// 		if (len > 0 && line[len - 1] == '\n')
-// 			line[len - 1] = '\0';
-
-// 		buf[i] = malloc(sizeof(char) * map->max_width + 1);
-// 		ft_strcpy(buf[i], line);
-// 		int j = 0;
-// 		while (buf[i][j])
-// 			j++;
-// 		j--;
-// 		while (j < map->max_width)
-// 		{
-// 			buf[i][j] = ' ';
-// 			j++;
-// 		}
-// 			buf[i][j] = '\0';
-// 		free(line);
-// 		i++;
-// 	}
-// 	buf[i] = NULL;
-// 	close(fd);
-// 	return buf;
-// }
-
-char **get_map(t_map *map, char *filename)
+void	format_line(t_variables *p, int max_width)
 {
-	int i = 0, fd;
-	char *line;
-	char **buf;
-
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return (NULL);
-	skip_initial_lines(map, fd);
-
-	buf = malloc(sizeof(char *) * (map->length + 1));
-	if (!buf)
-		return (NULL);
-
-	while (i < map->length)
+	p->buf[p->i] = malloc(max_width + 1);
+	if (!p->buf[p->i])
+		return ;
+	p->j = 0;
+	while (p->line[p->j] && p->j < max_width)
 	{
-		line = get_next_line(fd);
-		if (!line)
-			break;
-		int len = ft_strlen(line);
-		if (len > 0 && line[len - 1] == '\n')
-			line[len - 1] = '\0';
-		buf[i] = malloc(map->max_width + 1);
-		if (!buf[i])
-			return (NULL);
-		int j = 0;
-		while (line[j] && j < map->max_width)
-		{
-			if (line[j] == ' ')
-				buf[i][j] = '1';
-			else
-				buf[i][j] = line[j];
-			j++;
-		}
-		while (j < map->max_width)
-		{
-			buf[i][j] = '1';
-			j++;
-		}
-		buf[i][j] = '\0';
-
-		free(line);
-		i++;
+		if (p->line[p->j] == ' ')
+			p->buf[p->i][p->j] = '1';
+		else
+			p->buf[p->i][p->j] = p->line[p->j];
+		p->j++;
 	}
-	buf[i] = NULL;
-	close(fd);
-	return buf;
+	while (p->j < max_width)
+	{
+		p->buf[p->i][p->j] = '1';
+		p->j++;
+	}
+	p->buf[p->i][p->j] = '\0';
+	free(p->line);
+	p->i++;
+}
+
+char	**get_map(t_map *map, char *filename)
+{
+	t_variables	p;
+
+	p.i = 0;
+	p.fd = open(filename, O_RDONLY);
+	if (p.fd < 0)
+		return (NULL);
+	skip_initial_lines(map, p.fd);
+	p.buf = malloc(sizeof(char *) * (map->length + 1));
+	if (!p.buf)
+		return (NULL);
+	while (p.i < map->length)
+	{
+		p.line = get_next_line(p.fd);
+		if (!p.line)
+			break ;
+		p.len = ft_strlen(p.line);
+		if (p.len > 0 && p.line[p.len - 1] == '\n')
+			p.line[p.len - 1] = '\0';
+		format_line(&p, map->max_width);
+	}
+	p.buf[p.i] = NULL;
+	close (p.fd);
+	return (p.buf);
 }

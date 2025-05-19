@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/19 15:15:59 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/19 15:16:01 by ycantin          ###   ########.fr       */
+/*   Created: 2025/05/19 18:09:59 by ycantin           #+#    #+#             */
+/*   Updated: 2025/05/19 18:10:02 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,14 @@ void	get_widths(t_map *map, char *filename)
 		free(purse.line);
 	}
 	while (purse.y < map->length)
-    {
-        purse.array[purse.y] = 0;
-        purse.y++;
-    }
+	{
+		purse.array[purse.y] = 0;
+		purse.y++;
+	}
 	map->width = purse.array;
 	map->max_width = purse.size;
 	close(purse.fd);
 }
-
 
 void	player_start_info(t_map *info, char dir, int x, int y)
 {
