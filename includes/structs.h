@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:23:56 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/19 18:13:33 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/20 18:35:35 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,11 @@ typedef struct s_var_holder
 	int		count;
 	int		error;
 	int		is_empty;
+	int		found[6];
 	char	**_map;
 	char	**buf;
+	char	**split;
+	int		*rgb;
 	bool	**visited;
 	int		pr_min_x;
 	int		pr_min_y;

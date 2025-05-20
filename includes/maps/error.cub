@@ -3,7 +3,7 @@ SO ./includes/textures/wallbluearcade.xpm
 WE ./includes/textures/emptywall.xpm
 EA ./includes/textures/emptywall.xpm
 
-F 40, 40, 65
+F 40, 40, 0
 C 0, 0, 50
 
  1

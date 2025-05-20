@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:12:52 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/19 15:10:33 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/20 14:50:50 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	load_textures(t_game **game)
 		error = assign_texture_values(game, &textures[i], i);
 		if (error != 0)
 		{
-			printf("%d\n", error);
 			(*game)->map.parser.error = 1;
 			free_loaded_textures(textures, i + 1, (*game)->mlx);
 			return ;

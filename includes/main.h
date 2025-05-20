@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:46 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/19 17:47:06 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/20 18:52:35 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void			player_move(t_game *game);
 void			player_rotate(t_game *game);
 void			prep_rotation(t_game *game, double rot_speed);
 void			assign_potential_coords(t_variables *p, double x, double y);
-void			move_player_by_direction(t_game *game, double dx, double dy, double speed_multiplier);
+void			move_player_by_direction(t_game *game, double dx,
+					double dy, double speed_multiplier);
 void			change_player_coords(t_game *game, double nextX, double nextY);
 
 #endif

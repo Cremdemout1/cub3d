@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 17:29:54 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/19 17:48:26 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/20 18:25:05 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,15 @@ void	change_player_coords(t_game *game, double nextX, double nextY)
 		game->player.pos_x = nextX;
 		game->player.pos_y = nextY;
 	}
+	else
+	{
+		if (!check_collision(game, nextX, game->player.pos_y))
+			game->player.pos_x = nextX;
+		if (!check_collision(game, game->player.pos_x, nextY))
+			game->player.pos_y = nextY;
+	}
 }
 // sliding very rarely gives seg fault in corners when using valgrind
-// else 
-	// {
-	//	 if (!check_collision(game, nextX, game->player.pos_y))
-	//		 game->player.pos_x = nextX;
-	//	 if (!check_collision(game, game->player.pos_x, nextY))
-	//		 game->player.pos_y = nextY;
-	// }
 
 void	player_move(t_game *game)
 {

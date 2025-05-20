@@ -6,7 +6,7 @@
 #    By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/28 20:32:02 by ycantin           #+#    #+#              #
-#    Updated: 2025/05/19 17:45:33 by ycantin          ###   ########.fr        #
+#    Updated: 2025/05/20 18:46:15 by ycantin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,9 @@ SRC = 	main.c \
 		parsing/flood.c \
 		parsing/flood_utils.c \
 		parsing/bufferize.c \
+		parsing/bufferize_utils.c \
+		parsing/bufferize_utils2.c \
+		parsing/bufferize_utils3.c \
 		parsing/measure_map.c \
 		movement/movement.c \
 		movement/movement_utils.c \
