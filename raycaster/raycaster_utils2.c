@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 17:49:59 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/19 18:01:08 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/21 13:39:31 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,47 +40,63 @@ void	draw_wall_column(t_game *game, int x)
 	}
 }
 
-// if side == 0, vertical wall
-	// if raydir_x < 0, wall is to the left ELSE right
-// if side == 1, horizontal wall
+// if side == 0, east or west wall
+	// if raydir_x < 0, wall is to the east ELSE west
+// if side == 1, onrth or south wall
 	// if raydir_y < 0, wall is above ELSE below
+// | Hit Side | Ray Direction | Map Start   | Texture Used     |
+// | -------- | ------------- | ----------- | -----------------|
+// | 0        | raydir_x < 0 | NORTH/SOUTH | WEST (`texs[3]`)  |
+// | 0        | raydir_x < 0 | EAST/WEST   | SOUTH (`texs[1]`) |
+// | 0        | raydir_x > 0 | NORTH/SOUTH | EAST (`texs[2]`)  |
+// | 0        | raydir_x > 0 | EAST/WEST   | NORTH (`texs[0]`) |
+// | 1        | raydir_y < 0 | EAST/WEST   | NORTH (`texs[0]`) |
+// | 1        | raydir_y < 0 | NORTH/SOUTH | WEST (`texs[3]`)  |
+// | 1        | raydir_y > 0 | EAST/WEST   | SOUTH (`texs[1]`) |
+// | 1        | raydir_y > 0 | NORTH/SOUTH | EAST (`texs[2]`)  |
+
+void	hit_east_or_west_wall(t_game *game)
+{
+	if (game->ray.raydir_x < 0)
+	{
+		if (game->map.map_start == NORTH || game->map.map_start == SOUTH)
+			game->wall.texture = game->texs[3];
+		else
+			game->wall.texture = game->texs[1];
+	}
+	else
+	{
+		if (game->map.map_start == NORTH || game->map.map_start == SOUTH)
+			game->wall.texture = game->texs[2];
+		else
+			game->wall.texture = game->texs[0];
+	}
+}
+
+void	hit_north_or_south_wall(t_game *game)
+{
+	if (game->ray.raydir_y < 0)
+	{
+		if (game->map.map_start == EAST || game->map.map_start == WEST)
+			game->wall.texture = game->texs[0];
+		else
+			game->wall.texture = game->texs[3];
+	}
+	else
+	{
+		if (game->map.map_start == EAST || game->map.map_start == WEST)
+			game->wall.texture = game->texs[1];
+		else
+			game->wall.texture = game->texs[2];
+	}
+}
 
 void	select_texture(t_game *game)
 {
 	if (game->ray.side == 0)
-	{
-		if (game->ray.raydir_x < 0)
-		{
-			if (game->map.map_start == NORTH || game->map.map_start == SOUTH)
-				game->wall.texture = game->texs[3];
-			else
-				game->wall.texture = game->texs[1];
-		}
-		else
-		{
-			if (game->map.map_start == NORTH || game->map.map_start == SOUTH)
-				game->wall.texture = game->texs[2];
-			else
-				game->wall.texture = game->texs[0];
-		}
-	}
+		hit_east_or_west_wall(game);
 	else
-	{
-		if (game->ray.raydir_y < 0)
-		{
-			if (game->map.map_start == EAST || game->map.map_start == WEST)
-				game->wall.texture = game->texs[0];
-			else
-				game->wall.texture = game->texs[3];
-		}
-		else
-		{
-			if (game->map.map_start == EAST || game->map.map_start == WEST)
-				game->wall.texture = game->texs[1];
-			else
-				game->wall.texture = game->texs[2];
-		}
-	}
+		hit_north_or_south_wall(game);
 }
 
 float	deg_to_rad(int degree)

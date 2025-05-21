@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:40:46 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/20 18:52:35 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/21 13:45:07 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define VISITED		2
 # define XPM_X			64
 # define XPM_Y			64
-# define FOV			60
+# define FOV			0.66
 # define PLAYER_SPEED	3
 # define ROT_SPEED		1.8
 # define PLAYER_RADIUS	0.1
