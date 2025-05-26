@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:58:00 by yohan             #+#    #+#             */
-/*   Updated: 2025/05/19 15:17:58 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:05:31 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,6 @@ int		ft_isalnumund(int input);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 void	free_and_allocate(char **target, char *replacement, bool to_free);
 void	replace_and_free(char **target, char *replacement);
+char	**ft_split2(char const *s, char c);
 
 #endif

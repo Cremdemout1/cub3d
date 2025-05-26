@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brfernan <brfernan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:42:55 by yohan             #+#    #+#             */
-/*   Updated: 2024/08/22 17:58:23 by brfernan         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:40:38 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,32 @@ char	**ft_split(char const *s, char c)
 	var.dest[var.str_index] = NULL;
 	return (var.dest);
 }
+
+char	**ft_split2(char const *s, char c)
+{
+	t_vars	var;
+
+	if (!s)
+		return (NULL);
+	var.i = 0;
+	var.str_index = 0;
+	var.dest = (char **)malloc((ft_strlen(s) + 2) * sizeof(char *));
+	if (!var.dest)
+		return (NULL);
+	while (1)
+	{
+		var.start = var.i;
+		while (s[var.i] && s[var.i] != c)
+			var.i++;
+		var.dest[var.str_index++] = ft_substr(s, var.start, var.i - var.start);
+		if (!s[var.i])
+			break ;
+		var.i++;
+	}
+	var.dest[var.str_index] = NULL;
+	return (var.dest);
+}
+
 /*
 int main (void)
 {

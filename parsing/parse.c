@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:12:32 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/20 18:24:35 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:29:04 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	valid_textures(t_map *map)
 		j = 0;
 		while (map->texs[i][j])
 			j++;
-		while (map->texs[i][j] != '.')
+		while (j > 0 && map->texs[i][j] != '.')
 			j--;
 		fd = open(map->texs[i], O_RDONLY);
 		if (fd < 0 || ft_strncmp(map->texs[i] + j + 1, "xpm", 3)

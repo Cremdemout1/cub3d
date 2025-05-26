@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:16:17 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/20 18:45:37 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:16:42 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	handle_color(t_map *map, char *color, int *found, int type)
 	t_variables	p;
 
 	p.i = 0;
-	p.split = ft_split(color, ',');
+	p.split = ft_split2(color, ',');
 	if (!p.split)
 		return (ft_printf_fd(2, "Error\n"), 0);
 	if (count_strings(p.split) != 3)

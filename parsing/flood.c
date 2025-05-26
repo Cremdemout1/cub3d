@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:16:04 by ycantin           #+#    #+#             */
-/*   Updated: 2025/05/19 18:11:08 by ycantin          ###   ########.fr       */
+/*   Updated: 2025/05/26 14:41:36 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	reverse_fill(char **map, int x, int y, t_map *map_info)
 		return ;
 	if (map[y][x] == '0')
 	{
-		printf("%d  %d\n", x, y);
 		map_info->parser.error = 1;
 		return ;
 	}
